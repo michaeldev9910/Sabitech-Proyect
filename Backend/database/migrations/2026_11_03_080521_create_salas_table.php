@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('salas', function (Blueprint $table) {
             $table->id();
+            $table->string('nombre')->unique();
+            $table->string('ubicacion')->nullable();
+            $table->unsignedInteger('capacidad');
             $table->timestamps();
         });
     }

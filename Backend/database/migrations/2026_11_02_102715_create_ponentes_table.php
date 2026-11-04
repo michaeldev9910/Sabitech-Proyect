@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('ponentes', function (Blueprint $table) {
             $table->id();
+            $table->string('nombre');
+            $table->string('apellidos');
+            $table->string('organizacion')->nullable();
+            $table->text('biografia')->nullable();
+            $table->string('foto_url')->nullable();
             $table->timestamps();
         });
     }

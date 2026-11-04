@@ -1,4 +1,4 @@
-name: sabiteck-despliegue
+name: sabitech-despliegue
 
 services:
   web:
@@ -7,28 +7,38 @@ services:
       - "127.0.0.1:8080:80"
     volumes:
       - ./Backend:/var/www/html
+    depends_on:
+      db:
+        condition: service_healthy
 
   db:
     image: mysql:8.4
     environment:
-      MYSQL_DATABASE: sabiteck
-      MYSQL_USER: sabiteck_user
-      MYSQL_PASSWORD: Aula_Sabiteck_2026
+      MYSQL_DATABASE: sabitech
+      MYSQL_USER: sabitech_user
+      MYSQL_PASSWORD: Aula_Sabitech_2026
       MYSQL_ROOT_PASSWORD: Aula_Root_2026
     volumes:
       - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: sabiteck_phpmyadmin
+    container_name: sabitech_phpmyadmin
     restart: always
     ports:
-      - "8081:80"
+      - "127.0.0.1:8081:80"
     environment:
       PMA_HOST: db
       MYSQL_ROOT_PASSWORD: Aula_Root_2026
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
 volumes:
   mysql_data:
