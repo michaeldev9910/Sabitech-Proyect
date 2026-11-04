@@ -13,6 +13,15 @@ return new class extends Migration
     {
         Schema::create('reservas', function (Blueprint $table) {
             $table->id();
+            $table->string('codigo')->unique();
+            $table->foreignId('usuario_id')->constrained('usuarios')->cascadeOnDelete();
+            $table->foreignId('charla_id')->constrained('charlas')->cascadeOnDelete();
+            $table->string('estado')->default('pendiente');
+            $table->timestamp('confirmada_en')->nullable();
+            $table->timestamp('cancelada_en')->nullable();
+            $table->string('qr_semilla')->nullable();
+            $table->timestamp('qr_renovado_en')->nullable();
+            $table->unique(['usuario_id', 'charla_id']);
             $table->timestamps();
         });
     }

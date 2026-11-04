@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('notificaciones', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('reserva_id')->constrained('reservas')->cascadeOnDelete();
+            $table->string('destinatario');
+            $table->string('asunto');
+            $table->string('estado')->default('pendiente');
+            $table->unsignedTinyInteger('intentos')->default(0);
+            $table->text('ultimo_error')->nullable();
+            $table->timestamp('enviada_en')->nullable();
             $table->timestamps();
         });
     }
@@ -22,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('notificacions');
+        Schema::dropIfExists('notificaciones');
     }
 };

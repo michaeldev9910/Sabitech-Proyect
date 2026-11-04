@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('asistencias', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('reserva_id')->unique()->constrained('reservas')->cascadeOnDelete();
+            $table->foreignId('registrada_por')->nullable()->constrained('usuarios')->nullOnDelete();
+            $table->unsignedBigInteger('qr_ventana')->nullable();
+            $table->timestamp('registrada_en')->useCurrent();
             $table->timestamps();
         });
     }
