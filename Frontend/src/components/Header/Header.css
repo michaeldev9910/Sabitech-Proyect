@@ -1,0 +1,25 @@
+
+.Cabecera{
+display: grid;
+  grid-template-columns: auto auto;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+    background-color: rgb(78, 112, 143);
+
+}
+.Logo{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: white;
+}
+.Account{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: white;
+}
+
