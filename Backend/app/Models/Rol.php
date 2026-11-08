@@ -7,9 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable(['codigo', 'nombre', 'descripcion'])]
-class Role extends Model
+class Rol extends Model
 {
     protected $table = 'roles';
+
+    protected $fillable = ['codigo', 'nombre', 'descripcion'];
 
     public function usuarios(): HasMany
     {
