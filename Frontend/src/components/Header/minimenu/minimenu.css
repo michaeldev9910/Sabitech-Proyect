@@ -1,0 +1,44 @@
+.minimenu {
+  position: relative;
+}
+
+.minimenu__button {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid white;
+  border-radius: 4px;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+}
+
+.minimenu__list {
+  position: absolute;
+  z-index: 1;
+  top: calc(100% + 0.75rem);
+  right: 0;
+  display: grid;
+  gap: 0.75rem;
+  min-width: 12rem;
+  margin: 0;
+  padding: 1rem;
+  list-style: none;
+  background-color: rgb(78, 112, 143);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 20%);
+}
+
+.minimenu__item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: white;
+}
+
+.minimenu__item img {
+  width: 1.25rem;
+  height: 1.25rem;
+  object-fit: contain;
+}
+
+.minimenu__item a {
+  color: inherit;
+}
