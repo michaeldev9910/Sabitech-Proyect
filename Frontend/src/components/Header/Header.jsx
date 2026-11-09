@@ -1,4 +1,5 @@
 import './Header.css';
+import MiniMenu from './minimenu/minimenu.jsx';
 import reactLogo from '../../assets/react.svg'
 
 function Header() {
@@ -8,8 +9,8 @@ function Header() {
             <a href={reactLogo} className="Logo">
                 <img src={reactLogo} alt="React logo" />
             </a>
-            {/* Logo de Usuaruio */}
-            <a href="./assets/vite.svg" className= "Account">Aqui logo de cuenta</a>
+            
+            <MiniMenu />
 
             </nav>
            
