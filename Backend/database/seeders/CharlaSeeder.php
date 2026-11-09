@@ -13,8 +13,6 @@ class CharlaSeeder extends Seeder
     {
         $ponente = fn (string $nombre) => Ponente::where('nombre', $nombre)->value('id');
         $sala    = fn (string $nombre) => Sala::where('nombre', $nombre)->value('id');
-
-        // Las fechas son relativas a "hoy" para que la demo siempre tenga charlas futuras.
         $dia = fn (int $dias, int $hora) => now()->addDays($dias)->setTime($hora, 0);
 
         $charlas = [
@@ -29,7 +27,6 @@ class CharlaSeeder extends Seeder
                 'descripcion' => 'Componentes, estado y consumo de una API.',
             ],
             [
-                // Aforo 2: sirve para probar "ultima plaza" y "charla completa".
                 'titulo' => 'Docker para desarrolladores', 'ponente' => 'Daniel', 'sala' => 'Laboratorio',
                 'inicio' => $dia(4, 10), 'aforo' => 2, 'estado' => 'publicada',
                 'descripcion' => 'Contenedores para un entorno de desarrollo reproducible.',
