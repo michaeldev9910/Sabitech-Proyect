@@ -6,6 +6,7 @@ import {
   useSyncExternalStore,
 } from "react";
 import "./Header.css";
+import FotoCuenta from "../../assets/esteban.svg";
 import { irAlBuscador } from "../../utils/navegacion.js";
 
 // Cada sección tiene su color de marca para el visor del menú.
@@ -34,21 +35,6 @@ const seccionDelHash = () => {
   const id = window.location.hash.slice(1);
   return SECCIONES.some((seccion) => seccion.id === id) ? id : null;
 };
-
-const inicialesDe = (usuario) =>
-  `${usuario?.nombre?.[0] ?? ""}${usuario?.apellidos?.[0] ?? ""}`.toUpperCase() || "?";
-
-/** Esquinas de colores alrededor del botón de cuenta */
-function EsquinasCuenta() {
-  return (
-    <svg className="Cuenta__esquinas" viewBox="0 0 56 56" aria-hidden="true">
-      <path d="M2 14V9a7 7 0 0 1 7-7h5" stroke="var(--salud)" />
-      <path d="M42 2h5a7 7 0 0 1 7 7v5" stroke="var(--tecnologia)" />
-      <path d="M54 42v5a7 7 0 0 1-7 7h-5" stroke="var(--negocios)" />
-      <path d="M14 54H9a7 7 0 0 1-7-7v-5" stroke="var(--light-teal)" />
-    </svg>
-  );
-}
 
 function Header({ usuario = null, onAcceder, onCerrarSesion }) {
   const compacta = useSyncExternalStore(
@@ -307,10 +293,7 @@ function Header({ usuario = null, onAcceder, onCerrarSesion }) {
                 aria-label={`Mi cuenta: ${usuario.nombre} ${usuario.apellidos ?? ""}`.trim()}
                 onClick={() => setMenuCuenta((valor) => !valor)}
               >
-                <EsquinasCuenta />
-                <span className="Cuenta__iniciales" aria-hidden="true">
-                  {inicialesDe(usuario)}
-                </span>
+                <img className="Cuenta__foto" src={FotoCuenta} alt="" />
               </button>
 
               {menuCuenta && (
@@ -349,11 +332,7 @@ function Header({ usuario = null, onAcceder, onCerrarSesion }) {
                 onAcceder?.();
               }}
             >
-              <EsquinasCuenta />
-              <svg className="Cuenta__icono" viewBox="0 0 24 24" aria-hidden="true">
-                <circle cx="12" cy="8" r="4" />
-                <path d="M4 21a8 8 0 0 1 16 0" />
-              </svg>
+              <img className="Cuenta__foto" src={FotoCuenta} alt="" />
             </button>
           )}
         </div>
