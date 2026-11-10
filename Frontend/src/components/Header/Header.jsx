@@ -11,8 +11,8 @@ import FotoCuenta from "../../assets/esteban.svg";
 
 const SECCIONES = [
   { id: "inicio", texto: "Inicio", marca: "var(--cian)" },
-  { id: "charlas", texto: "Charlas", marca: "var(--morado)" },
-  { id: "donde-estamos", texto: "Dónde estamos", marca: "var(--magenta)" },
+  { id: "qr", texto: "QR", marca: "var(--morado)" },
+  { id: "admin", texto: "Control admin", marca: "var(--magenta)" },
   { id: "contacto", texto: "Contacto", marca: "var(--coral)" },
 ];
 
