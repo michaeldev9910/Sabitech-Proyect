@@ -1,0 +1,38 @@
+.SesionActiva {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  max-width: calc(1320px + 2rem);
+  margin-inline: auto;
+  padding: 1rem;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.SesionActiva button {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid rgba(15, 20, 32, 0.24);
+  border-radius: 8px;
+  background: #fff;
+  color: #0f1420;
+  font: inherit;
+  cursor: pointer;
+}
+
+.SesionActiva button:focus-visible {
+  outline: 2px solid #7f3bd3;
+  outline-offset: 2px;
+}
+
+.SesionActiva button:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.SesionActiva p {
+  flex-basis: 100%;
+  margin: 0;
+  color: #a21d2b;
+  text-align: right;
+}
