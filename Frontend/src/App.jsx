@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import LoginView from "./Views/loginView/loginView.jsx";
 import MainView from "./Views/mainView/MainView.jsx";
-import { cerrarSesion, obtenerUsuario } from "./api/authApi.js";
+import { cerrarSesion, obtenerUsuario } from "./api/loginApi.js";
 import { ApiError } from "./api/apiError.js";
 
 const TOKEN_KEY = "sabitech-auth-token";

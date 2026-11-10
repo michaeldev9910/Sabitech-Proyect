@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { iniciarSesion, registrarUsuario } from "../../api/authApi.js";
+import { iniciarSesion, registrarUsuario } from "../../api/loginApi.js";
 import "./loginView.css";
 
 function mensajeDeError(error) {
