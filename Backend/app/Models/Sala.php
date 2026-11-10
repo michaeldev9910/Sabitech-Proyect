@@ -11,15 +11,17 @@ class Sala extends Model
 {
     protected $table = 'salas';
 
-    protected function casts(): array
-    {
-        return [
-            'capacidad' => 'integer',
-        ];
+    protected $fillable = ['nombre', 'ubicacion', 'capacidad'];
+
+    protected function casts(): array {
+
+        return ['capacidad' => 'integer',];
+
     }
 
-    public function charlas(): HasMany
-    {
-        return $this->hasMany(Charla::class);
+    public function charlas(): HasMany{
+
+        return $this->hasMany(Charla::class, 'sala_id');
+
     }
 }
