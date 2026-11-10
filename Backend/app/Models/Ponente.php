@@ -11,8 +11,10 @@ class Ponente extends Model
 {
     protected $table = 'ponentes';
 
+    protected $fillable = ['nombre', 'apellidos', 'organizacion', 'biografia', 'foto_url'];
+
     public function charlas(): HasMany
     {
-        return $this->hasMany(Charla::class);
+        return $this->hasMany(Charla::class, 'ponente_id');
     }
 }

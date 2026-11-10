@@ -13,32 +13,40 @@ class Reserva extends Model
 {
     protected $table = 'reservas';
 
-    protected function casts(): array
-    {
+    protected $fillable = ['codigo', 'usuario_id', 'charla_id', 'estado', 'confirmada_en', 'cancelada_en', 'qr_semilla', 'qr_renovado_en'];
+
+    protected $hidden = ['qr_semilla'];
+
+    protected function casts(): array{
+
         return [
             'confirmada_en' => 'datetime',
             'cancelada_en' => 'datetime',
             'qr_renovado_en' => 'datetime',
         ];
+    } 
+
+    public function usuario(): BelongsTo{
+
+        return $this->belongsTo(Usuario::class, 'usuario_id');
+
     }
 
-    public function usuario(): BelongsTo
-    {
-        return $this->belongsTo(Usuario::class);
+    public function charla(): BelongsTo{
+
+        return $this->belongsTo(Charla::class, 'charla_id');
+
     }
 
-    public function charla(): BelongsTo
-    {
-        return $this->belongsTo(Charla::class);
+    public function asistencia(): HasOne{
+
+        return $this->hasOne(Asistencia::class, 'reserva_id');
+
     }
 
-    public function asistencia(): HasOne
-    {
-        return $this->hasOne(Asistencia::class);
-    }
+    public function notificaciones(): HasMany{
 
-    public function notificaciones(): HasMany
-    {
-        return $this->hasMany(Notificacion::class);
+        return $this->hasMany(Notificacion::class, 'reserva_id');
+
     }
 }
