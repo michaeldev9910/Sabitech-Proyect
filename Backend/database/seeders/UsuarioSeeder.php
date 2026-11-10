@@ -12,8 +12,6 @@ class UsuarioSeeder extends Seeder
     {
         $rol = fn (string $codigo) => Rol::where('codigo', $codigo)->value('id');
 
-        // Cuentas de laboratorio (datos ficticios). La contrasena es "password":
-        // el modelo Usuario la guarda siempre con hash, nunca en texto plano.
         $usuarios = [
             ['rol' => 'organizacion', 'nombre' => 'Olga',   'apellidos' => 'Organizacion Demo', 'email' => 'organizacion@sabitech.test'],
             ['rol' => 'acceso',       'nombre' => 'Aitor',  'apellidos' => 'Acceso Demo',       'email' => 'acceso@sabitech.test'],
