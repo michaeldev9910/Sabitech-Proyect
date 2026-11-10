@@ -1,0 +1,14 @@
+// =================================
+// Bootstrap 5 · solo el componente Carousel
+// Importamos únicamente lo necesario para que el resto de Bootstrap
+// (reboot, tipografía, botones...) no pise el diseño de Sabitech.
+// =================================
+
+$carousel-transition-duration: .7s;
+
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/carousel";

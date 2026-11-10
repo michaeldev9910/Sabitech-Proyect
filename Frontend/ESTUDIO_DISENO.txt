@@ -1,0 +1,407 @@
+================================================================================
+ SABITECH · ESTUDIO DE DISEÑO Y REDISEÑO DEL FRONTEND
+ Fecha: 10 de noviembre de 2026
+ Alcance: solo frontend (diseño, componentes y experiencia de usuario).
+          No se ha modificado nada del backend.
+================================================================================
+
+
+--------------------------------------------------------------------------------
+ 1. OBJETIVO
+--------------------------------------------------------------------------------
+
+Rediseñar la web de Sabitech (Salud + Tecnología + Negocios) para que:
+
+  - Llame la atención frente a lo que hay hoy en el mercado.
+  - Transmita seriedad a un público muy profesional (asistentes y ponentes
+    expertos en su materia).
+  - Ofrezca una buena experiencia de usuario: encontrar una charla, entender
+    su información y saber si quedan plazas, en pocos segundos.
+
+Requisitos pedidos:
+  - Navbar llamativo.
+  - Tarjetas tipo foto del ponente que, al pasar el cursor, muestren la charla.
+  - Carrusel de charlas recientes hecho con Bootstrap.
+  - Cuerpo con un color llamativo (paleta híbrida).
+  - Filtros por Salud, Tecnología y Negocios, y por lo que el usuario quiera.
+
+
+--------------------------------------------------------------------------------
+ 2. METODOLOGÍA Y FUENTES
+--------------------------------------------------------------------------------
+
+a) Selección de la muestra: las 10 webs de tecnología y electrónica con más
+   visitas en España en octubre de 2026, según el ranking de Doofinder
+   ("Ranking Top eCommerce Tecnología y Electrónica en España"). Se añadió
+   apple.com, que es 3ª en el ranking de electrónica de consumo de Similarweb
+   del mismo mes.
+
+b) Análisis: el 10/11/2026 se leyó la portada de cada web y se anotaron:
+   navegación, primer bloque (hero), organización del contenido, filtros,
+   señales de confianza y tono de los textos.
+
+c) Limitaciones (para interpretar bien los resultados):
+   - Es un análisis de patrones de diseño, no de datos de comportamiento.
+     No tenemos clics, conversiones ni mapas de calor de esas webs.
+   - Se leyó el contenido de las páginas, no se midieron sus estilos. Lo que
+     se dice de colores y tipografías se basa en la identidad pública de cada
+     marca.
+   - La captura coincide con la campaña de Black Friday. En 8 de 10 webs la
+     portada estaba dominada por ofertas, lo que exagera el tono promocional.
+   - En PcComponentes y Outlet PC parte de la página llegó resumida. Esos
+     datos se marcan como menos fiables.
+
+Fuentes:
+  - https://www.doofinder.com/es/ranking-top-ecommerce-en-espana/tecnologia-electronica/
+  - https://www.similarweb.com/top-websites/spain/computers-electronics-and-technology/consumer-electronics/
+
+
+--------------------------------------------------------------------------------
+ 3. MUESTRA ANALIZADA (visitas en España, octubre 2026, Doofinder)
+--------------------------------------------------------------------------------
+
+   #   Web                   Visitas/mes   Tipo
+   1   microsoft.com         28,9 M        Marca
+   2   samsung.com           20,3 M        Marca
+   3   mediamarkt.es         15,4 M        Retail
+   4   movistar.es           11,0 M        Operadora
+   5   pccomponentes.com     10,3 M        Retail
+   6   orange.es              9,6 M        Operadora
+   7   vodafone.es            6,2 M        Operadora
+   8   yoigo.com              1,4 M        Operadora (no se analizó en detalle)
+   9   outlet-pc.es           1,2 M        Retail outlet
+  10   hp.com                 1,1 M        Marca
+  +    apple.com              (3ª en Similarweb)  Marca
+
+Hay tres familias muy claras:
+  - MARCAS (Apple, Microsoft, Samsung, HP): aspiracionales, mucho espacio,
+    fotografía protagonista y titulares cortos.
+  - RETAIL (MediaMarkt, PcComponentes, Outlet PC): densos, mucha categoría,
+    precio y urgencia.
+  - OPERADORAS (Movistar, Orange, Vodafone): tarjetas de tarifas
+    comparables, precio mensual y un botón claro ("Lo quiero").
+
+
+--------------------------------------------------------------------------------
+ 4. QUÉ TIENEN EN COMÚN (HALLAZGOS)
+--------------------------------------------------------------------------------
+
+4.1 Navegación
+  - Menú principal plano, de 6 a 10 entradas, más un bloque de utilidades a
+    la derecha: búsqueda, cuenta y carrito.
+  - El buscador tiene cada vez más peso. MediaMarkt lo etiqueta "Búsqueda
+    con IA" y Microsoft pone en la cabecera un "Haz una pregunta". Samsung,
+    Apple, HP, Vodafone y Outlet PC lo tienen siempre a mano.
+  - Barra fina de avisos encima del menú (Apple, Microsoft, PcComponentes)
+    para un mensaje importante.
+  - Mega-menús con segmentación por público: HP (hogar, profesionales,
+    gaming), Samsung ("Para Empresas"), Movistar ("Autónomos", "Empresas").
+
+4.2 Primer bloque (hero)
+  - El carrusel es el formato más habitual (5 de 10): Microsoft, Samsung,
+    Movistar, Vodafone y HP. Microsoft incluye un botón de play/pausa.
+  - Apple no usa carrusel: apila bloques a pantalla completa con titulares
+    de 2 o 3 palabras ("Mucho Pro.", "Menudo gigante.").
+  - Siempre hay 1 o 2 botones claros: "Comprar" y "Más información".
+
+4.3 Accesos por categoría
+  - Todas usan baldosas de categoría para que el usuario se oriente sin
+    pensar: MediaMarkt (Televisión, Móviles…), HP ("Descubrir los productos
+    HP"), Vodafone (Móviles, Gaming, Smart TV…) y los enlaces rápidos de
+    Microsoft.
+
+4.4 Tarjetas
+  - Imagen grande, titular corto y un único botón (Microsoft usa tarjetas
+    16:9 con una sola acción).
+  - El detalle se revela por pasos: primero la imagen y el nombre, después
+    el precio o la información.
+
+4.5 Filtros
+  - En la portada casi no hay filtros: se delegan en las categorías y en
+    páginas de listado. Tiene sentido con catálogos de miles de productos.
+  - Sabitech tiene un catálogo pequeño, así que los filtros pueden estar en
+    la propia página sin que el usuario tenga que navegar a otra. Esto nos
+    da ventaja en experiencia de usuario.
+
+4.6 Señales de confianza
+  - Garantías explícitas: MediaMarkt ("Mejor precio garantizado",
+    "Devoluciones hasta en 60 días"), Movistar ("Sin permanencia", quejas
+    resueltas "en menos de 24 horas").
+  - Sellos y certificaciones, sobre todo en el pie: Confianza Online, ISO,
+    ENS, accesibilidad (Vodafone) o un premio de atención al cliente
+    (Samsung).
+  - Información de disponibilidad visible: stock, "AGOTADO" (Outlet PC) y
+    fechas de entrega (Orange).
+
+4.7 Tono
+  - Las marcas son aspiracionales y sobrias: hablan poco de precio.
+  - Retail y operadoras son promocionales y urgentes: cuentas atrás,
+    "ofertazas", "Por tiempo limitado".
+
+4.8 Identidad visual (basada en la identidad pública de cada marca)
+  - Un color corporativo dominante (rojo en MediaMarkt y Vodafone, naranja en
+    PcComponentes y Orange, azul en Movistar y HP) sobre mucho neutro
+    (blanco, negro o gris).
+  - Tipografía sans-serif y titulares grandes con poco texto.
+  - Fotografía de producto o de personas como elemento principal.
+
+
+--------------------------------------------------------------------------------
+ 5. QUÉ LE GUSTA A LA GENTE Y QUÉ ADAPTAMOS A UN PÚBLICO PROFESIONAL
+--------------------------------------------------------------------------------
+
+Lo que adoptamos, porque funciona en todas:
+  - Claridad de las marcas (Apple, HP): titulares cortos, espacio en blanco y
+    una sola acción principal por bloque.
+  - Imagen protagonista. En Sabitech el "producto" es el ponente, así que su
+    foto es la tarjeta.
+  - Accesos directos por categoría. Nuestras categorías son las tres áreas:
+    Salud, Tecnología y Negocios.
+  - Buscador visible siempre, con atajo de teclado.
+  - Carrusel para destacar contenido, con control de pausa (como Microsoft).
+  - Disponibilidad visible. El equivalente al stock son las plazas libres.
+
+Lo que evitamos, porque resta seriedad ante un público experto:
+  - Urgencia agresiva (cuentas atrás de ofertas, mayúsculas, exclamaciones).
+    En Sabitech la "urgencia" se convierte en información útil: "Últimas 3
+    plazas" o "Reservas desde el 12 nov", sin presión.
+  - Saturación de banners y colores chillones.
+  - Texto promocional. El tono es informativo y directo.
+
+El mismo patrón, adaptado:
+  - Cuenta atrás: en retail es para una oferta; aquí se usa solo para la
+    próxima charla. Es un dato real y no presiona.
+  - Señales de confianza: "Ponentes en activo", "Aforo reducido" y "Acceso
+    con código QR". Son ventajas reales del sistema (el back ya gestiona
+    aforo y QR).
+
+
+--------------------------------------------------------------------------------
+ 6. DECISIONES DE DISEÑO PARA SABITECH
+--------------------------------------------------------------------------------
+
+6.1 Paleta híbrida
+  La base corporativa sale del footer que ya teníamos. Encima, un color de
+  acento por área. Es la idea de "un color dominante + neutros" de las
+  grandes webs, pero con un código de color propio que además sirve para
+  orientarse.
+
+    Base de marca
+      Navy           #14283D   (texto, titulares, botones)
+      Abismo         #0A1726   (bandas oscuras: hero, carrusel)
+      Teal           #168C8C   (acción principal)
+      Teal claro     #42B8B0   (detalles sobre fondo oscuro)
+
+    Áreas
+      Salud          #22B07D   (verde esmeralda)
+      Tecnología     #4F7BFF   (azul eléctrico)
+      Negocios       #E7A33E   (ámbar / dorado)
+
+  Cada área tiene además una versión de texto legible (con buen contraste
+  en claro y en oscuro) y un fondo suave para los chips.
+
+6.2 Estructura: todo en blanco y oscuro solo al final
+  - La web es blanca. Las secciones se separan alternando blanco y un gris
+    muy claro (#F5F7FA), como hacen Apple o Microsoft. Se lee mejor y
+    transmite orden y limpieza.
+  - Solo hay dos bloques oscuros (azul marino): CONTACTO y FOOTER. Cierran
+    la página con peso visual y enlazan con el header, que también es marino.
+  - No hay modo oscuro. Se decidió una única versión clara para mantener una
+    imagen corporativa consistente.
+
+6.3 Tipografía
+  - Manrope (variable, alojada en el propio proyecto, sin CDN externo).
+    Geométrica, moderna y muy legible. Titulares grandes con interletrado
+    ajustado, como en las webs de marca.
+
+6.4 Componentes
+  NAVBAR (tipo entrada / ticket)
+    - El header tiene forma de entrada de evento, que es justo lo que se
+      reserva en Sabitech:
+        * CUERPO azul marino: logo, lema ("Tu entrada al conocimiento
+          experto") y menú.
+        * TALÓN blanco: "Reservar plaza" y la cuenta.
+        * Entre las dos partes hay muescas recortadas y un troquel de puntos
+          con los colores de Salud, Tecnología y Negocios.
+    - Al pasar por "Reservar plaza" el talón se inclina un poco, como si se
+      fuera a arrancar.
+    - Un visor con cuatro esquinas se desliza hasta la sección activa (o la
+      que apuntas) y toma el color de esa sección.
+    - Flota sobre la página. Al hacer scroll se vuelve más compacto y se
+      oculta el lema.
+    - Botón de búsqueda (atajo "/").
+    - En móvil la entrada se pone en vertical: cuerpo arriba y talón abajo,
+      con el troquel en horizontal. Al hacer scroll el talón se recoge. El
+      menú se abre con un botón de 4 cuadrados de colores.
+
+  HERO (#inicio)
+    - Fondo blanco con una rejilla técnica muy suave y tres brillos tenues
+      (uno por área).
+    - Titular con las tres áreas coloreadas: "Donde la salud, la tecnología
+      y los negocios se encuentran."
+    - Cifras reales sacadas de la API: charlas programadas, ponentes, plazas
+      disponibles y salas.
+    - Tarjeta "Próxima charla" con cuenta atrás (o "En directo ahora").
+    - Tres accesos por área con su número de charlas. Al pulsar uno se
+      filtra el programa.
+
+  CHARLAS RECIENTES (#recientes): carrusel de Bootstrap 5
+    - Muestra las 5 charlas más cercanas a hoy (en directo, recién
+      celebradas o a punto de empezar).
+    - Cada diapositiva lleva el retrato del ponente, el estado, el área, el
+      título, la descripción, la fecha, el horario, la sala y las plazas.
+    - Indicadores en forma de barras que se rellenan con el tiempo, botones
+      anterior/siguiente y botón de pausa (requisito WCAG 2.2.2).
+    - Se pausa al pasar el ratón. Funciona con teclado y con gestos
+      táctiles.
+    - "Ver en el programa" lleva a esa charla dentro del listado.
+
+  PROGRAMA (#charlas): filtros + tarjetas-foto
+    - Buscador por tema, ponente, organización o sala. Admite varias
+      palabras y no distingue tildes.
+    - Momento: Próximas / Celebradas / Todas.
+    - Sala, y orden por fecha, plazas libres o título.
+    - Chips de área con contador. El contador tiene en cuenta los demás
+      filtros (búsqueda facetada, como en los grandes retail).
+    - Contador de resultados, botón "Limpiar filtros" y estado vacío con
+      salida ("Ver todas las charlas").
+    - Los filtros se guardan en la URL (?area=salud&q=ia…), así que una
+      búsqueda se puede compartir o guardar en favoritos.
+    - Tarjeta-foto (estilo blanco): foto del ponente, área, fecha, nombre,
+      organización y título. Abajo lleva un degradado blanco para que el
+      nombre se lea sobre cualquier foto.
+        * Escritorio: al pasar el cursor aparece la charla (título,
+          descripción, fecha, horario, sala, bio y plazas).
+        * Teclado: se abre al enfocar el botón "+".
+        * Móvil: no hay hover, así que se abre y se cierra al tocar la
+          tarjeta.
+      Si el ponente no tiene foto, se genera un retrato con sus iniciales en
+      el color de su área.
+
+  DÓNDE ESTAMOS (#donde-estamos)
+    - Salas reales de la API dibujadas como un edificio por plantas, con
+      capacidad y charlas próximas. Al pulsar una sala se filtra el programa
+      por ella.
+
+  CONTACTO (#contacto)
+    - Llamada a proponer charlas y tres ventajas del evento.
+
+6.5 Experiencia de usuario y accesibilidad
+  - Todo funciona con teclado: foco visible, atajo "/" y Escape para borrar
+    la búsqueda.
+  - Lectores de pantalla: roles y etiquetas en el carrusel, aria-pressed en
+    los filtros, aria-expanded en las tarjetas y resultados anunciados con
+    aria-live.
+  - Respeta "reducir movimiento" del sistema: sin animaciones ni carrusel
+    automático.
+  - Esqueletos de carga en lugar de pantallas vacías, y mensajes de error
+    claros.
+  - Diseño adaptable probado a 1440 px y a 390 px (móvil).
+
+
+--------------------------------------------------------------------------------
+ 7. CAMBIOS EN EL CÓDIGO (Frontend/)
+--------------------------------------------------------------------------------
+
+Nuevos componentes (src/components/)
+  Hero/Hero.jsx + .css              Hero, cifras, próxima charla, accesos por área
+  Recientes/Recientes.jsx + .css    Carrusel Bootstrap de charlas recientes
+  Programa/Programa.jsx + .css      Filtros y rejilla del programa
+  Programa/TarjetaCharla.jsx        Tarjeta-foto con detalle al pasar el cursor
+  Retrato/Retrato.jsx + .css        Foto del ponente o retrato generado
+  Sedes/Sedes.jsx + .css            "Dónde estamos" (salas por planta)
+  Contacto/Contacto.jsx + .css      Sección de contacto
+  IconoArea/IconoArea.jsx           Iconos de Salud, Tecnología y Negocios
+
+Modificados
+  components/Header/Header.jsx + .css   Navbar tipo entrada (ticket)
+  App.jsx                               Une las secciones, carga datos y filtros
+  index.css                             Sistema de diseño: colores y tipografía
+  main.jsx                              Carga la fuente Manrope
+  models/Charla.js                      Lee plazas_libres, reservas_confirmadas_count
+                                        y "categoria" (si el back la añade)
+  api/charlasApi.js                     Usa el cliente común
+  components/footer/footer.css          Solo la fuente (Manrope)
+  vite.config.js                        Opciones de Sass para Bootstrap
+
+Nuevos módulos
+  api/cliente.js          Función común de peticiones a la API
+  api/salasApi.js         GET /salas (endpoint que ya existía)
+  utils/categorias.js     Áreas y deducción de la categoría de cada charla
+  utils/charlas.js        Fechas, estado de la charla, plazas, recientes
+  utils/filtros.js        Filtros por defecto y sincronización con la URL
+  utils/navegacion.js     Ir al buscador
+  styles/bootstrap-carrusel.scss   Solo el carrusel de Bootstrap
+
+Eliminado
+  App.css                 Estilos antiguos de la plantilla de Vite y del listado
+
+Dependencias nuevas (package.json)
+  bootstrap 5.3.8                  Carrusel (JS + SCSS). Solo se importa el
+                                   carrusel para que el resto de Bootstrap no
+                                   cambie el diseño.
+  sass (dev)                       Para compilar el SCSS de Bootstrap.
+  @fontsource-variable/manrope     Tipografía alojada en el proyecto.
+
+
+--------------------------------------------------------------------------------
+ 8. LIMITACIONES Y PENDIENTES (para el equipo)
+--------------------------------------------------------------------------------
+
+1. Categoría de las charlas (Salud / Tecnología / Negocios)
+   La base de datos no tiene campo de categoría. Ahora se deduce en el front
+   con palabras clave del título, la descripción y la biografía del ponente
+   (src/utils/categorias.js). Si no encuentra pistas, la charla cuenta como
+   Tecnología.
+   -> Recomendación para el back: añadir a "charlas" un campo
+      categoria ENUM('salud','tecnologia','negocios'). El front ya está
+      preparado: si la API lo envía, lo usa directamente.
+   Con los datos de prueba actuales todas las charlas son de tecnología, así
+   que Salud y Negocios aparecen con 0.
+
+2. Fotos de ponentes
+   Ningún ponente de los datos de prueba tiene foto_url, así que se ven los
+   retratos generados. En cuanto haya fotos reales, aparecerán solas. Lo
+   ideal es una foto vertical (4:5) de al menos 600 x 750 px.
+
+3. Correo de contacto
+   src/components/Contacto/Contacto.jsx usa "contacto@sabitech.es" como
+   provisional (marcado con TODO). Hay que poner el correo real.
+
+4. Reserva y cuenta
+   "Reservar plaza" lleva al programa y el avatar a "#cuenta". El flujo de
+   reserva e inicio de sesión no existe todavía en el front.
+
+5. Rendimiento
+   src/assets/esteban.svg pesa 1,85 MB (es un PNG metido dentro de un SVG).
+   Conviene convertirlo a WebP de unos 100 x 100 px.
+
+6. Horarios
+   Las horas se muestran en UTC, igual que antes, para que coincidan con lo
+   que guarda la API.
+
+7. Otros avisos que ya existían
+   - "npm run lint" falla en src/models/page.js (error de sintaxis que ya
+     estaba).
+   - "npm audit" avisa de vulnerabilidades moderadas en minimatch. Llega a
+     través de eslint (solo se usa en desarrollo), no de los paquetes nuevos.
+
+
+--------------------------------------------------------------------------------
+ 9. CÓMO PROBARLO
+--------------------------------------------------------------------------------
+
+  1. Levantar el backend como siempre (docker compose up).
+  2. En Frontend/:  npm install   y después   npm run dev
+  3. Abrir la URL que indica Vite (por defecto http://localhost:5173).
+
+Qué revisar:
+  - Hacer scroll: la entrada del header se compacta y el visor sigue a la
+    sección en la que estás.
+  - Pasar el ratón por "Reservar plaza": el talón se inclina.
+  - Pulsar "/" en cualquier parte: el foco salta al buscador.
+  - Pasar el cursor por una tarjeta de ponente (o tocarla en móvil).
+  - Pulsar un área en el hero o una sala en "Dónde estamos": el programa se
+    filtra.
+  - Copiar la URL tras filtrar y abrirla en otra pestaña: se mantienen los
+    filtros.
