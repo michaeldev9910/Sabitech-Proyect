@@ -352,9 +352,10 @@ Integración con la rama login (Karim)
   Views/loginView/              Login y registro de Karim, con la paleta nueva.
   api/loginApi.js               Peticiones de login, registro, /me y logout.
   Header                        Menú con QR y Control admin (sus secciones aún
-                                no existen). La sesión está en el talón: invitado
-                                = abre el login; con sesión = iniciales y menú
-                                con nombre, email y "Cerrar sesión".
+                                no existen). La sesión está en el talón, en la
+                                foto de la cuenta (sin animación al pasar el
+                                ratón): invitado = abre el login; con sesión =
+                                menú con nombre, email y "Cerrar sesión".
 
 --------------------------------------------------------------------------------
  8. LIMITACIONES Y PENDIENTES (para el equipo)

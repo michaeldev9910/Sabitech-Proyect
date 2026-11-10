@@ -474,59 +474,23 @@
     height var(--duracion) var(--curva);
 }
 
-.Cuenta__esquinas {
-  position: absolute;
-  inset: 0;
+/* Foto de la cuenta: sin animaciones al pasar el ratón */
+.Cuenta__foto {
+  display: block;
 
-  width: 100%;
-  height: 100%;
+  width: calc(var(--cuenta) - 8px);
+  height: calc(var(--cuenta) - 8px);
 
-  fill: none;
-  stroke-width: 3.5;
-  stroke-linecap: round;
+  background: #ffffff;
+  border: 1px solid var(--linea);
+  border-radius: 12px;
 
-  transition: transform 0.6s var(--muelle);
-}
-
-.Cuenta:focus-visible .Cuenta__esquinas,
-.Cuenta[aria-expanded="true"] .Cuenta__esquinas {
-  transform: rotate(90deg);
-}
-
-/* Invitado: icono de persona */
-.Cuenta__icono {
-  width: 22px;
-  height: 22px;
-
-  fill: none;
-  stroke: var(--navy);
-  stroke-width: 2;
-  stroke-linecap: round;
-
-  transition: transform 0.4s var(--muelle);
-}
-
-/* Con sesión: iniciales del usuario */
-.Cuenta__iniciales {
-  display: grid;
-  place-items: center;
-
-  width: calc(var(--cuenta) - 14px);
-  height: calc(var(--cuenta) - 14px);
-
-  background: var(--navy);
-  border-radius: 9px;
-
-  color: #ffffff;
-
-  font-size: 0.85rem;
-  font-weight: 800;
-  letter-spacing: 0.02em;
+  object-fit: cover;
+  object-position: top;
 
   transition:
     width var(--duracion) var(--curva),
-    height var(--duracion) var(--curva),
-    transform 0.4s var(--muelle);
+    height var(--duracion) var(--curva);
 }
 
 /* Menú desplegable de la cuenta */
@@ -660,15 +624,6 @@
 
   .Accion:hover svg {
     transform: translateX(4px);
-  }
-
-  .Cuenta:hover .Cuenta__esquinas {
-    transform: rotate(90deg);
-  }
-
-  .Cuenta:hover .Cuenta__iniciales,
-  .Cuenta:hover .Cuenta__icono {
-    transform: scale(1.06);
   }
 }
 
@@ -1046,12 +1001,7 @@
   .Talon:has(.Accion:hover),
   .Talon:has(.Accion:active),
   .Talon:has(.Accion:focus-visible),
-  .Accion:hover svg,
-  .Cuenta:hover .Cuenta__esquinas,
-  .Cuenta:focus-visible .Cuenta__esquinas,
-  .Cuenta[aria-expanded="true"] .Cuenta__esquinas,
-  .Cuenta:hover .Cuenta__iniciales,
-  .Cuenta:hover .Cuenta__icono {
+  .Accion:hover svg {
     transform: none;
   }
 }
