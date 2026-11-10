@@ -6,20 +6,22 @@ import {
   useSyncExternalStore,
 } from "react";
 import "./Header.css";
-import FotoCuenta from "../../assets/esteban.svg";
 import { irAlBuscador } from "../../utils/navegacion.js";
 
-// Cada sección tiene su color de marca para el visor del menú
+// Cada sección tiene su color de marca para el visor del menú.
+// "QR" y "Control admin" vienen de la rama login: sus secciones aún no existen.
 const SECCIONES = [
   { id: "inicio", texto: "Inicio", marca: "var(--light-teal)" },
   { id: "recientes", texto: "Recientes", marca: "var(--salud)" },
   { id: "charlas", texto: "Programa", marca: "var(--tecnologia)" },
   { id: "donde-estamos", texto: "Dónde estamos", marca: "var(--negocios)" },
+  { id: "qr", texto: "QR", marca: "var(--salud)" },
+  { id: "admin", texto: "Control admin", marca: "var(--tecnologia)" },
   { id: "contacto", texto: "Contacto", marca: "var(--light-teal)" },
 ];
 
 const UMBRAL_COMPACTA = 24;
-const MENU_EN_LINEA = "(min-width: 1080px)";
+const MENU_EN_LINEA = "(min-width: 1200px)";
 
 const suscribirDesplazamiento = (avisar) => {
   window.addEventListener("scroll", avisar, { passive: true });
@@ -33,7 +35,22 @@ const seccionDelHash = () => {
   return SECCIONES.some((seccion) => seccion.id === id) ? id : null;
 };
 
-function Header() {
+const inicialesDe = (usuario) =>
+  `${usuario?.nombre?.[0] ?? ""}${usuario?.apellidos?.[0] ?? ""}`.toUpperCase() || "?";
+
+/** Esquinas de colores alrededor del botón de cuenta */
+function EsquinasCuenta() {
+  return (
+    <svg className="Cuenta__esquinas" viewBox="0 0 56 56" aria-hidden="true">
+      <path d="M2 14V9a7 7 0 0 1 7-7h5" stroke="var(--salud)" />
+      <path d="M42 2h5a7 7 0 0 1 7 7v5" stroke="var(--tecnologia)" />
+      <path d="M54 42v5a7 7 0 0 1-7 7h-5" stroke="var(--negocios)" />
+      <path d="M14 54H9a7 7 0 0 1-7-7v-5" stroke="var(--light-teal)" />
+    </svg>
+  );
+}
+
+function Header({ usuario = null, onAcceder, onCerrarSesion }) {
   const compacta = useSyncExternalStore(
     suscribirDesplazamiento,
     estaDesplazada,
@@ -44,10 +61,17 @@ function Header() {
   );
   const [apuntada, setApuntada] = useState(null);
 
+  // Menú de la cuenta (solo con sesión iniciada)
+  const [menuCuenta, setMenuCuenta] = useState(false);
+  const [cerrandoSesion, setCerrandoSesion] = useState(false);
+  const [errorCuenta, setErrorCuenta] = useState("");
+
   const entradaRef = useRef(null);
   const conmutadorRef = useRef(null);
   const navegacionRef = useRef(null);
   const visorRef = useRef(null);
+  const cuentaRef = useRef(null);
+  const botonCuentaRef = useRef(null);
 
   const destino = apuntada ?? activa;
   const marcaDestino = SECCIONES.find(({ id }) => id === destino).marca;
@@ -137,7 +161,43 @@ function Header() {
     };
   }, [abierta]);
 
+  // Cierra el menú de la cuenta al pulsar fuera o con Escape
+  useEffect(() => {
+    if (!menuCuenta) return undefined;
+
+    const alPulsarFuera = (evento) => {
+      if (!cuentaRef.current?.contains(evento.target)) setMenuCuenta(false);
+    };
+    const alTeclear = (evento) => {
+      if (evento.key === "Escape") {
+        setMenuCuenta(false);
+        botonCuentaRef.current?.focus();
+      }
+    };
+
+    document.addEventListener("pointerdown", alPulsarFuera);
+    document.addEventListener("keydown", alTeclear);
+    return () => {
+      document.removeEventListener("pointerdown", alPulsarFuera);
+      document.removeEventListener("keydown", alTeclear);
+    };
+  }, [menuCuenta]);
+
   const cerrar = () => setAbierta(false);
+
+  async function cerrarSesion() {
+    setErrorCuenta("");
+    setCerrandoSesion(true);
+    try {
+      await onCerrarSesion?.();
+      setMenuCuenta(false);
+    } catch (error) {
+      console.error("No se pudo cerrar la sesión:", error);
+      setErrorCuenta("No se pudo cerrar la sesión. Inténtalo de nuevo.");
+    } finally {
+      setCerrandoSesion(false);
+    }
+  }
 
   return (
     <header
@@ -154,10 +214,7 @@ function Header() {
             <a href="#inicio" className="Logo" aria-label="Sabitech, ir al inicio">
               sabi<span>tech</span>
             </a>
-            <p className="Lema">
-              <strong>Tu entrada al conocimiento experto</strong>
-              <span>Salud · Tecnología · Negocios</span>
-            </p>
+            <p className="Lema">Tu entrada al conocimiento experto</p>
           </div>
 
           <button
@@ -239,15 +296,66 @@ function Header() {
             </svg>
           </a>
 
-          <a href="#cuenta" className="Cuenta" aria-label="Mi cuenta">
-            <svg viewBox="0 0 56 56" aria-hidden="true">
-              <path d="M2 14V9a7 7 0 0 1 7-7h5" stroke="var(--salud)" />
-              <path d="M42 2h5a7 7 0 0 1 7 7v5" stroke="var(--tecnologia)" />
-              <path d="M54 42v5a7 7 0 0 1-7 7h-5" stroke="var(--negocios)" />
-              <path d="M14 54H9a7 7 0 0 1-7-7v-5" stroke="var(--light-teal)" />
-            </svg>
-            <img src={FotoCuenta} alt="" />
-          </a>
+          {usuario ? (
+            <div className="CuentaZona" ref={cuentaRef}>
+              <button
+                type="button"
+                className="Cuenta"
+                ref={botonCuentaRef}
+                aria-expanded={menuCuenta}
+                aria-controls="menu-cuenta"
+                aria-label={`Mi cuenta: ${usuario.nombre} ${usuario.apellidos ?? ""}`.trim()}
+                onClick={() => setMenuCuenta((valor) => !valor)}
+              >
+                <EsquinasCuenta />
+                <span className="Cuenta__iniciales" aria-hidden="true">
+                  {inicialesDe(usuario)}
+                </span>
+              </button>
+
+              {menuCuenta && (
+                <div id="menu-cuenta" className="MenuCuenta">
+                  <p className="MenuCuenta__etiqueta">Sesión iniciada como</p>
+                  <p className="MenuCuenta__nombre">
+                    {usuario.nombre} {usuario.apellidos}
+                  </p>
+                  {usuario.email && <p className="MenuCuenta__email">{usuario.email}</p>}
+
+                  {errorCuenta && (
+                    <p className="MenuCuenta__error" role="alert">
+                      {errorCuenta}
+                    </p>
+                  )}
+
+                  <button
+                    type="button"
+                    className="MenuCuenta__salir"
+                    onClick={cerrarSesion}
+                    disabled={cerrandoSesion}
+                  >
+                    {cerrandoSesion ? "Cerrando sesión…" : "Cerrar sesión"}
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <button
+              type="button"
+              className="Cuenta"
+              aria-label="Iniciar sesión o registrarme"
+              title="Iniciar sesión o registrarme"
+              onClick={() => {
+                cerrar();
+                onAcceder?.();
+              }}
+            >
+              <EsquinasCuenta />
+              <svg className="Cuenta__icono" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="8" r="4" />
+                <path d="M4 21a8 8 0 0 1 16 0" />
+              </svg>
+            </button>
+          )}
         </div>
       </div>
     </header>
