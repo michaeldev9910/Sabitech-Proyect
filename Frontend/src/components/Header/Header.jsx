@@ -9,7 +9,6 @@ import "./Header.css";
 import SabitechLogo from "../../assets/logo.svg";
 import FotoCuenta from "../../assets/esteban.svg";
 
-// Cada apartado lleva un color de marca, en el mismo orden que las letras del logo
 const SECCIONES = [
   { id: "inicio", texto: "Inicio", marca: "var(--cian)" },
   { id: "charlas", texto: "Charlas", marca: "var(--morado)" },
@@ -18,7 +17,6 @@ const SECCIONES = [
 ];
 
 const UMBRAL_COMPACTA = 24;
-// Debe coincidir con el punto de corte del menú en línea de Header.css
 const MENU_EN_LINEA = "(min-width: 940px)";
 
 const suscribirDesplazamiento = (avisar) => {
@@ -49,7 +47,6 @@ function Header() {
   const navegacionRef = useRef(null);
   const visorRef = useRef(null);
 
-  // El visor enfoca el enlace apuntado; si no hay ninguno, descansa en la sección actual
   const destino = apuntada ?? activa;
   const marcaDestino = SECCIONES.find(({ id }) => id === destino).marca;
 
@@ -71,7 +68,6 @@ function Header() {
     return () => observador.disconnect();
   }, [destino]);
 
-  // Sin esto, el visor entraría deslizándose desde la esquina al cargar la página
   useEffect(() => {
     const fotograma = requestAnimationFrame(() => {
       visorRef.current.dataset.listo = "true";
@@ -79,8 +75,6 @@ function Header() {
     return () => cancelAnimationFrame(fotograma);
   }, []);
 
-  // La sección actual sigue al hash y al desplazamiento. Las secciones se buscan en
-  // cada fotograma porque pueden montarse más tarde, por ejemplo tras pedir datos
   useEffect(() => {
     const alCambiarHash = () => {
       const id = seccionDelHash();
@@ -91,7 +85,6 @@ function Header() {
     const alDesplazar = () => {
       cancelAnimationFrame(fotograma);
       fotograma = requestAnimationFrame(() => {
-        // Al final de la página, la última sección cuenta aunque sea muy corta
         const { scrollHeight } = document.documentElement;
         const alFinal = window.innerHeight + window.scrollY >= scrollHeight - 1;
         const linea = alFinal ? Infinity : window.innerHeight / 2;
@@ -144,7 +137,6 @@ function Header() {
       data-abierta={abierta}
     >
       <div className="Entrada" ref={entradaRef}>
-        {/* Cuerpo de la entrada: la marca y la navegación del sitio */}
         <div className="Cuerpo">
           <span className="Papel" aria-hidden="true" />
 
@@ -161,7 +153,6 @@ function Header() {
             </p>
           </div>
 
-          {/* Los módulos 2×2 del isotipo hacen de icono de menú */}
           <button
             type="button"
             className="Conmutador"
@@ -214,7 +205,6 @@ function Header() {
           </nav>
         </div>
 
-        {/* Talón de la entrada: lo que es del usuario, su plaza y su cuenta */}
         <div className="Talon">
           <span className="Papel" aria-hidden="true" />
 
@@ -229,7 +219,6 @@ function Header() {
             </svg>
           </a>
 
-          {/* Foto de usuario, en el hueco donde una entrada lleva su QR */}
           <a href="#cuenta" className="Account">
             <svg viewBox="0 0 56 56" aria-hidden="true">
               <path d="M2 14V9a7 7 0 0 1 7-7h5" stroke="var(--cian)" />
