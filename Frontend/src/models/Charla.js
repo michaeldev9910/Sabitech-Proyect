@@ -13,6 +13,9 @@ export class Charla {
         apertura_plazas,
         aforo,
         estado,
+        categoria,
+        plazas_libres,
+        reservas_confirmadas_count,
         ponente,
         sala,
     }) {
@@ -26,6 +29,10 @@ export class Charla {
         this.aperturaPlazas = apertura_plazas;
         this.aforo = aforo;
         this.estado = estado;
+        // La API aún no tiene categoría: si algún día la envía, se usa; si no, se deduce en el front.
+        this.categoria = categoria ?? null;
+        this.plazasLibres = plazas_libres ?? null;
+        this.reservasConfirmadas = reservas_confirmadas_count ?? null;
         this.ponente = ponente ? Ponente.fromJSON(ponente) : null;
         this.sala = sala ? Sala.fromJSON(sala) : null;
     }
@@ -43,6 +50,9 @@ export class Charla {
             apertura_plazas: json.apertura_plazas,
             aforo: json.aforo,
             estado: json.estado,
+            categoria: json.categoria,
+            plazas_libres: json.plazas_libres,
+            reservas_confirmadas_count: json.reservas_confirmadas_count,
             ponente: json.ponente,
             sala: json.sala,
         });

@@ -1,20 +1,9 @@
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-html {
-  scroll-padding-top: 6.5rem;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
-  }
-}
+/* =================================
+   HEADER SABITECH · tipo entrada (ticket)
+   - Cuerpo azul marino (logo, lema, menú)
+   - Talón blanco (reservar + cuenta)
+   - Muescas y troquel con los colores de las tres áreas
+================================= */
 
 @property --muesca {
   syntax: "<length>";
@@ -23,79 +12,68 @@ html {
 }
 
 .Cabecera {
-  --cian: #02c5d7;
-  --morado: #7f3bd3;
-  --magenta: #de1385;
-  --coral: #f96344;
-
-  --tinta: #0f1420;
-  --papel: #fff;
-
-  --cuerpo-fondo: var(--tinta);
-  --cuerpo-texto: #fff;
-  --cuerpo-texto-suave: rgba(255, 255, 255, 0.72);
+  --cuerpo-fondo: var(--navy);
+  --cuerpo-texto: #ffffff;
+  --cuerpo-texto-suave: rgba(255, 255, 255, 0.7);
   --cuerpo-linea: rgba(255, 255, 255, 0.16);
-  --talon-fondo: var(--papel);
-  --talon-texto: var(--tinta);
+  --talon-fondo: #ffffff;
+  --talon-texto: var(--navy);
 
-  --radio: 20px;
+  --radio-entrada: 18px;
   --muesca: 10px;
   --mordisco: transparent calc(100% - 0.5px), #000 calc(100% + 0.5px);
 
-  --alto-reposo: 92px;
+  --alto-reposo: 88px;
   --alto-compacta: 64px;
-  --margen-reposo: 20px;
+  --margen-reposo: 18px;
   --margen-compacta: 10px;
-  --logo-reposo: 54px;
-  --logo-compacta: 38px;
-  --cuenta-reposo: 54px;
-  --cuenta-compacta: 46px;
+  --cuenta-reposo: 52px;
+  --cuenta-compacta: 44px;
 
   --alto: var(--alto-reposo);
   --margen: var(--margen-reposo);
-  --logo: var(--logo-reposo);
   --cuenta: var(--cuenta-reposo);
 
   --inicio-troquel: 6px;
 
-  --desgarro: translateX(4px) rotate(1.2deg);
-  --desgarro-fuerte: translateX(7px) rotate(2deg);
+  /* Pequeño "desgarro" del talón al pasar por "Reservar plaza" */
+  --desgarro: translateX(3px) rotate(0.8deg);
+  --desgarro-fuerte: translateX(5px) rotate(1.4deg);
 
-  --fluida: cubic-bezier(0.22, 1, 0.36, 1);
   --muelle: cubic-bezier(0.34, 1.56, 0.64, 1);
   --duracion: 0.5s;
 
   position: sticky;
   top: 0;
   z-index: 100;
+
   display: flow-root;
   height: calc(var(--alto-reposo) + var(--margen-reposo));
   padding-inline: 1rem;
+
   pointer-events: none;
-  font-family:
-    system-ui,
-    -apple-system,
-    "Segoe UI",
-    Roboto,
-    sans-serif;
 }
 
 .Cabecera[data-compacta="true"] {
   --alto: var(--alto-compacta);
   --margen: var(--margen-compacta);
-  --logo: var(--logo-compacta);
   --cuenta: var(--cuenta-compacta);
   --inicio-troquel: 4px;
 }
 
+/* Banda difuminada detrás de la entrada al hacer scroll */
 .Cabecera::before {
   content: "";
   position: absolute;
   inset: 0 0 auto;
+
   height: calc(var(--alto-compacta) + var(--margen-compacta) + 2.5rem);
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
+
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  -webkit-mask: linear-gradient(#000 55%, transparent);
   mask: linear-gradient(#000 55%, transparent);
+
   opacity: 0;
   transition: opacity var(--duracion) ease;
 }
@@ -106,21 +84,26 @@ html {
 
 .Entrada {
   position: relative;
+
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
+
   max-width: 1320px;
   height: var(--alto);
   margin: var(--margen) auto 0;
+
   pointer-events: auto;
+
   transition:
-    height var(--duracion) var(--fluida),
-    margin-top var(--duracion) var(--fluida),
-    max-width var(--duracion) var(--fluida);
-  animation: imprimir 0.9s var(--fluida) backwards;
+    height var(--duracion) var(--curva),
+    margin-top var(--duracion) var(--curva),
+    max-width var(--duracion) var(--curva);
+
+  animation: imprimir 0.9s var(--curva) backwards;
 }
 
 .Cabecera[data-compacta="true"] .Entrada {
-  max-width: 1120px;
+  max-width: 1180px;
 }
 
 @keyframes imprimir {
@@ -128,6 +111,8 @@ html {
     transform: translateY(calc(-100% - var(--margen)));
   }
 }
+
+/* PAPEL: el fondo de cada parte, con las muescas recortadas */
 
 .Cuerpo,
 .Talon {
@@ -139,54 +124,61 @@ html {
   position: absolute;
   inset: 0;
   z-index: -1;
-  filter: drop-shadow(0 10px 16px rgba(15, 20, 32, 0.13));
-  transition: --muesca var(--duracion) var(--fluida);
+
+  transition: --muesca var(--duracion) var(--curva);
 }
 
 .Papel::before {
   content: "";
   position: absolute;
   inset: 0;
-  transition: border-radius var(--duracion) var(--fluida);
+
+  transition: border-radius var(--duracion) var(--curva);
 }
 
 .Cuerpo .Papel {
-  filter: drop-shadow(0 0 0.5px rgba(255, 255, 255, 0.5))
-    drop-shadow(0 10px 16px rgba(15, 20, 32, 0.13));
+  filter: drop-shadow(0 10px 18px rgba(20, 40, 61, 0.16));
 }
 
 .Cuerpo .Papel::before {
-  border-radius: var(--radio) 0 0 var(--radio);
+  border-radius: var(--radio-entrada) 0 0 var(--radio-entrada);
   background: var(--cuerpo-fondo);
+
+  -webkit-mask:
+    radial-gradient(circle var(--muesca) at 100% 0, var(--mordisco)) top / 100% 51% no-repeat,
+    radial-gradient(circle var(--muesca) at 100% 100%, var(--mordisco)) bottom / 100% 51% no-repeat;
   mask:
-    radial-gradient(circle var(--muesca) at 100% 0, var(--mordisco))
-      top / 100% 51% no-repeat,
-    radial-gradient(circle var(--muesca) at 100% 100%, var(--mordisco))
-      bottom / 100% 51% no-repeat;
+    radial-gradient(circle var(--muesca) at 100% 0, var(--mordisco)) top / 100% 51% no-repeat,
+    radial-gradient(circle var(--muesca) at 100% 100%, var(--mordisco)) bottom / 100% 51% no-repeat;
 }
 
 .Talon .Papel {
-  filter: drop-shadow(0 0 0.5px rgba(15, 20, 32, 0.45))
-    drop-shadow(0 10px 16px rgba(15, 20, 32, 0.13));
+  filter: drop-shadow(0 0 0.5px rgba(20, 40, 61, 0.45))
+    drop-shadow(0 10px 18px rgba(20, 40, 61, 0.12));
 }
 
 .Talon .Papel::before {
-  border-radius: 0 var(--radio) var(--radio) 0;
+  border-radius: 0 var(--radio-entrada) var(--radio-entrada) 0;
   background: var(--talon-fondo);
+
+  -webkit-mask:
+    radial-gradient(circle var(--muesca) at 0 0, var(--mordisco)) top / 100% 51% no-repeat,
+    radial-gradient(circle var(--muesca) at 0 100%, var(--mordisco)) bottom / 100% 51% no-repeat;
   mask:
-    radial-gradient(circle var(--muesca) at 0 0, var(--mordisco))
-      top / 100% 51% no-repeat,
-    radial-gradient(circle var(--muesca) at 0 100%, var(--mordisco))
-      bottom / 100% 51% no-repeat;
+    radial-gradient(circle var(--muesca) at 0 0, var(--mordisco)) top / 100% 51% no-repeat,
+    radial-gradient(circle var(--muesca) at 0 100%, var(--mordisco)) bottom / 100% 51% no-repeat;
 }
+
+/* CUERPO */
 
 .Cuerpo {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1.25rem;
+  gap: 1rem;
+
   min-width: 0;
-  padding-inline: 1.75rem 1.5rem;
+  padding-inline: 1.75rem 1.25rem;
+
   color: var(--cuerpo-texto);
 }
 
@@ -199,49 +191,60 @@ html {
 .Logo {
   display: block;
   flex: none;
-  border-radius: 8px;
-  color: inherit;
+
+  border-radius: 6px;
+
+  color: var(--cuerpo-texto);
+
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  text-decoration: none;
+
   transition: transform 0.35s var(--muelle);
 }
 
-.Logo:hover {
-  transform: scale(1.03) rotate(-1.5deg);
+.Logo span {
+  color: var(--light-teal);
 }
 
-.Logo img {
-  display: block;
-  height: var(--logo);
-  width: auto;
-  transition: height var(--duracion) var(--fluida);
+.Logo:hover {
+  transform: scale(1.03);
 }
 
 .Lema {
   display: grid;
   gap: 0.2rem;
+
   max-width: 17rem;
-  margin-left: 1.375rem;
-  padding-left: 1.375rem;
-  overflow: hidden;
+  margin-left: 1.25rem;
+  padding-left: 1.25rem;
+
   border-left: 1px solid var(--cuerpo-linea);
+
+  overflow: hidden;
   white-space: nowrap;
+
   transition:
-    max-width var(--duracion) var(--fluida),
-    margin var(--duracion) var(--fluida),
-    padding var(--duracion) var(--fluida),
+    max-width var(--duracion) var(--curva),
+    margin var(--duracion) var(--curva),
+    padding var(--duracion) var(--curva),
     opacity 0.25s ease,
     visibility var(--duracion);
 }
 
 .Lema strong {
-  font-size: 0.875rem;
-  font-weight: 600;
-  letter-spacing: -0.005em;
+  font-size: 0.82rem;
+  font-weight: 700;
 }
 
+/* Texto pequeño "impreso", como en una entrada */
 .Lema span {
   color: var(--cuerpo-texto-suave);
+
   font-family: ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, monospace;
-  font-size: 0.6875rem;
+  font-size: 0.68rem;
   letter-spacing: 0.02em;
 }
 
@@ -249,32 +252,41 @@ html {
   max-width: 0;
   margin-left: 0;
   padding-left: 0;
+
   border-left-color: transparent;
   opacity: 0;
   visibility: hidden;
 }
 
+/* MENÚ con visor deslizante */
+
 .Navegacion {
   position: relative;
+  order: 1;
+
+  margin-left: auto;
 }
 
 .Menu {
   display: flex;
-  gap: 0.125rem;
+  gap: 0.1rem;
   list-style: none;
 }
 
 .Menu a {
   position: relative;
   display: block;
-  padding: 0.6875rem 0.9375rem;
+
+  padding: 0.65rem 0.85rem;
   border-radius: 10px;
+
   color: var(--cuerpo-texto-suave);
-  font-size: 0.9375rem;
+
+  font-size: 0.9rem;
   font-weight: 600;
-  letter-spacing: -0.005em;
   text-decoration: none;
   white-space: nowrap;
+
   transition: color 0.2s ease;
 }
 
@@ -285,52 +297,99 @@ html {
 }
 
 .Visor {
-  --largo: 10px;
+  --largo: 9px;
 
   position: absolute;
   top: 0;
   left: 0;
+
   width: var(--ancho, 0);
   height: var(--alto-enlace, 0);
-  border-radius: 10px;
+
   background: color-mix(in srgb, var(--marca) 16%, transparent);
+  border-radius: 10px;
+
   color: var(--marca);
+
   transform: translate(var(--x, 0), var(--y, 0));
   pointer-events: none;
 }
 
 .Visor[data-listo] {
   transition:
-    transform 0.45s var(--fluida),
-    width 0.45s var(--fluida),
-    height 0.45s var(--fluida),
+    transform 0.45s var(--curva),
+    width 0.45s var(--curva),
+    height 0.45s var(--curva),
     color 0.3s ease,
     background-color 0.3s ease;
 }
 
+/* Las cuatro esquinas del visor */
 .Visor::before {
   content: "";
   position: absolute;
   inset: 0;
+
   border: 2px solid currentColor;
   border-radius: inherit;
-  mask: conic-gradient(
-      at var(--largo) var(--largo),
-      transparent 75%,
-      #000 0
-    )
-    0 0 / calc(100% - var(--largo)) calc(100% - var(--largo));
+
+  -webkit-mask: conic-gradient(at var(--largo) var(--largo), transparent 75%, #000 0) 0 0 / calc(100% - var(--largo)) calc(100% - var(--largo));
+  mask: conic-gradient(at var(--largo) var(--largo), transparent 75%, #000 0) 0 0 / calc(100% - var(--largo)) calc(100% - var(--largo));
+}
+
+/* Buscar */
+
+.BotonBuscar {
+  display: grid;
+  place-items: center;
+  flex: none;
+  order: 2;
+
+  width: 40px;
+  height: 40px;
+
+  background: transparent;
+  border: 1px solid var(--cuerpo-linea);
+  border-radius: 12px;
+
+  color: var(--cuerpo-texto-suave);
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.BotonBuscar:hover {
+  border-color: var(--light-teal);
+  color: var(--cuerpo-texto);
+}
+
+.BotonBuscar svg {
+  width: 18px;
+  height: 18px;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
 }
 
 .Conmutador {
   display: none;
 }
 
+/* TALÓN */
+
 .Talon {
   display: flex;
   align-items: stretch;
-  padding-right: 1.125rem;
+
+  padding-right: 1rem;
+
   color: var(--talon-texto);
+
   transform-origin: 0 100%;
   transition: transform 0.5s var(--muelle);
 }
@@ -343,35 +402,44 @@ html {
   transform: var(--desgarro-fuerte);
 }
 
+/* Troquel: línea de puntos con los colores de Salud, Tecnología y Negocios */
 .Talon::before {
   content: "";
   position: absolute;
   top: calc(var(--muesca) + var(--inicio-troquel));
   bottom: calc(var(--muesca) + 3px);
   left: -1.5px;
+
   width: 3px;
+
   background: repeating-linear-gradient(
     180deg,
-    var(--cian),
-    var(--morado) 16.66%,
-    var(--magenta) 33.33%,
-    var(--coral) 50%
+    var(--salud),
+    var(--tecnologia) 16.66%,
+    var(--negocios) 33.33%,
+    var(--salud) 50%
   );
   background-size: 100% 200%;
+
+  -webkit-mask: repeating-linear-gradient(180deg, #000 0 3px, transparent 3px 8px);
   mask: repeating-linear-gradient(180deg, #000 0 3px, transparent 3px 8px);
+
   transition:
-    top var(--duracion) var(--fluida),
-    background-position 0.9s var(--fluida);
+    top var(--duracion) var(--curva),
+    background-position 0.9s var(--curva);
 }
 
 .Accion {
   display: flex;
   align-items: center;
-  gap: 0.625rem;
-  padding-inline: 1.75rem 1.125rem;
+  gap: 0.6rem;
+
+  padding-inline: 1.75rem 1.1rem;
+
   color: inherit;
-  font-size: 0.9375rem;
-  font-weight: 700;
+
+  font-size: 0.92rem;
+  font-weight: 800;
   letter-spacing: -0.01em;
   text-decoration: none;
   white-space: nowrap;
@@ -380,55 +448,69 @@ html {
 .Accion svg {
   width: 20px;
   height: 20px;
+
   fill: none;
-  stroke: currentColor;
+  stroke: var(--teal);
   stroke-width: 2.25;
   stroke-linecap: round;
   stroke-linejoin: round;
+
   transition: transform 0.4s var(--muelle);
 }
 
-.Account {
+.Cuenta {
   position: relative;
+
   display: grid;
   flex: none;
   place-items: center;
   align-self: center;
+
   width: var(--cuenta);
   height: var(--cuenta);
+
   border-radius: 14px;
+
   color: inherit;
+
   transition:
-    width var(--duracion) var(--fluida),
-    height var(--duracion) var(--fluida);
+    width var(--duracion) var(--curva),
+    height var(--duracion) var(--curva);
 }
 
-.Account svg {
+.Cuenta svg {
   position: absolute;
   inset: 0;
+
   width: 100%;
   height: 100%;
+
   fill: none;
   stroke-width: 3.5;
   stroke-linecap: round;
+
   transition: transform 0.6s var(--muelle);
 }
 
-.Account:focus-visible svg {
+.Cuenta:focus-visible svg {
   transform: rotate(90deg);
 }
 
-.Account img {
+.Cuenta img {
   display: block;
+
   width: calc(var(--cuenta) - 14px);
   height: calc(var(--cuenta) - 14px);
+
+  background: #ffffff;
   border-radius: 9px;
-  background: #fff;
+
   object-fit: cover;
   object-position: top;
+
   transition:
-    width var(--duracion) var(--fluida),
-    height var(--duracion) var(--fluida),
+    width var(--duracion) var(--curva),
+    height var(--duracion) var(--curva),
     transform 0.4s var(--muelle);
 }
 
@@ -449,21 +531,28 @@ html {
     transform: translateX(4px);
   }
 
-  .Account:hover svg {
+  .Cuenta:hover svg {
     transform: rotate(90deg);
   }
 
-  .Account:hover img {
+  .Cuenta:hover img {
     transform: scale(1.06);
   }
 }
 
+/* FOCO ACCESIBLE */
+
 .Logo:focus-visible,
 .Menu a:focus-visible,
-.Accion:focus-visible,
-.Account:focus-visible,
+.BotonBuscar:focus-visible,
 .Conmutador:focus-visible {
-  outline: 2px solid currentColor;
+  outline: 2px solid var(--light-teal);
+  outline-offset: 2px;
+}
+
+.Accion:focus-visible,
+.Cuenta:focus-visible {
+  outline: 2px solid var(--teal);
   outline-offset: 2px;
 }
 
@@ -472,11 +561,12 @@ html {
   outline-offset: -8px;
 }
 
-@media (max-width: 1239.98px) {
-  .Cabecera {
-    --logo-reposo: 42px;
-  }
+/* =================================
+   RESPONSIVE
+================================= */
 
+/* Lema debajo del logo cuando falta espacio */
+@media (max-width: 1279.98px) {
   .Cuerpo {
     padding-inline: 1.5rem 1rem;
   }
@@ -496,10 +586,11 @@ html {
 
   .Lema {
     max-height: 1.25rem;
-    margin-top: 0.3125rem;
+    margin-top: 0.35rem;
+
     transition:
-      max-height var(--duracion) var(--fluida),
-      margin var(--duracion) var(--fluida),
+      max-height var(--duracion) var(--curva),
+      margin var(--duracion) var(--curva),
       opacity 0.25s ease,
       visibility var(--duracion);
   }
@@ -510,19 +601,12 @@ html {
   }
 
   .Lema strong {
-    color: var(--cuerpo-texto-suave);
-    font-family: ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, monospace;
-    font-size: 0.6875rem;
-    font-weight: 400;
-    letter-spacing: 0.02em;
-  }
-
-  .Lema span {
     display: none;
   }
 }
 
-@media (max-width: 939.98px) {
+/* Menú plegable */
+@media (max-width: 1079.98px) {
   .Cabecera {
     --margen-reposo: 14px;
   }
@@ -533,14 +617,24 @@ html {
 
   .Cuerpo {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr) auto auto;
     grid-template-rows: var(--alto) 0fr;
     gap: 0 0.5rem;
-    transition: grid-template-rows var(--duracion) var(--fluida);
+
+    transition: grid-template-rows var(--duracion) var(--curva);
   }
 
   .Cabecera[data-abierta="true"] .Cuerpo {
     grid-template-rows: var(--alto) 1fr;
+  }
+
+  .Navegacion,
+  .BotonBuscar {
+    order: 0;
+  }
+
+  .BotonBuscar {
+    align-self: center;
   }
 
   .Conmutador {
@@ -548,36 +642,43 @@ html {
     grid-template-columns: repeat(2, 8px);
     gap: 4px;
     place-content: center;
+    align-self: center;
+
     width: 44px;
     height: 44px;
+
+    background: none;
     border: 0;
     border-radius: 12px;
-    background: none;
+
     color: inherit;
+
     cursor: pointer;
   }
 
   .Conmutador span {
     width: 8px;
     height: 8px;
+
     border-radius: 25%;
-    transition: transform 0.45s var(--fluida);
+
+    transition: transform 0.45s var(--curva);
   }
 
   .Conmutador span:nth-child(1) {
-    background: var(--cian);
+    background: var(--salud);
   }
 
   .Conmutador span:nth-child(2) {
-    background: var(--morado);
+    background: var(--tecnologia);
   }
 
   .Conmutador span:nth-child(3) {
-    background: var(--magenta);
+    background: var(--negocios);
   }
 
   .Conmutador span:nth-child(4) {
-    background: var(--coral);
+    background: var(--light-teal);
   }
 
   .Conmutador[aria-expanded="true"] span:nth-child(1) {
@@ -616,9 +717,13 @@ html {
 
   .Navegacion {
     grid-column: 1 / -1;
+
     min-height: 0;
+    margin-left: 0;
+
     overflow: hidden;
     visibility: hidden;
+
     transition: visibility 0s linear var(--duracion);
   }
 
@@ -641,68 +746,69 @@ html {
     outline-offset: -2px;
   }
 
+  /* Punto de color de cada sección */
   .Menu a::before {
     content: "";
     width: 8px;
     height: 8px;
-    border-radius: 25%;
+
     background: var(--marca);
+    border-radius: 25%;
   }
 
   .Menu li {
     opacity: 0;
     transform: translateY(-6px);
+
     transition:
       opacity 0.3s ease,
-      transform 0.45s var(--fluida);
+      transform 0.45s var(--curva);
   }
 
   .Cabecera[data-abierta="true"] .Menu li {
     opacity: 1;
     transform: none;
+
     transition-delay: calc(var(--orden) * 45ms + 80ms);
   }
 
   .Cabecera[data-abierta="true"] .Lema {
     max-height: 0;
     margin-top: 0;
+
     opacity: 0;
     visibility: hidden;
   }
 }
 
-@media (min-width: 600px) and (max-width: 789.98px) {
+@media (min-width: 600px) and (max-width: 1079.98px) {
   .Menu {
     display: grid;
-    grid-template-columns: repeat(2, auto);
+    grid-template-columns: repeat(3, auto);
     justify-content: start;
   }
 }
 
+/* Móvil: la entrada se coloca en vertical (cuerpo arriba, talón abajo) */
 @media (max-width: 599.98px) {
   .Cabecera {
-    --alto-reposo: 82px;
+    --alto-reposo: 78px;
     --alto-compacta: 60px;
-    --alto-talon: 58px;
+    --alto-talon: 56px;
     --margen-reposo: 8px;
     --margen-compacta: 8px;
-    --logo-reposo: 38px;
-    --logo-compacta: 34px;
-    --cuenta-reposo: 44px;
-    --cuenta-compacta: 44px;
-    --radio: 18px;
-    --desgarro: translateY(3px) rotate(-0.8deg);
-    --desgarro-fuerte: translateY(5px) rotate(-1.4deg);
+    --cuenta-reposo: 42px;
+    --cuenta-compacta: 42px;
+    --radio-entrada: 16px;
+    --desgarro: translateY(2px) rotate(-0.6deg);
+    --desgarro-fuerte: translateY(4px) rotate(-1deg);
 
-    height: calc(
-      var(--alto-reposo) + var(--alto-talon) + var(--margen-reposo)
-    );
+    height: calc(var(--alto-reposo) + var(--alto-talon) + var(--margen-reposo));
     padding-inline: 0.5rem;
   }
 
   .Cabecera[data-abierta="true"] {
     --alto: var(--alto-compacta);
-    --logo: var(--logo-compacta);
   }
 
   .Entrada {
@@ -710,11 +816,16 @@ html {
   }
 
   .Cuerpo {
-    padding-inline: 1.125rem;
+    padding-inline: 1.125rem 0.75rem;
   }
 
-  .Conmutador {
-    margin-right: -0.75rem;
+  .Logo {
+    font-size: 1.45rem;
+  }
+
+  .BotonBuscar {
+    width: 38px;
+    height: 38px;
   }
 
   .Visor {
@@ -722,36 +833,43 @@ html {
   }
 
   .Cuerpo .Papel::before {
-    border-radius: var(--radio) var(--radio) 0 0;
+    border-radius: var(--radio-entrada) var(--radio-entrada) 0 0;
+
+    -webkit-mask:
+      radial-gradient(circle var(--muesca) at 0 100%, var(--mordisco)) left / 51% 100% no-repeat,
+      radial-gradient(circle var(--muesca) at 100% 100%, var(--mordisco)) right / 51% 100% no-repeat;
     mask:
-      radial-gradient(circle var(--muesca) at 0 100%, var(--mordisco))
-        left / 51% 100% no-repeat,
-      radial-gradient(circle var(--muesca) at 100% 100%, var(--mordisco))
-        right / 51% 100% no-repeat;
+      radial-gradient(circle var(--muesca) at 0 100%, var(--mordisco)) left / 51% 100% no-repeat,
+      radial-gradient(circle var(--muesca) at 100% 100%, var(--mordisco)) right / 51% 100% no-repeat;
   }
 
   .Talon .Papel::before {
-    border-radius: 0 0 var(--radio) var(--radio);
+    border-radius: 0 0 var(--radio-entrada) var(--radio-entrada);
+
+    -webkit-mask:
+      radial-gradient(circle var(--muesca) at 0 0, var(--mordisco)) left / 51% 100% no-repeat,
+      radial-gradient(circle var(--muesca) at 100% 0, var(--mordisco)) right / 51% 100% no-repeat;
     mask:
-      radial-gradient(circle var(--muesca) at 0 0, var(--mordisco))
-        left / 51% 100% no-repeat,
-      radial-gradient(circle var(--muesca) at 100% 0, var(--mordisco))
-        right / 51% 100% no-repeat;
+      radial-gradient(circle var(--muesca) at 0 0, var(--mordisco)) left / 51% 100% no-repeat,
+      radial-gradient(circle var(--muesca) at 100% 0, var(--mordisco)) right / 51% 100% no-repeat;
   }
 
   .Talon {
     justify-content: space-between;
+
     height: var(--alto-talon);
-    padding-right: 1.125rem;
+    padding-right: 1rem;
+
     transform-origin: 100% 0;
+
     transition:
       transform 0.5s var(--muelle),
-      height var(--duracion) var(--fluida),
+      height var(--duracion) var(--curva),
       visibility var(--duracion);
   }
 
   .Accion,
-  .Account {
+  .Cuenta {
     transition: opacity 0.2s ease;
   }
 
@@ -760,24 +878,30 @@ html {
     padding-inline: 1.125rem 0.75rem;
   }
 
+  /* El troquel pasa a ser horizontal */
   .Talon::before {
     top: -1.5px;
     right: var(--muesca);
     bottom: auto;
     left: calc(var(--muesca) + 5px);
+
     width: auto;
     height: 3px;
+
     background: repeating-linear-gradient(
       90deg,
-      var(--cian),
-      var(--morado) 16.66%,
-      var(--magenta) 33.33%,
-      var(--coral) 50%
+      var(--salud),
+      var(--tecnologia) 16.66%,
+      var(--negocios) 33.33%,
+      var(--salud) 50%
     );
     background-size: 200% 100%;
+
+    -webkit-mask: linear-gradient(90deg, #000 3px, transparent 0) 0 0 / 8px 100% round;
     mask: linear-gradient(90deg, #000 3px, transparent 0) 0 0 / 8px 100% round;
   }
 
+  /* Al hacer scroll el talón se recoge y queda solo el cuerpo */
   .Cabecera[data-compacta="true"][data-abierta="false"] .Talon {
     height: 0;
     visibility: hidden;
@@ -785,7 +909,7 @@ html {
 
   .Cabecera[data-compacta="true"][data-abierta="false"] .Talon::before,
   .Cabecera[data-compacta="true"][data-abierta="false"] .Accion,
-  .Cabecera[data-compacta="true"][data-abierta="false"] .Account {
+  .Cabecera[data-compacta="true"][data-abierta="false"] .Cuenta {
     opacity: 0;
   }
 
@@ -794,18 +918,20 @@ html {
   }
 
   .Cabecera[data-compacta="true"][data-abierta="false"] .Cuerpo .Papel::before {
-    border-radius: var(--radio);
+    border-radius: var(--radio-entrada);
   }
 
   .Menu {
     flex-direction: column;
     gap: 0;
+
     padding-block: 0 0.75rem;
   }
 
   .Menu a {
-    padding: 0.8125rem 0.75rem;
-    font-size: 1.0625rem;
+    padding: 0.8rem 0.75rem;
+
+    font-size: 1.05rem;
   }
 }
 
@@ -829,9 +955,9 @@ html {
   .Talon:has(.Accion:active),
   .Talon:has(.Accion:focus-visible),
   .Accion:hover svg,
-  .Account:hover svg,
-  .Account:focus-visible svg,
-  .Account:hover img {
+  .Cuenta:hover svg,
+  .Cuenta:focus-visible svg,
+  .Cuenta:hover img {
     transform: none;
   }
 }

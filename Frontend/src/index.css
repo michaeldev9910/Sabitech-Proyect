@@ -1,3 +1,233 @@
-body{
-    margin : 0 ;
+/* =================================
+   SABITECH · Sistema de diseño global (tema claro)
+   Base corporativa (navy + teal del footer)
+   + un color por área: Salud · Tecnología · Negocios
+================================= */
+
+:root {
+  /* Marca */
+  --navy: #14283D;
+  --navy-2: #1C354B;
+  --abismo: #0A1726;
+  --teal: #168C8C;
+  --teal-oscuro: #117272;
+  --light-teal: #42B8B0;
+  --muted: #C3CFD9;
+
+  /* Áreas (color de acento, texto legible y fondo suave) */
+  --salud: #22B07D;
+  --salud-texto: #0E7A53;
+  --salud-suave: rgba(34, 176, 125, 0.12);
+
+  --tecnologia: #4F7BFF;
+  --tecnologia-texto: #2C55D6;
+  --tecnologia-suave: rgba(79, 123, 255, 0.12);
+
+  --negocios: #E7A33E;
+  --negocios-texto: #A35F00;
+  --negocios-suave: rgba(231, 163, 62, 0.14);
+
+  /* Superficies y texto: la web es clara (oscuro solo en contacto y footer) */
+  --fondo: #FFFFFF;
+  --fondo-alterno: #F5F7FA;
+  --superficie: #FFFFFF;
+  --superficie-2: #F1F4F7;
+  --texto: #14283D;
+  --texto-suave: #5B6B7A;
+  --titulo: #14283D;
+  --linea: #DCE3EA;
+  --linea-fuerte: #C3CFD9;
+
+  --boton-fondo: #14283D;
+  --boton-hover: #168C8C;
+  --error-linea: #B42318;
+  --error-texto: #7A271A;
+  --aviso: #B54708;
+  --exito: #067647;
+
+  /* Forma */
+  --radio: 6px;
+  --radio-l: 14px;
+  --sombra: 0 1px 2px rgba(20, 40, 61, 0.06), 0 4px 12px rgba(20, 40, 61, 0.06);
+  --sombra-hover: 0 2px 4px rgba(20, 40, 61, 0.06), 0 16px 32px rgba(20, 40, 61, 0.14);
+  --sombra-cabecera: 0 2px 12px rgba(20, 40, 61, 0.08);
+
+  /* Tipografía */
+  --fuente:
+    "Manrope Variable",
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+
+  --curva: cubic-bezier(0.22, 1, 0.36, 1);
+
+  color-scheme: light;
+}
+
+/* Zonas oscuras (contacto, tarjetas-foto): usan la versión
+   clara de los colores de área para que se lean sobre fondo oscuro. */
+.ZonaOscura {
+  --salud-texto: #4BD39E;
+  --salud-suave: rgba(34, 176, 125, 0.18);
+  --tecnologia-texto: #93ACFF;
+  --tecnologia-suave: rgba(79, 123, 255, 0.2);
+  --negocios-texto: #F2BE6B;
+  --negocios-suave: rgba(231, 163, 62, 0.18);
+}
+
+/* Cada área expone su color al componente con data-area="..." */
+
+[data-area="salud"] {
+  --area: var(--salud);
+  --area-texto: var(--salud-texto);
+  --area-suave: var(--salud-suave);
+}
+
+[data-area="tecnologia"] {
+  --area: var(--tecnologia);
+  --area-texto: var(--tecnologia-texto);
+  --area-suave: var(--tecnologia-suave);
+}
+
+[data-area="negocios"] {
+  --area: var(--negocios);
+  --area-texto: var(--negocios-texto);
+  --area-suave: var(--negocios-suave);
+}
+
+/* =================================
+   RESET Y BASE
+================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-padding-top: 7.5rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  background: var(--fondo);
+  color: var(--texto);
+
+  font-family: var(--fuente);
+  font-size: 1rem;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+main {
+  flex: 1;
+}
+
+img,
+svg {
+  display: block;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+::selection {
+  background: var(--teal);
+  color: #ffffff;
+}
+
+/* Solo para lectores de pantalla */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Etiqueta de área reutilizable (chip) */
+.Etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  padding: 0.22rem 0.6rem;
+
+  background: var(--area-suave);
+  border-radius: 999px;
+
+  color: var(--area-texto);
+
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.Etiqueta::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--area);
+}
+
+/* Animaciones compartidas */
+
+@keyframes latido {
+  50% {
+    opacity: 0.45;
+  }
+}
+
+/* Brillo que recorre los esqueletos de carga */
+@keyframes brillo-carga {
+  to {
+    background-position: -150% 0, 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
