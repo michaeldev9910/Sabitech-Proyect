@@ -6,7 +6,6 @@
   margin: 0;
 }
 
-/* Las anclas no deben quedar ocultas bajo la cabecera fija */
 html {
   scroll-padding-top: 6.5rem;
 }
@@ -17,19 +16,11 @@ html {
   }
 }
 
-/* Registrada para que las muescas de la entrada puedan animarse */
 @property --muesca {
   syntax: "<length>";
   inherits: true;
   initial-value: 0px;
 }
-
-/* ==========================================================================
-   LA ENTRADA
-   La cabecera es una entrada física: el cuerpo lleva la marca y la navegación,
-   el talón lleva lo que es del usuario. Todos los recursos gráficos salen del
-   isotipo: las esquinas del marco, los módulos 2×2 y la secuencia de color.
-   ========================================================================== */
 
 .Cabecera {
   --cian: #02c5d7;
@@ -37,7 +28,6 @@ html {
   --magenta: #de1385;
   --coral: #f96344;
 
-  /* Sobre esta tinta, los cuatro colores del logo superan el contraste 3:1 */
   --tinta: #0f1420;
   --papel: #fff;
 
@@ -66,7 +56,6 @@ html {
   --logo: var(--logo-reposo);
   --cuenta: var(--cuenta-reposo);
 
-  /* Con estos valores los módulos de la línea quedan centrados en vertical */
   --inicio-troquel: 6px;
 
   --desgarro: translateX(4px) rotate(1.2deg);
@@ -79,7 +68,6 @@ html {
   position: sticky;
   top: 0;
   z-index: 100;
-  /* Altura fija aunque la entrada se compacte: el contenido de debajo no salta */
   display: flow-root;
   height: calc(var(--alto-reposo) + var(--margen-reposo));
   padding-inline: 1rem;
@@ -100,8 +88,6 @@ html {
   --inicio-troquel: 4px;
 }
 
-/* El contenido se desenfoca antes de pasar por detrás de la entrada; al no
-   llevar color, sirve igual sobre secciones claras y oscuras */
 .Cabecera::before {
   content: "";
   position: absolute;
@@ -137,17 +123,11 @@ html {
   max-width: 1120px;
 }
 
-/* La entrada sale de la impresora al cargar la página */
 @keyframes imprimir {
   from {
     transform: translateY(calc(-100% - var(--margen)));
   }
 }
-
-/* --------------------------------------------------------------------------
-   Papel: la silueta troquelada. Va en su propia capa para que la sombra siga
-   las muescas sin afectar al suavizado del texto.
-   -------------------------------------------------------------------------- */
 
 .Cuerpo,
 .Talon {
@@ -170,7 +150,6 @@ html {
   transition: border-radius var(--duracion) var(--fluida);
 }
 
-/* Invisible sobre la página blanca; separa la tinta de una sección oscura */
 .Cuerpo .Papel {
   filter: drop-shadow(0 0 0.5px rgba(255, 255, 255, 0.5))
     drop-shadow(0 10px 16px rgba(15, 20, 32, 0.13));
@@ -186,7 +165,6 @@ html {
       bottom / 100% 51% no-repeat;
 }
 
-/* El papel es del color de la página: un filete fino define su borde */
 .Talon .Papel {
   filter: drop-shadow(0 0 0.5px rgba(15, 20, 32, 0.45))
     drop-shadow(0 10px 16px rgba(15, 20, 32, 0.13));
@@ -201,10 +179,6 @@ html {
     radial-gradient(circle var(--muesca) at 0 100%, var(--mordisco))
       bottom / 100% 51% no-repeat;
 }
-
-/* --------------------------------------------------------------------------
-   Cuerpo: marca y navegación
-   -------------------------------------------------------------------------- */
 
 .Cuerpo {
   display: flex;
@@ -241,7 +215,6 @@ html {
   transition: height var(--duracion) var(--fluida);
 }
 
-/* Lema: dice qué es esto, con la voz de la letra pequeña de una entrada */
 .Lema {
   display: grid;
   gap: 0.2rem;
@@ -311,7 +284,6 @@ html {
   color: var(--cuerpo-texto);
 }
 
-/* Visor: las esquinas del marco del logo. Viaja entre enlaces y se fija en cada uno */
 .Visor {
   --largo: 10px;
 
@@ -350,14 +322,9 @@ html {
     0 0 / calc(100% - var(--largo)) calc(100% - var(--largo));
 }
 
-/* Conmutador del menú: solo cuando la navegación no cabe en línea */
 .Conmutador {
   display: none;
 }
-
-/* --------------------------------------------------------------------------
-   Talón: la acción principal y la cuenta
-   -------------------------------------------------------------------------- */
 
 .Talon {
   display: flex;
@@ -368,7 +335,6 @@ html {
   transition: transform 0.5s var(--muelle);
 }
 
-/* Al apuntar a la reserva, el talón empieza a separarse por la línea troquelada */
 .Talon:has(.Accion:focus-visible) {
   transform: var(--desgarro);
 }
@@ -377,7 +343,6 @@ html {
   transform: var(--desgarro-fuerte);
 }
 
-/* Línea troquelada: los módulos del isotipo, con la secuencia de color de marca */
 .Talon::before {
   content: "";
   position: absolute;
@@ -423,7 +388,6 @@ html {
   transition: transform 0.4s var(--muelle);
 }
 
-/* La foto ocupa el lugar del QR, dentro del marco de escaneo del logo */
 .Account {
   position: relative;
   display: grid;
@@ -468,7 +432,6 @@ html {
     transform 0.4s var(--muelle);
 }
 
-/* En táctil :hover se queda pegado tras pulsar: estos gestos son solo de ratón */
 @media (hover: hover) {
   .Talon:has(.Accion:hover) {
     transform: var(--desgarro);
@@ -508,10 +471,6 @@ html {
   border-radius: 14px;
   outline-offset: -8px;
 }
-
-/* --------------------------------------------------------------------------
-   Sin sitio para el lema al lado: pasa a ser letra pequeña bajo el logo
-   -------------------------------------------------------------------------- */
 
 @media (max-width: 1239.98px) {
   .Cabecera {
@@ -563,10 +522,6 @@ html {
   }
 }
 
-/* --------------------------------------------------------------------------
-   La navegación no cabe en línea: el cuerpo de la entrada se despliega
-   -------------------------------------------------------------------------- */
-
 @media (max-width: 939.98px) {
   .Cabecera {
     --margen-reposo: 14px;
@@ -588,7 +543,6 @@ html {
     grid-template-rows: var(--alto) 1fr;
   }
 
-  /* Los módulos 2×2 del isotipo que, al abrir, se estiran hasta formar un aspa */
   .Conmutador {
     display: grid;
     grid-template-columns: repeat(2, 8px);
@@ -683,12 +637,10 @@ html {
     gap: 0.625rem;
   }
 
-  /* El menú recorta lo que sobresale: el contorno de foco va por dentro */
   .Menu a:focus-visible {
     outline-offset: -2px;
   }
 
-  /* En táctil no hay hover: cada enlace muestra su color con un módulo */
   .Menu a::before {
     content: "";
     width: 8px;
@@ -719,7 +671,6 @@ html {
   }
 }
 
-/* Los cuatro enlaces no caben en una fila junto al talón */
 @media (min-width: 600px) and (max-width: 789.98px) {
   .Menu {
     display: grid;
@@ -727,10 +678,6 @@ html {
     justify-content: start;
   }
 }
-
-/* --------------------------------------------------------------------------
-   Móvil: la entrada se pone vertical y el troquel pasa a ser horizontal
-   -------------------------------------------------------------------------- */
 
 @media (max-width: 599.98px) {
   .Cabecera {
@@ -762,7 +709,6 @@ html {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  /* Logo, visor, conmutador y marco de la cuenta comparten el mismo margen */
   .Cuerpo {
     padding-inline: 1.125rem;
   }
@@ -829,11 +775,9 @@ html {
       var(--coral) 50%
     );
     background-size: 200% 100%;
-    /* El ancho varía con la pantalla: round ajusta los módulos a un número exacto */
     mask: linear-gradient(90deg, #000 3px, transparent 0) 0 0 / 8px 100% round;
   }
 
-  /* Al desplazarse quedan solo la marca y el menú; el talón vuelve al abrirlo */
   .Cabecera[data-compacta="true"][data-abierta="false"] .Talon {
     height: 0;
     visibility: hidden;
@@ -865,7 +809,6 @@ html {
   }
 }
 
-/* Móvil apaisado o con mucho zoom: el menú abierto debe caber en la pantalla */
 @media (max-width: 599.98px) and (max-height: 459.98px) {
   .Menu {
     display: grid;
