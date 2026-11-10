@@ -1,25 +1,188 @@
-footer{
-    position: fixed;
-    bottom: 0;
-    left: 0;
+/* =================================
+   FOOTER SABITECH
+   Corporate Design
+================================= */
+
+.footer {
+    --navy: #14283D;
+    --teal: #168C8C;
+    --light-teal: #42B8B0;
+    --muted: #C3CFD9;
+
     width: 100%;
-    background-color: rgb(78, 112, 143);
-    
+    flex-shrink: 0;
+
+    color: #ffffff;
+
+    font-family: var(--fuente);
+
+    background: linear-gradient(110deg,
+            #14283D,
+            #1C354B);
+
+    border-top: 3px solid var(--teal);
 }
-.footer ul{
+
+/* CONTENEDOR */
+
+.footer__container {
     display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    gap: 20px;
-    justify-content: center;
+
+    grid-template-columns:
+        1.2fr 1fr 1fr;
+
+    gap: 2.5rem;
+
+    max-width: 1320px;
+    margin: 0 auto;
+
+    padding: 1.8rem 2.5rem;
+}
+
+/* MARCA */
+
+.footer__logo {
+    display: inline-block;
+
+    margin-bottom: 0.6rem;
+
+    color: #ffffff;
+
+    font-size: 1.65rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+
+    text-decoration: none;
+}
+
+.footer__logo span {
+    color: var(--light-teal);
+}
+
+.footer__brand p,
+.footer__info p,
+.footer__action p {
+    max-width: 300px;
+
+    color: var(--muted);
+
+    font-size: 0.82rem;
+    line-height: 1.7;
+}
+
+/* INFORMACIÓN */
+
+.footer__info h3,
+.footer__action h3 {
+    margin-bottom: 0.65rem;
+
+    color: #ffffff;
+
+    font-size: 0.92rem;
+    font-weight: 700;
+}
+
+/* ENLACE DE ACCIÓN */
+
+.footer__action a {
+    display: inline-block;
+
+    margin-top: 0.7rem;
+
+    color: var(--light-teal);
+
+    font-size: 0.84rem;
+    font-weight: 700;
+
+    text-decoration: none;
+
+    transition:
+        color 0.25s ease,
+        transform 0.25s ease;
+}
+
+.footer__action a:hover {
+    color: #ffffff;
+    transform: translateX(3px);
+}
+
+/* COPYRIGHT */
+
+.footer__bottom {
+    display: flex;
     align-items: center;
-    height: 100%;
-    
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    gap: 0.75rem;
+
+    max-width: 1320px;
+    margin: 0 auto;
+
+    padding: 0.9rem 2.5rem;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.13);
+}
+
+.footer__bottom p {
+    color: #AAB9C7;
+
+    font-size: 0.72rem;
+}
+
+.footer__bottom strong {
+    color: #ffffff;
+}
+
+/* =================================
+   RESPONSIVE
+================================= */
+
+@media (max-width: 750px) {
+
+    .footer__container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        gap: 1.8rem;
+
+        padding: 1.8rem 1.5rem;
+    }
+
+    .footer__brand {
+        grid-column: 1 / -1;
+    }
 
 }
-.footer li{
-    display: flex;
-    justify-content: center;
-    color: white;
-    list-style: none;
-    margin: 0 10px;
+
+@media (max-width: 480px) {
+
+    .footer__container {
+        grid-template-columns: 1fr;
+
+        gap: 1.5rem;
+
+        padding: 1.6rem 1.25rem;
+    }
+
+    .footer__brand {
+        grid-column: auto;
+    }
+
+    .footer__bottom {
+        flex-direction: column;
+        text-align: center;
+
+        padding: 1rem;
+    }
+
+}
+
+/* ACCESIBILIDAD */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .footer * {
+        transition: none !important;
+    }
+
 }

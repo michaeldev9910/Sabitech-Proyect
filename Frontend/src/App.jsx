@@ -1,107 +1,123 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Header from "./components/Header/Header.jsx";
+import Hero from "./components/Hero/Hero.jsx";
+import Recientes from "./components/Recientes/Recientes.jsx";
+import Programa from "./components/Programa/Programa.jsx";
+import Sedes from "./components/Sedes/Sedes.jsx";
+import Contacto from "./components/Contacto/Contacto.jsx";
 import Footer from "./components/footer/footer.jsx";
 import { listarCharlas } from "./api/charlasApi.js";
-import "./App.css";
-
-const formatoFecha = new Intl.DateTimeFormat("es-ES", {
-  dateStyle: "medium",
-  timeStyle: "short",
-  timeZone: "UTC",
-});
+import { listarSalas } from "./api/salasApi.js";
+import { categoriaDe } from "./utils/categorias.js";
+import { charlasRecientes } from "./utils/charlas.js";
+import {
+  FILTROS_INICIALES,
+  escribirFiltrosEnUrl,
+  leerFiltrosDeUrl,
+} from "./utils/filtros.js";
 
 function App() {
   const [charlas, setCharlas] = useState(null);
   const [hayError, setHayError] = useState(false);
-  const [visibles, setVisibles] = useState(false);
+  const [salasApi, setSalasApi] = useState(null);
+  const [filtros, setFiltros] = useState(leerFiltrosDeUrl);
 
   useEffect(() => {
     listarCharlas()
-      .then((charlas) => {
-        console.log("Charlas:", charlas);
-        setCharlas(charlas);
-      })
+      .then(setCharlas)
       .catch((error) => {
         console.error("Error al listar charlas:", error);
         setHayError(true);
+        setCharlas([]);
+      });
+
+    listarSalas()
+      .then(setSalasApi)
+      .catch((error) => {
+        // Sin el listado de salas seguimos con las que vienen en las charlas
+        console.error("Error al listar salas:", error);
+        setSalasApi([]);
       });
   }, []);
+
+  // Los filtros viajan en la URL para poder compartir una búsqueda
+  useEffect(() => {
+    escribirFiltrosEnUrl(filtros);
+  }, [filtros]);
+
+  const cargando = charlas === null;
+  const lista = useMemo(() => charlas ?? [], [charlas]);
+
+  // Área (Salud / Tecnología / Negocios) de cada charla
+  const areaDe = useMemo(
+    () => new Map(lista.map((charla) => [charla.id, categoriaDe(charla)])),
+    [lista],
+  );
+
+  const recientes = useMemo(() => charlasRecientes(lista), [lista]);
+
+  // Salas: las de la API; si no llegan, las que aparecen en las charlas
+  const salas = useMemo(() => {
+    if (salasApi?.length) return salasApi;
+    const unicas = new Map();
+    for (const charla of lista) {
+      if (charla.sala) unicas.set(charla.sala.id, charla.sala);
+    }
+    return [...unicas.values()].sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
+  }, [salasApi, lista]);
+
+  const elegirArea = useCallback(
+    (area) => setFiltros((anteriores) => ({ ...anteriores, area })),
+    [],
+  );
+
+  const elegirSala = useCallback(
+    (sala) => setFiltros((anteriores) => ({ ...anteriores, sala, momento: "todas" })),
+    [],
+  );
+
+  const verCharla = useCallback(
+    (charla) => setFiltros({ ...FILTROS_INICIALES, q: charla.titulo, momento: "todas" }),
+    [],
+  );
 
   return (
     <>
       <Header />
 
       <main>
-        <section id="charlas" className="Charlas">
-          <button
-            type="button"
-            className="BotonCharlas"
-            aria-expanded={visibles}
-            onClick={() => setVisibles((valor) => !valor)}
-          >
-            {visibles ? "Ocultar charlas" : "Ver charlas"}
-          </button>
+        <Hero
+          charlas={charlas}
+          areaDe={areaDe}
+          cargando={cargando}
+          onElegirArea={elegirArea}
+        />
 
-          {visibles && (
-            <>
-              {hayError && (
-                <p role="alert">
-                  No se han podido cargar las charlas. Recarga la página para
-                  volver a intentarlo.
-                </p>
-              )}
-              {!hayError && charlas === null && <p>Cargando charlas…</p>}
-              {charlas?.length === 0 && (
-                <p>Todavía no hay charlas publicadas.</p>
-              )}
-              {charlas?.length > 0 && (
-                <ul className="ListaCharlas">
-                  {charlas.map((charla) => (
-                    <li key={charla.id} className="TarjetaCharla">
-                      <h2>{charla.titulo}</h2>
-                      {charla.descripcion && <p>{charla.descripcion}</p>}
-                      <dl>
-                        <dt>Horario</dt>
-                        <dd>
-                          {formatoFecha.formatRange(
-                            new Date(charla.inicio),
-                            new Date(charla.fin),
-                          )}
-                        </dd>
-                        {charla.ponente && (
-                          <>
-                            <dt>Ponente</dt>
-                            <dd>
-                              {charla.ponente.nombre} {charla.ponente.apellidos}
-                              {charla.ponente.organizacion &&
-                                ` · ${charla.ponente.organizacion}`}
-                            </dd>
-                          </>
-                        )}
-                        {charla.sala && (
-                          <>
-                            <dt>Sala</dt>
-                            <dd>
-                              {charla.sala.nombre}
-                              {charla.sala.ubicacion &&
-                                ` · ${charla.sala.ubicacion}`}
-                            </dd>
-                          </>
-                        )}
-                        <dt>Aforo</dt>
-                        <dd>{charla.aforo} plazas</dd>
-                        <dt>Reservas desde</dt>
-                        <dd>
-                          {formatoFecha.format(new Date(charla.aperturaPlazas))}
-                        </dd>
-                      </dl>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </>
-          )}
-        </section>
+        <Recientes
+          charlas={recientes}
+          areaDe={areaDe}
+          cargando={cargando}
+          onVerCharla={verCharla}
+        />
+
+        <Programa
+          charlas={charlas}
+          areaDe={areaDe}
+          salas={salas}
+          filtros={filtros}
+          setFiltros={setFiltros}
+          cargando={cargando}
+          hayError={hayError}
+        />
+
+        <Sedes
+          salas={salas}
+          charlas={charlas}
+          cargando={cargando && salasApi === null}
+          onElegirSala={elegirSala}
+        />
+
+        <Contacto />
       </main>
 
       <Footer />

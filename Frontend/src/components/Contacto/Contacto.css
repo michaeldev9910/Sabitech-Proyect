@@ -1,0 +1,179 @@
+/* =================================
+   CONTACTO · banda oscura con llamada a la acción
+================================= */
+
+.Contacto {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  padding: 5.5rem 2.5rem;
+
+  background: linear-gradient(120deg, var(--navy) 0%, var(--abismo) 100%);
+  color: #ffffff;
+}
+
+/* Brillo suave en el color de marca */
+.Contacto::before {
+  content: "";
+  position: absolute;
+  top: -40%;
+  right: -10%;
+  z-index: -1;
+
+  width: 620px;
+  height: 620px;
+
+  background: radial-gradient(circle, rgba(66, 184, 176, 0.28), transparent 65%);
+}
+
+.Contacto__contenedor {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  align-items: center;
+  gap: 4rem;
+
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+.Contacto__antetitulo {
+  margin-bottom: 0.4rem;
+
+  color: var(--light-teal);
+
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.Contacto__titulo {
+  max-width: 16ch;
+
+  font-size: clamp(1.9rem, 3.6vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.Contacto__texto {
+  max-width: 520px;
+  margin-top: 1rem;
+
+  color: rgba(255, 255, 255, 0.72);
+
+  font-size: 1.02rem;
+}
+
+.Contacto__botones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+
+  margin-top: 2rem;
+}
+
+.Contacto__boton {
+  display: inline-flex;
+  align-items: center;
+
+  height: 48px;
+  padding: 0 1.4rem;
+
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+
+  color: #ffffff;
+
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-decoration: none;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.Contacto__boton:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.Contacto__boton--principal {
+  background: var(--teal);
+  border-color: var(--teal);
+  box-shadow: 0 10px 30px rgba(22, 140, 140, 0.4);
+}
+
+.Contacto__boton--principal:hover {
+  background: var(--light-teal);
+  border-color: var(--light-teal);
+}
+
+.Contacto__boton:focus-visible {
+  outline: 2px solid var(--light-teal);
+  outline-offset: 3px;
+}
+
+.Contacto__ventajas {
+  display: grid;
+  gap: 0.75rem;
+
+  list-style: none;
+}
+
+.Contacto__ventajas li {
+  display: flex;
+  gap: 1.1rem;
+
+  padding: 1.15rem 1.25rem;
+
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+}
+
+.Contacto__numero {
+  color: var(--light-teal);
+
+  font-size: 0.85rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.Contacto__ventajas strong {
+  font-size: 1rem;
+}
+
+.Contacto__ventajas p {
+  margin-top: 0.2rem;
+
+  color: rgba(255, 255, 255, 0.65);
+
+  font-size: 0.88rem;
+}
+
+@media (max-width: 900px) {
+  .Contacto__contenedor {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
+
+@media (max-width: 760px) {
+  .Contacto {
+    padding: 4rem 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .Contacto {
+    padding-inline: 1rem;
+  }
+
+  .Contacto__boton {
+    justify-content: center;
+    width: 100%;
+  }
+}
