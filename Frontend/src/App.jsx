@@ -1,127 +1,113 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import Header from "./components/Header/Header.jsx";
-import Hero from "./components/Hero/Hero.jsx";
-import Recientes from "./components/Recientes/Recientes.jsx";
-import Programa from "./components/Programa/Programa.jsx";
-import Sedes from "./components/Sedes/Sedes.jsx";
-import Contacto from "./components/Contacto/Contacto.jsx";
-import Footer from "./components/footer/footer.jsx";
-import { listarCharlas } from "./api/charlasApi.js";
-import { listarSalas } from "./api/salasApi.js";
-import { categoriaDe } from "./utils/categorias.js";
-import { charlasRecientes } from "./utils/charlas.js";
-import {
-  FILTROS_INICIALES,
-  escribirFiltrosEnUrl,
-  leerFiltrosDeUrl,
-} from "./utils/filtros.js";
+import { useEffect, useState } from "react";
+import LoginView from "./Views/loginView/loginView.jsx";
+import MainView from "./Views/mainView/MainView.jsx";
+import { cerrarSesion, obtenerUsuario } from "./api/loginApi.js";
+import { ApiError } from "./api/apiError.js";
+
+const TOKEN_KEY = "sabitech-auth-token";
 
 function App() {
-  const [charlas, setCharlas] = useState(null);
-  const [hayError, setHayError] = useState(false);
-  const [salasApi, setSalasApi] = useState(null);
-  const [filtros, setFiltros] = useState(leerFiltrosDeUrl);
+  const [estado, setEstado] = useState("comprobando");
+  const [usuario, setUsuario] = useState(null);
+  const [token, setToken] = useState(null);
+  const [errorSesion, setErrorSesion] = useState("");
 
   useEffect(() => {
-    listarCharlas()
-      .then(setCharlas)
-      .catch((error) => {
-        console.error("Error al listar charlas:", error);
-        setHayError(true);
-        setCharlas([]);
-      });
+    let cancelado = false;
 
-    listarSalas()
-      .then(setSalasApi)
-      .catch((error) => {
-        // Sin el listado de salas seguimos con las que vienen en las charlas
-        console.error("Error al listar salas:", error);
-        setSalasApi([]);
-      });
+    async function comprobarSesion() {
+      try {
+        const tokenGuardado = window.localStorage.getItem(TOKEN_KEY);
+        if (!tokenGuardado) {
+          if (!cancelado) setEstado("invitado");
+          return;
+        }
+
+        const usuarioActual = await obtenerUsuario(tokenGuardado);
+        if (!cancelado) {
+          setToken(tokenGuardado);
+          setUsuario(usuarioActual);
+          setEstado("autenticado");
+        }
+      } catch (error) {
+        console.error("No se pudo comprobar la sesión:", error);
+
+        if (!cancelado) {
+          if (error instanceof ApiError && error.status === 401) {
+            window.localStorage.removeItem(TOKEN_KEY);
+          } else {
+            setErrorSesion(
+              "No se pudo comprobar la sesión. Continúas como invitado.",
+            );
+          }
+          setEstado("invitado");
+        }
+      }
+    }
+
+    comprobarSesion();
+    return () => {
+      cancelado = true;
+    };
   }, []);
 
-  // Los filtros viajan en la URL para poder compartir una búsqueda
-  useEffect(() => {
-    escribirFiltrosEnUrl(filtros);
-  }, [filtros]);
+  function iniciarSesion({
+    usuario: usuarioAutenticado,
+    token: tokenAutenticado,
+  }) {
+    window.localStorage.setItem(TOKEN_KEY, tokenAutenticado);
+    setToken(tokenAutenticado);
+    setUsuario(usuarioAutenticado);
+    setErrorSesion("");
+    setEstado("autenticado");
+  }
 
-  const cargando = charlas === null;
-  const lista = useMemo(() => charlas ?? [], [charlas]);
+  function entrarComoInvitado() {
+    setErrorSesion("");
+    setEstado("invitado");
+  }
 
-  // Área (Salud / Tecnología / Negocios) de cada charla
-  const areaDe = useMemo(
-    () => new Map(lista.map((charla) => [charla.id, categoriaDe(charla)])),
-    [lista],
-  );
+  function mostrarAcceso() {
+    setEstado("anonimo");
+  }
 
-  const recientes = useMemo(() => charlasRecientes(lista), [lista]);
+  async function salir() {
+    await cerrarSesion(token);
+    window.localStorage.removeItem(TOKEN_KEY);
+    setToken(null);
+    setUsuario(null);
+    setEstado("invitado");
+  }
 
-  // Salas: las de la API; si no llegan, las que aparecen en las charlas
-  const salas = useMemo(() => {
-    if (salasApi?.length) return salasApi;
-    const unicas = new Map();
-    for (const charla of lista) {
-      if (charla.sala) unicas.set(charla.sala.id, charla.sala);
-    }
-    return [...unicas.values()].sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
-  }, [salasApi, lista]);
+  if (estado === "comprobando") {
+    return <p role="status">Comprobando la sesión…</p>;
+  }
 
-  const elegirArea = useCallback(
-    (area) => setFiltros((anteriores) => ({ ...anteriores, area })),
-    [],
-  );
+  if (estado === "autenticado") {
+    return (
+      <MainView
+        usuario={usuario}
+        onCerrarSesion={salir}
+        onMostrarAcceso={mostrarAcceso}
+      />
+    );
+  }
 
-  const elegirSala = useCallback(
-    (sala) => setFiltros((anteriores) => ({ ...anteriores, sala, momento: "todas" })),
-    [],
-  );
-
-  const verCharla = useCallback(
-    (charla) => setFiltros({ ...FILTROS_INICIALES, q: charla.titulo, momento: "todas" }),
-    [],
-  );
+  if (estado === "invitado") {
+    return (
+      <MainView
+        onMostrarAcceso={mostrarAcceso}
+        errorInicial={errorSesion}
+      />
+    );
+  }
 
   return (
-    <>
-      <Header />
-
-      <main>
-        <Hero
-          charlas={charlas}
-          areaDe={areaDe}
-          cargando={cargando}
-          onElegirArea={elegirArea}
-        />
-
-        <Recientes
-          charlas={recientes}
-          areaDe={areaDe}
-          cargando={cargando}
-          onVerCharla={verCharla}
-        />
-
-        <Programa
-          charlas={charlas}
-          areaDe={areaDe}
-          salas={salas}
-          filtros={filtros}
-          setFiltros={setFiltros}
-          cargando={cargando}
-          hayError={hayError}
-        />
-
-        <Sedes
-          salas={salas}
-          charlas={charlas}
-          cargando={cargando && salasApi === null}
-          onElegirSala={elegirSala}
-        />
-
-        <Contacto />
-      </main>
-
-      <Footer />
-    </>
+    <LoginView
+      onAuthenticated={iniciarSesion}
+      onGuest={entrarComoInvitado}
+      errorInicial={errorSesion}
+    />
   );
 }
 
