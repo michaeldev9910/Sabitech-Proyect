@@ -45,6 +45,9 @@ function LoginView({ onAuthenticated, onGuest, errorInicial = "" }) {
   return (
     <main className="VistaAcceso">
       <section className="TarjetaAcceso" aria-labelledby="titulo-acceso">
+        <p className="AccesoMarca" aria-hidden="true">
+          sabi<span>tech</span>
+        </p>
         <h1 id="titulo-acceso">
           {esRegistro ? "Crear cuenta" : "Iniciar sesión"}
         </h1>

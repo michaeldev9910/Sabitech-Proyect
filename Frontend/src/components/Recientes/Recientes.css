@@ -1,0 +1,504 @@
+/* =================================
+   CHARLAS RECIENTES · carrusel Bootstrap
+   Banda gris muy clara para separarla del hero
+================================= */
+
+.Recientes {
+  padding: 5rem 2.5rem 5.5rem;
+
+  background: var(--fondo-alterno);
+  border-top: 1px solid var(--linea);
+  border-bottom: 1px solid var(--linea);
+
+  color: var(--texto);
+}
+
+.Recientes__contenedor {
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+.Recientes__cabecera {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem 3rem;
+
+  margin-bottom: 2.25rem;
+}
+
+.Recientes__antetitulo {
+  margin-bottom: 0.4rem;
+
+  color: var(--teal);
+
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.Recientes__titulo {
+  color: var(--titulo);
+
+  font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.Recientes__intro {
+  max-width: 460px;
+
+  color: var(--texto-suave);
+
+  font-size: 0.95rem;
+}
+
+.Recientes__vacio {
+  padding: 2rem;
+
+  background: var(--superficie);
+  border: 1px dashed var(--linea-fuerte);
+  border-radius: 20px;
+
+  color: var(--texto-suave);
+  text-align: center;
+}
+
+.Recientes__esqueleto {
+  height: 440px;
+
+  background:
+    linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, 0.7) 50%, transparent 70%) 0 0 / 250% 100%,
+    var(--superficie-2);
+  border-radius: 24px;
+
+  animation: brillo-carga 1.4s linear infinite;
+}
+
+/* DIAPOSITIVA */
+
+.Recientes__carrusel .carousel-inner {
+  border-radius: 24px;
+  box-shadow: 0 2px 4px rgba(20, 40, 61, 0.04), 0 24px 48px rgba(20, 40, 61, 0.1);
+}
+
+.Diapositiva {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+
+  min-height: 440px;
+
+  background: var(--superficie);
+  border: 1px solid var(--linea);
+  border-radius: 24px;
+
+  overflow: hidden;
+}
+
+.Diapositiva__visual {
+  position: relative;
+}
+
+.Diapositiva__retrato {
+  position: absolute;
+  inset: 0;
+}
+
+.Diapositiva__retrato .Retrato__iniciales {
+  font-size: clamp(4rem, 9vw, 7rem);
+}
+
+/* Barra del color del área entre el retrato y la información */
+.Diapositiva__visual::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+
+  width: 4px;
+
+  background: var(--area);
+}
+
+.Diapositiva__momento {
+  position: absolute;
+  top: 1.25rem;
+  left: 1.25rem;
+  z-index: 1;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+
+  padding: 0.35rem 0.8rem;
+
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--linea);
+  border-radius: 999px;
+  box-shadow: var(--sombra);
+
+  color: var(--titulo);
+
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.Diapositiva__momento::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+
+  background: var(--teal);
+  border-radius: 50%;
+}
+
+.Diapositiva__momento--en-curso::before {
+  background: #D92D20;
+  animation: latido 2s ease-in-out infinite;
+}
+
+.Diapositiva__momento--celebrada::before {
+  background: var(--linea-fuerte);
+}
+
+.Diapositiva__info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  padding: 2.75rem 3rem;
+}
+
+.Diapositiva__titulo {
+  margin-top: 1rem;
+
+  color: var(--titulo);
+
+  font-size: clamp(1.6rem, 2.8vw, 2.3rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+}
+
+.Diapositiva__descripcion {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+
+  max-width: 54ch;
+  margin-top: 0.9rem;
+
+  color: var(--texto-suave);
+
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.Diapositiva__datos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 2rem;
+
+  width: 100%;
+  margin-top: 1.75rem;
+  padding-top: 1.5rem;
+
+  border-top: 1px solid var(--linea);
+}
+
+.Diapositiva__datos dt {
+  color: var(--texto-suave);
+
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.Diapositiva__datos dd {
+  margin-top: 0.15rem;
+
+  color: var(--titulo);
+
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.Diapositiva__fecha::first-letter {
+  text-transform: uppercase;
+}
+
+.Diapositiva__datos dd[data-tono="ultimas"] {
+  color: var(--negocios-texto);
+}
+
+.Diapositiva__datos dd[data-tono="completa"] {
+  color: var(--error-linea);
+}
+
+.Diapositiva__datos dd[data-tono="abierta"] {
+  color: var(--salud-texto);
+}
+
+.Diapositiva__pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  width: 100%;
+  margin-top: auto;
+  padding-top: 2rem;
+}
+
+.Diapositiva__ponente {
+  display: grid;
+}
+
+.Diapositiva__ponente strong {
+  color: var(--titulo);
+
+  font-size: 0.95rem;
+}
+
+.Diapositiva__ponente span {
+  color: var(--texto-suave);
+
+  font-size: 0.85rem;
+}
+
+.Diapositiva__boton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  height: 44px;
+  padding: 0 1.25rem;
+
+  background: var(--navy);
+  border-radius: 999px;
+
+  color: #ffffff;
+
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+
+  transition: background-color 0.2s ease;
+}
+
+.Diapositiva__boton svg {
+  width: 17px;
+  height: 17px;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+
+  transition: transform 0.25s var(--curva);
+}
+
+.Diapositiva__boton:hover {
+  background: var(--teal);
+}
+
+.Diapositiva__boton:hover svg {
+  transform: translateX(3px);
+}
+
+.Diapositiva__boton:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 3px;
+}
+
+/* CONTROLES: indicadores como barras de progreso + botones */
+
+.Recientes__controles {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+
+  margin-top: 1.5rem;
+}
+
+.Recientes .carousel-indicators {
+  position: static;
+
+  justify-content: flex-start;
+  gap: 0.5rem;
+
+  margin: 0;
+}
+
+.Recientes .carousel-indicators [data-bs-target] {
+  position: relative;
+
+  width: 56px;
+  height: 4px;
+  margin: 0;
+
+  background-color: var(--linea-fuerte);
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-radius: 0;
+
+  opacity: 1;
+  overflow: hidden;
+}
+
+.Recientes .carousel-indicators [data-bs-target]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: var(--teal);
+
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+
+.Recientes .carousel-indicators .active::after {
+  transform: scaleX(1);
+}
+
+.Recientes__carrusel[data-automatico="true"] .carousel-indicators .active::after {
+  animation: llenar var(--intervalo) linear forwards;
+}
+
+/* Bootstrap pausa al pasar el ratón: la barra lo refleja */
+.Recientes__carrusel[data-automatico="true"]:hover .carousel-indicators .active::after {
+  animation: none;
+  transform: scaleX(1);
+}
+
+@keyframes llenar {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.Recientes .carousel-indicators [data-bs-target]:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 4px;
+}
+
+.Recientes__botones {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.Recientes .Recientes__boton {
+  position: static;
+
+  display: grid;
+  place-items: center;
+
+  width: 44px;
+  height: 44px;
+
+  background: var(--superficie);
+  border: 1px solid var(--linea-fuerte);
+  border-radius: 50%;
+
+  color: var(--titulo);
+  opacity: 1;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.Recientes .Recientes__boton:hover {
+  background: var(--navy);
+  border-color: var(--navy);
+
+  color: #ffffff;
+}
+
+.Recientes .Recientes__boton:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 3px;
+}
+
+.Recientes__boton svg {
+  width: 18px;
+  height: 18px;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* =================================
+   RESPONSIVE
+================================= */
+
+@media (max-width: 900px) {
+  .Diapositiva {
+    grid-template-columns: 1fr;
+  }
+
+  .Diapositiva__visual {
+    height: 240px;
+  }
+
+  .Diapositiva__visual::after {
+    top: auto;
+    left: 0;
+
+    width: auto;
+    height: 4px;
+  }
+
+  .Diapositiva__info {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 760px) {
+  .Recientes {
+    padding: 4rem 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .Recientes {
+    padding-inline: 1rem;
+  }
+
+  .Diapositiva__info {
+    padding: 1.5rem;
+  }
+
+  .Diapositiva__datos {
+    grid-template-columns: 1fr;
+  }
+
+  .Diapositiva__boton {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .Recientes .carousel-indicators [data-bs-target] {
+    width: 32px;
+  }
+}

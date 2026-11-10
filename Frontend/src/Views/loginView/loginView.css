@@ -1,69 +1,169 @@
+/* =================================
+   VISTA DE ACCESO (login / registro)
+   Misma estructura que la versión de la rama login,
+   con la paleta y tipografía del rediseño.
+================================= */
+
 .VistaAcceso {
+  position: relative;
+  isolation: isolate;
+
   min-height: 100vh;
   display: grid;
   place-items: center;
   padding: 1.5rem;
-  box-sizing: border-box;
-  background: #f5f3f8;
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  background: var(--fondo-alterno);
+  overflow: hidden;
+}
+
+/* Rejilla suave de fondo, como en la portada */
+.VistaAcceso::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+
+  background-image:
+    linear-gradient(rgba(20, 40, 61, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(20, 40, 61, 0.05) 1px, transparent 1px);
+  background-size: 56px 56px;
+
+  -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 40%, #000 30%, transparent 100%);
+  mask-image: radial-gradient(ellipse 70% 70% at 50% 40%, #000 30%, transparent 100%);
 }
 
 .TarjetaAcceso {
+  position: relative;
+
   width: min(100%, 28rem);
-  padding: 2rem;
-  box-sizing: border-box;
-  border: 1px solid rgba(15, 20, 32, 0.16);
-  border-radius: 16px;
-  background: #fff;
-  color: #0f1420;
-  box-shadow: 0 12px 36px rgba(15, 20, 32, 0.08);
+  padding: 2.25rem 2rem 2rem;
+
+  background: var(--superficie);
+  border: 1px solid var(--linea);
+  border-radius: 20px;
+  box-shadow: 0 2px 4px rgba(20, 40, 61, 0.04), 0 24px 48px rgba(20, 40, 61, 0.12);
+
+  color: var(--texto);
+}
+
+/* Línea superior con los colores de Salud, Tecnología y Negocios */
+.TarjetaAcceso::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 2rem;
+  right: 2rem;
+
+  height: 3px;
+
+  background: linear-gradient(90deg, var(--salud), var(--tecnologia), var(--negocios));
+  border-radius: 0 0 3px 3px;
+}
+
+.AccesoMarca {
+  margin-bottom: 1.25rem;
+
+  color: var(--navy);
+
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.AccesoMarca span {
+  color: var(--teal);
 }
 
 .TarjetaAcceso h1 {
   margin: 0;
+
+  color: var(--titulo);
+
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
-.TarjetaAcceso > p {
-  color: rgba(15, 20, 32, 0.68);
+.TarjetaAcceso > p:not(.AccesoMarca):not(.AlternarAcceso) {
+  margin-top: 0.4rem;
+
+  color: var(--texto-suave);
 }
 
 .FormularioAcceso {
   display: grid;
   gap: 1rem;
+
   margin-top: 1.5rem;
 }
 
 .FormularioAcceso label {
   display: grid;
   gap: 0.375rem;
-  font-weight: 600;
+
+  color: var(--titulo);
+
+  font-size: 0.88rem;
+  font-weight: 700;
 }
 
 .FormularioAcceso input {
   min-width: 0;
-  padding: 0.75rem;
-  border: 1px solid rgba(15, 20, 32, 0.24);
-  border-radius: 8px;
+  height: 46px;
+  padding: 0 0.9rem;
+
+  background: var(--superficie-2);
+  border: 1px solid var(--linea);
+  border-radius: 12px;
+
+  color: var(--texto);
+
   font: inherit;
+  font-weight: 500;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
 }
 
-.FormularioAcceso input:focus-visible,
+.FormularioAcceso input:focus {
+  background: var(--superficie);
+  border-color: var(--teal);
+  outline: none;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--teal) 18%, transparent);
+}
+
 .FormularioAcceso button:focus-visible,
 .AlternarAcceso button:focus-visible,
 .AccesoInvitado:focus-visible {
-  outline: 2px solid #7f3bd3;
+  outline: 2px solid var(--teal);
   outline-offset: 2px;
 }
 
 .FormularioAcceso > button {
-  padding: 0.75rem 1rem;
+  height: 48px;
+  margin-top: 0.25rem;
+
+  background: var(--teal);
   border: 0;
-  border-radius: 8px;
-  background: #0f1420;
-  color: #fff;
+  border-radius: 999px;
+  box-shadow: 0 10px 26px rgba(22, 140, 140, 0.3);
+
+  color: #ffffff;
+
   font: inherit;
   font-weight: 700;
+
   cursor: pointer;
+
+  transition: background-color 0.2s ease;
+}
+
+.FormularioAcceso > button:hover {
+  background: var(--teal-oscuro);
 }
 
 .FormularioAcceso > button:disabled {
@@ -73,33 +173,67 @@
 
 .ErrorAcceso {
   margin: 0;
-  color: #a21d2b;
+  padding: 0.7rem 0.9rem;
+
+  background: color-mix(in srgb, var(--error-linea) 8%, transparent);
+  border-left: 3px solid var(--error-linea);
+  border-radius: 8px;
+
+  color: var(--error-texto);
+
+  font-size: 0.88rem;
 }
 
 .AlternarAcceso {
-  margin-bottom: 0;
+  margin: 1.25rem 0 0;
+
+  color: var(--texto-suave);
+
+  font-size: 0.9rem;
+  text-align: center;
 }
 
 .AlternarAcceso button {
   padding: 0;
-  border: 0;
+
   background: none;
-  color: #6426b5;
+  border: 0;
+
+  color: var(--teal);
+
   font: inherit;
   font-weight: 700;
   text-decoration: underline;
+  text-underline-offset: 3px;
+
   cursor: pointer;
 }
 
 .AccesoInvitado {
   width: 100%;
-  margin-top: 1.25rem;
-  padding: 0.75rem 1rem;
-  border: 1px solid rgba(15, 20, 32, 0.24);
-  border-radius: 8px;
-  background: #fff;
-  color: #0f1420;
+  height: 46px;
+  margin-top: 1rem;
+
+  background: var(--superficie);
+  border: 1px solid var(--linea-fuerte);
+  border-radius: 999px;
+
+  color: var(--titulo);
+
   font: inherit;
   font-weight: 700;
+
   cursor: pointer;
+
+  transition: border-color 0.2s ease;
+}
+
+.AccesoInvitado:hover {
+  border-color: var(--navy);
+}
+
+@media (max-width: 480px) {
+  .TarjetaAcceso {
+    padding: 2rem 1.25rem 1.5rem;
+  }
 }

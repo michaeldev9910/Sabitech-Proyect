@@ -1,15 +1,26 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Header from "../../components/Header/Header.jsx";
+import Hero from "../../components/Hero/Hero.jsx";
+import Recientes from "../../components/Recientes/Recientes.jsx";
+import Programa from "../../components/Programa/Programa.jsx";
+import Sedes from "../../components/Sedes/Sedes.jsx";
+import Contacto from "../../components/Contacto/Contacto.jsx";
 import Footer from "../../components/footer/footer.jsx";
 import { listarCharlas } from "../../api/charlasApi.js";
+import { listarSalas } from "../../api/salasApi.js";
+import { categoriaDe } from "../../utils/categorias.js";
+import { charlasRecientes } from "../../utils/charlas.js";
+import {
+  FILTROS_INICIALES,
+  escribirFiltrosEnUrl,
+  leerFiltrosDeUrl,
+} from "../../utils/filtros.js";
 import "./mainView.css";
 
-const formatoFecha = new Intl.DateTimeFormat("es-ES", {
-  dateStyle: "medium",
-  timeStyle: "short",
-  timeZone: "UTC",
-});
-
+/**
+ * Página principal de Sabitech (invitado o con sesión iniciada).
+ * La sesión la gestiona App.jsx; aquí solo se muestra en el header.
+ */
 function MainView({
   usuario = null,
   onCerrarSesion,
@@ -18,137 +29,129 @@ function MainView({
 }) {
   const [charlas, setCharlas] = useState(null);
   const [hayError, setHayError] = useState(false);
-  const [visibles, setVisibles] = useState(false);
-  const [errorSesion, setErrorSesion] = useState(errorInicial);
-  const [cerrandoSesion, setCerrandoSesion] = useState(false);
+  const [salasApi, setSalasApi] = useState(null);
+  const [filtros, setFiltros] = useState(leerFiltrosDeUrl);
+  const [aviso, setAviso] = useState(errorInicial);
 
   useEffect(() => {
     listarCharlas()
-      .then((charlasCargadas) => {
-        setCharlas(charlasCargadas);
-      })
+      .then(setCharlas)
       .catch((error) => {
         console.error("Error al listar charlas:", error);
         setHayError(true);
+        setCharlas([]);
+      });
+
+    listarSalas()
+      .then(setSalasApi)
+      .catch((error) => {
+        // Sin el listado de salas seguimos con las que vienen en las charlas
+        console.error("Error al listar salas:", error);
+        setSalasApi([]);
       });
   }, []);
 
-  async function cerrarSesion() {
-    setErrorSesion("");
-    setCerrandoSesion(true);
-    try {
-      await onCerrarSesion();
-    } catch (error) {
-      console.error("No se pudo cerrar la sesión:", error);
-      setErrorSesion("No se pudo cerrar la sesión. Inténtalo de nuevo.");
-    } finally {
-      setCerrandoSesion(false);
+  // Los filtros viajan en la URL para poder compartir una búsqueda
+  useEffect(() => {
+    escribirFiltrosEnUrl(filtros);
+  }, [filtros]);
+
+  const cargando = charlas === null;
+  const lista = useMemo(() => charlas ?? [], [charlas]);
+
+  // Área (Salud / Tecnología / Negocios) de cada charla
+  const areaDe = useMemo(
+    () => new Map(lista.map((charla) => [charla.id, categoriaDe(charla)])),
+    [lista],
+  );
+
+  const recientes = useMemo(() => charlasRecientes(lista), [lista]);
+
+  // Salas: las de la API; si no llegan, las que aparecen en las charlas
+  const salas = useMemo(() => {
+    if (salasApi?.length) return salasApi;
+    const unicas = new Map();
+    for (const charla of lista) {
+      if (charla.sala) unicas.set(charla.sala.id, charla.sala);
     }
-  }
+    return [...unicas.values()].sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
+  }, [salasApi, lista]);
+
+  const elegirArea = useCallback(
+    (area) => setFiltros((anteriores) => ({ ...anteriores, area })),
+    [],
+  );
+
+  const elegirSala = useCallback(
+    (sala) => setFiltros((anteriores) => ({ ...anteriores, sala, momento: "todas" })),
+    [],
+  );
+
+  const verCharla = useCallback(
+    (charla) => setFiltros({ ...FILTROS_INICIALES, q: charla.titulo, momento: "todas" }),
+    [],
+  );
 
   return (
     <>
-      <Header />
+      <Header
+        usuario={usuario}
+        onAcceder={onMostrarAcceso}
+        onCerrarSesion={onCerrarSesion}
+      />
 
       <main>
-        <section className="SesionActiva" aria-label="Sesión activa">
-          {usuario ? (
-            <>
-              <span>
-                Sesión iniciada como {usuario.nombre} {usuario.apellidos}
-              </span>
-              <button
-                type="button"
-                onClick={cerrarSesion}
-                disabled={cerrandoSesion}
-              >
-                {cerrandoSesion ? "Cerrando sesión…" : "Cerrar sesión"}
-              </button>
-            </>
-          ) : (
-            <>
-              <span>Estás navegando como invitado.</span>
-              <button type="button" onClick={onMostrarAcceso}>
-                Iniciar sesión o registrarme
-              </button>
-            </>
-          )}
-          {errorSesion && <p role="alert">{errorSesion}</p>}
-        </section>
+        <Hero
+          charlas={charlas}
+          areaDe={areaDe}
+          cargando={cargando}
+          onElegirArea={elegirArea}
+        />
 
-        <section id="charlas" className="Charlas">
-          <button
-            type="button"
-            className="BotonCharlas"
-            aria-expanded={visibles}
-            onClick={() => setVisibles((valor) => !valor)}
-          >
-            {visibles ? "Ocultar charlas" : "Ver charlas"}
-          </button>
+        <Recientes
+          charlas={recientes}
+          areaDe={areaDe}
+          cargando={cargando}
+          onVerCharla={verCharla}
+        />
 
-          {visibles && (
-            <>
-              {hayError && (
-                <p role="alert">
-                  No se han podido cargar las charlas. Recarga la página para
-                  volver a intentarlo.
-                </p>
-              )}
-              {!hayError && charlas === null && <p>Cargando charlas…</p>}
-              {charlas?.length === 0 && (
-                <p>Todavía no hay charlas publicadas.</p>
-              )}
-              {charlas?.length > 0 && (
-                <ul className="ListaCharlas">
-                  {charlas.map((charla) => (
-                    <li key={charla.id} className="TarjetaCharla">
-                      <h2>{charla.titulo}</h2>
-                      {charla.descripcion && <p>{charla.descripcion}</p>}
-                      <dl>
-                        <dt>Horario</dt>
-                        <dd>
-                          {formatoFecha.formatRange(
-                            new Date(charla.inicio),
-                            new Date(charla.fin),
-                          )}
-                        </dd>
-                        {charla.ponente && (
-                          <>
-                            <dt>Ponente</dt>
-                            <dd>
-                              {charla.ponente.nombre} {charla.ponente.apellidos}
-                              {charla.ponente.organizacion &&
-                                ` · ${charla.ponente.organizacion}`}
-                            </dd>
-                          </>
-                        )}
-                        {charla.sala && (
-                          <>
-                            <dt>Sala</dt>
-                            <dd>
-                              {charla.sala.nombre}
-                              {charla.sala.ubicacion &&
-                                ` · ${charla.sala.ubicacion}`}
-                            </dd>
-                          </>
-                        )}
-                        <dt>Aforo</dt>
-                        <dd>{charla.aforo} plazas</dd>
-                        <dt>Reservas desde</dt>
-                        <dd>
-                          {formatoFecha.format(new Date(charla.aperturaPlazas))}
-                        </dd>
-                      </dl>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </>
-          )}
-        </section>
+        <Programa
+          charlas={charlas}
+          areaDe={areaDe}
+          salas={salas}
+          filtros={filtros}
+          setFiltros={setFiltros}
+          cargando={cargando}
+          hayError={hayError}
+        />
+
+        <Sedes
+          salas={salas}
+          charlas={charlas}
+          cargando={cargando && salasApi === null}
+          onElegirSala={elegirSala}
+        />
+
+        <Contacto />
       </main>
 
       <Footer />
+
+      {/* Aviso si no se pudo comprobar la sesión al entrar */}
+      {aviso && (
+        <div className="AvisoSesion" role="alert">
+          <p>{aviso}</p>
+          <button
+            type="button"
+            aria-label="Cerrar aviso"
+            onClick={() => setAviso("")}
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M18 6 6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      )}
     </>
   );
 }
