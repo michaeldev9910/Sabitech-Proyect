@@ -16,13 +16,10 @@ class ReservaSeeder extends Seeder
         $charla  = fn (string $titulo) => Charla::where('titulo', $titulo)->value('id');
 
         $reservas = [
-            // Docker (aforo 2): dos confirmadas = charla completa, y una cancelada de ejemplo.
             ['asistente1@sabitech.test', 'Docker para desarrolladores', 'confirmada'],
             ['asistente2@sabitech.test', 'Docker para desarrolladores', 'confirmada'],
             ['asistente3@sabitech.test', 'Docker para desarrolladores', 'cancelada'],
-            // Una reserva normal.
             ['asistente1@sabitech.test', 'Introduccion a Laravel', 'confirmada'],
-            // Reserva en la charla con el QR abierto.
             ['asistente2@sabitech.test', 'Demo en curso (prueba del QR)', 'confirmada'],
         ];
 
