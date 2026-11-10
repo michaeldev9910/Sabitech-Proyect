@@ -37,19 +37,16 @@ class CharlaSeeder extends Seeder
                 'descripcion' => 'Etiquetas, foco, contraste y navegacion por teclado.',
             ],
             [
-                // Borrador: no debe verse en el listado publico.
                 'titulo' => 'Seguridad en aplicaciones web', 'ponente' => 'Laura', 'sala' => 'Aula 1',
                 'inicio' => $dia(6, 10), 'aforo' => 30, 'estado' => 'borrador',
                 'descripcion' => 'Charla en preparacion.',
             ],
             [
-                // Cancelada: tampoco debe verse en el listado publico.
                 'titulo' => 'Taller de testing (cancelado)', 'ponente' => 'Hugo', 'sala' => 'Aula 2',
                 'inicio' => $dia(6, 12), 'aforo' => 20, 'estado' => 'cancelada',
                 'descripcion' => 'Charla cancelada por el ponente.',
             ],
             [
-                // Plazo del QR abierto ahora mismo (apertura <= ahora <= fin): para probar el QR.
                 'titulo' => 'Demo en curso (prueba del QR)', 'ponente' => 'Daniel', 'sala' => 'Sala Magna',
                 'inicio' => now()->subMinutes(10), 'fin' => now()->addHours(2),
                 'apertura_plazas' => now()->subHours(2), 'aforo' => 50, 'estado' => 'publicada',
