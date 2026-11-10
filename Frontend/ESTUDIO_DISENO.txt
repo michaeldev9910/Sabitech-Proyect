@@ -344,6 +344,18 @@ Dependencias nuevas (package.json)
   @fontsource-variable/manrope     Tipografía alojada en el proyecto.
 
 
+Integración con la rama login (Karim)
+  App.jsx                       Lógica de sesión de Karim: comprueba el token,
+                                muestra el login o la página (invitado o con
+                                sesión) y cierra sesión.
+  Views/mainView/MainView.jsx   Toda la página del rediseño (antes en App.jsx).
+  Views/loginView/              Login y registro de Karim, con la paleta nueva.
+  api/loginApi.js               Peticiones de login, registro, /me y logout.
+  Header                        Menú con QR y Control admin (sus secciones aún
+                                no existen). La sesión está en el talón: invitado
+                                = abre el login; con sesión = iniciales y menú
+                                con nombre, email y "Cerrar sesión".
+
 --------------------------------------------------------------------------------
  8. LIMITACIONES Y PENDIENTES (para el equipo)
 --------------------------------------------------------------------------------

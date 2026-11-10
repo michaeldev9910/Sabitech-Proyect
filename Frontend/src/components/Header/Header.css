@@ -103,7 +103,7 @@
 }
 
 .Cabecera[data-compacta="true"] .Entrada {
-  max-width: 1180px;
+  max-width: 1260px;
 }
 
 @keyframes imprimir {
@@ -183,9 +183,9 @@
 }
 
 .Marca {
-  display: flex;
+  display: grid;
   flex: none;
-  align-items: center;
+  justify-items: start;
 }
 
 .Logo {
@@ -213,47 +213,31 @@
   transform: scale(1.03);
 }
 
+/* Lema "impreso" bajo el logo, como en una entrada */
 .Lema {
-  display: grid;
-  gap: 0.2rem;
+  max-height: 1.25rem;
+  margin-top: 0.35rem;
 
-  max-width: 17rem;
-  margin-left: 1.25rem;
-  padding-left: 1.25rem;
+  color: var(--cuerpo-texto-suave);
 
-  border-left: 1px solid var(--cuerpo-linea);
-
-  overflow: hidden;
+  font-family: ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.02em;
   white-space: nowrap;
 
+  overflow: hidden;
+
   transition:
-    max-width var(--duracion) var(--curva),
+    max-height var(--duracion) var(--curva),
     margin var(--duracion) var(--curva),
-    padding var(--duracion) var(--curva),
     opacity 0.25s ease,
     visibility var(--duracion);
 }
 
-.Lema strong {
-  font-size: 0.82rem;
-  font-weight: 700;
-}
-
-/* Texto pequeño "impreso", como en una entrada */
-.Lema span {
-  color: var(--cuerpo-texto-suave);
-
-  font-family: ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, monospace;
-  font-size: 0.68rem;
-  letter-spacing: 0.02em;
-}
-
 .Cabecera[data-compacta="true"] .Lema {
-  max-width: 0;
-  margin-left: 0;
-  padding-left: 0;
+  max-height: 0;
+  margin-top: 0;
 
-  border-left-color: transparent;
   opacity: 0;
   visibility: hidden;
 }
@@ -277,12 +261,12 @@
   position: relative;
   display: block;
 
-  padding: 0.65rem 0.85rem;
+  padding: 0.6rem 0.7rem;
   border-radius: 10px;
 
   color: var(--cuerpo-texto-suave);
 
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   font-weight: 600;
   text-decoration: none;
   white-space: nowrap;
@@ -458,6 +442,13 @@
   transition: transform 0.4s var(--muelle);
 }
 
+.CuentaZona {
+  position: relative;
+
+  display: flex;
+  align-self: center;
+}
+
 .Cuenta {
   position: relative;
 
@@ -468,17 +459,22 @@
 
   width: var(--cuenta);
   height: var(--cuenta);
+  padding: 0;
 
+  background: none;
+  border: 0;
   border-radius: 14px;
 
   color: inherit;
+
+  cursor: pointer;
 
   transition:
     width var(--duracion) var(--curva),
     height var(--duracion) var(--curva);
 }
 
-.Cuenta svg {
+.Cuenta__esquinas {
   position: absolute;
   inset: 0;
 
@@ -492,26 +488,161 @@
   transition: transform 0.6s var(--muelle);
 }
 
-.Cuenta:focus-visible svg {
+.Cuenta:focus-visible .Cuenta__esquinas,
+.Cuenta[aria-expanded="true"] .Cuenta__esquinas {
   transform: rotate(90deg);
 }
 
-.Cuenta img {
-  display: block;
+/* Invitado: icono de persona */
+.Cuenta__icono {
+  width: 22px;
+  height: 22px;
+
+  fill: none;
+  stroke: var(--navy);
+  stroke-width: 2;
+  stroke-linecap: round;
+
+  transition: transform 0.4s var(--muelle);
+}
+
+/* Con sesión: iniciales del usuario */
+.Cuenta__iniciales {
+  display: grid;
+  place-items: center;
 
   width: calc(var(--cuenta) - 14px);
   height: calc(var(--cuenta) - 14px);
 
-  background: #ffffff;
+  background: var(--navy);
   border-radius: 9px;
 
-  object-fit: cover;
-  object-position: top;
+  color: #ffffff;
+
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
 
   transition:
     width var(--duracion) var(--curva),
     height var(--duracion) var(--curva),
     transform 0.4s var(--muelle);
+}
+
+/* Menú desplegable de la cuenta */
+.MenuCuenta {
+  position: absolute;
+  top: calc(100% + 14px);
+  right: -0.5rem;
+  z-index: 10;
+
+  display: grid;
+  gap: 0.2rem;
+
+  width: 260px;
+  padding: 1rem;
+
+  background: var(--superficie);
+  border: 1px solid var(--linea);
+  border-radius: 14px;
+  box-shadow: 0 16px 40px rgba(20, 40, 61, 0.18);
+
+  color: var(--texto);
+
+  animation: aparecer-menu-cuenta 0.25s var(--curva);
+}
+
+/* Línea con los tres colores, como el troquel */
+.MenuCuenta::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 1rem;
+  right: 1rem;
+
+  height: 3px;
+
+  background: linear-gradient(90deg, var(--salud), var(--tecnologia), var(--negocios));
+  border-radius: 0 0 3px 3px;
+}
+
+@keyframes aparecer-menu-cuenta {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+.MenuCuenta__etiqueta {
+  color: var(--texto-suave);
+
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.MenuCuenta__nombre {
+  color: var(--titulo);
+
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.MenuCuenta__email {
+  color: var(--texto-suave);
+
+  font-size: 0.82rem;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.MenuCuenta__error {
+  margin-top: 0.4rem;
+
+  color: var(--error-linea);
+
+  font-size: 0.82rem;
+}
+
+.MenuCuenta__salir {
+  margin-top: 0.75rem;
+  padding: 0.6rem 0.9rem;
+
+  background: var(--superficie-2);
+  border: 1px solid var(--linea);
+  border-radius: 10px;
+
+  color: var(--titulo);
+
+  font-size: 0.86rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.MenuCuenta__salir:hover {
+  background: var(--navy);
+  border-color: var(--navy);
+
+  color: #ffffff;
+}
+
+.MenuCuenta__salir:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.MenuCuenta__salir:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
 }
 
 @media (hover: hover) {
@@ -531,11 +662,12 @@
     transform: translateX(4px);
   }
 
-  .Cuenta:hover svg {
+  .Cuenta:hover .Cuenta__esquinas {
     transform: rotate(90deg);
   }
 
-  .Cuenta:hover img {
+  .Cuenta:hover .Cuenta__iniciales,
+  .Cuenta:hover .Cuenta__icono {
     transform: scale(1.06);
   }
 }
@@ -565,48 +697,8 @@
    RESPONSIVE
 ================================= */
 
-/* Lema debajo del logo cuando falta espacio */
-@media (max-width: 1279.98px) {
-  .Cuerpo {
-    padding-inline: 1.5rem 1rem;
-  }
-
-  .Marca {
-    display: grid;
-    justify-items: start;
-  }
-
-  .Lema,
-  .Cabecera[data-compacta="true"] .Lema {
-    max-width: none;
-    margin-left: 0;
-    padding-left: 0;
-    border-left: 0;
-  }
-
-  .Lema {
-    max-height: 1.25rem;
-    margin-top: 0.35rem;
-
-    transition:
-      max-height var(--duracion) var(--curva),
-      margin var(--duracion) var(--curva),
-      opacity 0.25s ease,
-      visibility var(--duracion);
-  }
-
-  .Cabecera[data-compacta="true"] .Lema {
-    max-height: 0;
-    margin-top: 0;
-  }
-
-  .Lema strong {
-    display: none;
-  }
-}
-
 /* Menú plegable */
-@media (max-width: 1079.98px) {
+@media (max-width: 1199.98px) {
   .Cabecera {
     --margen-reposo: 14px;
   }
@@ -781,10 +873,10 @@
   }
 }
 
-@media (min-width: 600px) and (max-width: 1079.98px) {
+@media (min-width: 600px) and (max-width: 1199.98px) {
   .Menu {
     display: grid;
-    grid-template-columns: repeat(3, auto);
+    grid-template-columns: repeat(4, auto);
     justify-content: start;
   }
 }
@@ -955,9 +1047,11 @@
   .Talon:has(.Accion:active),
   .Talon:has(.Accion:focus-visible),
   .Accion:hover svg,
-  .Cuenta:hover svg,
-  .Cuenta:focus-visible svg,
-  .Cuenta:hover img {
+  .Cuenta:hover .Cuenta__esquinas,
+  .Cuenta:focus-visible .Cuenta__esquinas,
+  .Cuenta[aria-expanded="true"] .Cuenta__esquinas,
+  .Cuenta:hover .Cuenta__iniciales,
+  .Cuenta:hover .Cuenta__icono {
     transform: none;
   }
 }
