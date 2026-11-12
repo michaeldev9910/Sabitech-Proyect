@@ -9,7 +9,7 @@ function Footer() {
         {/* Identidad de Sabitech */}
         <div className="footer__brand">
           <a href="#" className="footer__logo">
-            sabi<span>tech</span>
+            SaBi<span>Tech</span>
           </a>
 
           <p>
@@ -20,7 +20,7 @@ function Footer() {
 
         {/* Información */}
         <div className="footer__info">
-          <h3>Sobre Sabitech</h3>
+          <h3>Sobre SaBiTech</h3>
 
           <p>
             Un espacio para compartir conocimientos, descubrir nuevas ideas y
@@ -43,7 +43,7 @@ function Footer() {
 
       {/* Copyright */}
       <div className="footer__bottom">
-        <p>© {anio} Sabitech. Todos los derechos reservados.</p>
+        <p>© {anio} SaBiTech. Todos los derechos reservados.</p>
 
         <p>
           Desarrollado por
