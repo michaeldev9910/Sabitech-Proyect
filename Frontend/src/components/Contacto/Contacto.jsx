@@ -1,8 +1,5 @@
 import "./Contacto.css";
 
-// TODO: sustituir por el correo real de la organización de Sabitech.
-const CORREO_CONTACTO = "contacto@sabitech.es";
-
 const VENTAJAS = [
   {
     titulo: "Ponentes en activo",
@@ -19,8 +16,17 @@ const VENTAJAS = [
 ];
 
 function Contacto() {
+  function enviarPropuesta(evento) {
+    evento.preventDefault();
+    // TODO: enviar por POST cuando exista la ruta en el backend
+  }
+
   return (
-    <section id="contacto" className="Contacto ZonaOscura" aria-labelledby="contacto-titulo">
+    <section
+      id="contacto"
+      className="Contacto ZonaOscura"
+      aria-labelledby="contacto-titulo"
+    >
       <div className="Contacto__contenedor">
         <div className="Contacto__llamada">
           <p className="Contacto__antetitulo">Contacto</p>
@@ -33,19 +39,53 @@ function Contacto() {
             programa.
           </p>
 
-          <div className="Contacto__botones">
-            <a
-              href={`mailto:${CORREO_CONTACTO}?subject=${encodeURIComponent("Propuesta de charla para Sabitech")}`}
+          <form className="Contacto__formulario" onSubmit={enviarPropuesta}>
+            <div className="Contacto__campo">
+              <label htmlFor="nombre">Nombre y apellidos</label>
+              <input
+                type="text"
+                id="nombre"
+                name="nombre"
+                autoComplete="name"
+                required
+              />
+            </div>
+
+            <div className="Contacto__campo">
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                autoComplete="email"
+                required
+              />
+            </div>
+
+            <div className="Contacto__campo">
+              <label htmlFor="telefono">Número de teléfono</label>
+              <input
+                type="tel"
+                id="telefono"
+                name="telefono"
+                autoComplete="tel"
+                required
+              />
+            </div>
+
+            <div className="Contacto__campo">
+              <label htmlFor="mensaje">Mensaje</label>
+              <textarea id="mensaje" name="mensaje" rows={5} required />
+            </div>
+
+            <button
+              type="submit"
               className="Contacto__boton Contacto__boton--principal"
             >
-              Proponer una charla
-            </a>
-            <a href={`mailto:${CORREO_CONTACTO}`} className="Contacto__boton">
-              {CORREO_CONTACTO}
-            </a>
-          </div>
+              Enviar propuesta
+            </button>
+          </form>
         </div>
-
         <ul className="Contacto__ventajas">
           {VENTAJAS.map(({ titulo, texto }, indice) => (
             <li key={titulo}>

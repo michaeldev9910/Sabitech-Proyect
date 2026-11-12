@@ -82,11 +82,6 @@ function MainView({
     [],
   );
 
-  const elegirSala = useCallback(
-    (sala) => setFiltros((anteriores) => ({ ...anteriores, sala, momento: "todas" })),
-    [],
-  );
-
   const verCharla = useCallback(
     (charla) => setFiltros({ ...FILTROS_INICIALES, q: charla.titulo, momento: "todas" }),
     [],
@@ -125,12 +120,7 @@ function MainView({
           hayError={hayError}
         />
 
-        <Sedes
-          salas={salas}
-          charlas={charlas}
-          cargando={cargando && salasApi === null}
-          onElegirSala={elegirSala}
-        />
+        <Sedes />
 
         <Contacto />
       </main>
