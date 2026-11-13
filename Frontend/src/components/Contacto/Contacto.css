@@ -66,11 +66,7 @@
   font-size: 1.02rem;
 }
 
-.Contacto__botones {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-
+.Contacto__acciones {
   margin-top: 2rem;
 }
 

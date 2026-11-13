@@ -20,7 +20,11 @@ const VENTAJAS = [
 
 function Contacto() {
   return (
-    <section id="contacto" className="Contacto ZonaOscura" aria-labelledby="contacto-titulo">
+    <section
+      id="contacto"
+      className="Contacto ZonaOscura"
+      aria-labelledby="contacto-titulo"
+    >
       <div className="Contacto__contenedor">
         <div className="Contacto__llamada">
           <p className="Contacto__antetitulo">Contacto</p>
@@ -33,15 +37,12 @@ function Contacto() {
             programa.
           </p>
 
-          <div className="Contacto__botones">
+          <div className="Contacto__acciones">
             <a
               href={`mailto:${CORREO_CONTACTO}?subject=${encodeURIComponent("Propuesta de charla para Sabitech")}`}
               className="Contacto__boton Contacto__boton--principal"
             >
               Proponer una charla
-            </a>
-            <a href={`mailto:${CORREO_CONTACTO}`} className="Contacto__boton">
-              {CORREO_CONTACTO}
             </a>
           </div>
         </div>

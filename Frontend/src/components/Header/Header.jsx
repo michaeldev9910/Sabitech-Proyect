@@ -197,8 +197,12 @@ function Header({ usuario = null, onAcceder, onCerrarSesion }) {
           <span className="Papel" aria-hidden="true" />
 
           <div className="Marca">
-            <a href="#inicio" className="Logo" aria-label="Sabitech, ir al inicio">
-              sabi<span>tech</span>
+            <a
+              href="#inicio"
+              className="Logo"
+              aria-label="SaBiTech, ir al inicio"
+            >
+              SaBi<span>Tech</span>
             </a>
             <p className="Lema">Tu entrada al conocimiento experto</p>
           </div>
@@ -302,7 +306,9 @@ function Header({ usuario = null, onAcceder, onCerrarSesion }) {
                   <p className="MenuCuenta__nombre">
                     {usuario.nombre} {usuario.apellidos}
                   </p>
-                  {usuario.email && <p className="MenuCuenta__email">{usuario.email}</p>}
+                  {usuario.email && (
+                    <p className="MenuCuenta__email">{usuario.email}</p>
+                  )}
 
                   {errorCuenta && (
                     <p className="MenuCuenta__error" role="alert">

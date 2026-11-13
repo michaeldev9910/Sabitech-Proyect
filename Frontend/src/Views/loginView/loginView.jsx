@@ -46,7 +46,7 @@ function LoginView({ onAuthenticated, onGuest, errorInicial = "" }) {
     <main className="VistaAcceso">
       <section className="TarjetaAcceso" aria-labelledby="titulo-acceso">
         <p className="AccesoMarca" aria-hidden="true">
-          sabi<span>tech</span>
+          SaBi<span>Tech</span>
         </p>
         <h1 id="titulo-acceso">
           {esRegistro ? "Crear cuenta" : "Iniciar sesión"}
@@ -105,14 +105,14 @@ function LoginView({ onAuthenticated, onGuest, errorInicial = "" }) {
             />
           </label>
 
-          {error && <p className="ErrorAcceso" role="alert">{error}</p>}
+          {error && (
+            <p className="ErrorAcceso" role="alert">
+              {error}
+            </p>
+          )}
 
           <button type="submit" disabled={enviando}>
-            {enviando
-              ? "Un momento…"
-              : esRegistro
-                ? "Registrarme"
-                : "Entrar"}
+            {enviando ? "Un momento…" : esRegistro ? "Registrarme" : "Entrar"}
           </button>
         </form>
 
@@ -125,11 +125,7 @@ function LoginView({ onAuthenticated, onGuest, errorInicial = "" }) {
             {esRegistro ? "Inicia sesión" : "Regístrate"}
           </button>
         </p>
-        <button
-          className="AccesoInvitado"
-          type="button"
-          onClick={onGuest}
-        >
+        <button className="AccesoInvitado" type="button" onClick={onGuest}>
           Entrar como invitado
         </button>
       </section>
