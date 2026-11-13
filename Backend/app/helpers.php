@@ -5,8 +5,8 @@
 | Helpers propios de SaBiTech
 |--------------------------------------------------------------------------
 | Funciones globales que se pueden usar en cualquier parte de la aplicación
-| (controladores, vistas Blade, etc.). Composer carga este archivo gracias a
-| la sección "autoload" > "files" de composer.json.
+| (controladores, vistas Blade, etc.). Se carga desde
+| App\Providers\AppServiceProvider::register().
 |
 | El "if (! function_exists(...))" evita un error si algún paquete ya tiene
 | una función con el mismo nombre.
