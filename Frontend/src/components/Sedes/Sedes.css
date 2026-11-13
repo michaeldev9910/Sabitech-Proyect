@@ -1,0 +1,165 @@
+/* =================================
+   DÓNDE ESTAMOS · información de XTART y mapa
+================================= */
+
+.Sedes {
+  padding: 5.5rem 2.5rem;
+
+  background: var(--fondo-alterno);
+  border-top: 1px solid var(--linea);
+  border-bottom: 1px solid var(--linea);
+}
+
+.Sedes__contenedor {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  align-items: center;
+  gap: 4rem;
+
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+.Sedes__antetitulo {
+  margin-bottom: 0.4rem;
+
+  color: var(--teal);
+
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.Sedes__titulo {
+  color: var(--titulo);
+
+  font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.Sedes__intro {
+  margin-top: 0.9rem;
+
+  color: var(--texto-suave);
+}
+
+/* DIRECCIÓN */
+
+.Sedes__direccion {
+  display: grid;
+  gap: 0.15rem;
+
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+
+  border-top: 1px solid var(--linea);
+
+  color: var(--texto-suave);
+
+  font-style: normal; /* <address> sale en cursiva por defecto */
+}
+
+.Sedes__direccion strong {
+  margin-bottom: 0.2rem;
+
+  color: var(--titulo);
+
+  font-size: 1.05rem;
+}
+
+.Sedes__enlace {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+
+  margin-top: 1.25rem;
+
+  color: var(--teal);
+
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.Sedes__enlace span {
+  transition: transform 0.25s var(--curva);
+}
+
+.Sedes__enlace:hover span {
+  transform: translateX(3px);
+}
+
+.Sedes__enlace:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* MAPA */
+
+.Sedes__mapa {
+  position: relative;
+  overflow: hidden;
+
+  height: 420px;
+
+  background: var(--superficie-2);
+  border: 1px solid var(--linea);
+  border-radius: 22px;
+  box-shadow: var(--sombra);
+}
+
+/* Franja superior con los tres colores de Sabitech */
+.Sedes__mapa::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 2rem;
+  right: 2rem;
+  z-index: 1;
+
+  height: 3px;
+
+  background: linear-gradient(90deg, var(--salud), var(--tecnologia), var(--negocios));
+  border-radius: 0 0 3px 3px;
+
+  pointer-events: none;
+}
+
+.Sedes__mapa iframe {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  border: 0;
+}
+
+/* =================================
+   RESPONSIVE
+================================= */
+
+@media (max-width: 960px) {
+  .Sedes__contenedor {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
+
+@media (max-width: 760px) {
+  .Sedes {
+    padding: 4rem 1.5rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .Sedes {
+    padding-inline: 1rem;
+  }
+
+  .Sedes__mapa {
+    height: 320px;
+  }
+}

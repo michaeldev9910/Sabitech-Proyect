@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sala;
+use Closure;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -38,18 +39,18 @@ class SalaController extends Controller
             
             'nombre'    => ['required', 'string', 'max:100', Rule::unique('salas', 'nombre')->ignore($sala->id)],
             'ubicacion' => 'nullable|string|max:255',
-            'capacidad' => 'required|integer|min:1|max:65535',
+            'capacidad' => [
+                'bail', 'required', 'integer', 'min:1', 'max:65535',
+                // Regla propia: no puede quedar por debajo del aforo de sus charlas
+                function (string $atributo, mixed $valor, Closure $fallo) use ($sala) {
+                    $aforoMaximo = $sala->charlas()->where('estado', '!=', 'cancelada')->max('aforo');
+
+                    if ($aforoMaximo && $valor < $aforoMaximo) {
+                        $fallo("La capacidad es menor que el aforo de alguna charla de esta sala: debe ser al menos {$aforoMaximo}.");
+                    }
+                },
+            ],
         ]);
-
-
-        $aforoMaximo = $sala->charlas()->where('estado', '!=', 'cancelada')->max('aforo');
-
-        if ($aforoMaximo && $datos['capacidad'] < $aforoMaximo) {
-            return response()->json([
-                'message' => 'La capacidad es menor que el aforo de alguna charla de esta sala.',
-                'errors'  => ['capacidad' => ["Debe ser al menos {$aforoMaximo}."]],
-            ], 422);
-        }
 
         $sala->update($datos);
 

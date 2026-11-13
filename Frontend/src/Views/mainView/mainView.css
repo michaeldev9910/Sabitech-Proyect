@@ -1,0 +1,67 @@
+/* =================================
+   VISTA PRINCIPAL
+   Aviso flotante cuando no se pudo comprobar la sesión
+================================= */
+
+.AvisoSesion {
+  position: fixed;
+  left: 1rem;
+  bottom: 1rem;
+  z-index: 200;
+
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  max-width: min(420px, calc(100vw - 2rem));
+  padding: 0.85rem 0.85rem 0.85rem 1.1rem;
+
+  background: var(--superficie);
+  border: 1px solid var(--linea);
+  border-left: 3px solid var(--negocios);
+  border-radius: 12px;
+  box-shadow: var(--sombra-hover);
+
+  color: var(--texto);
+
+  font-size: 0.88rem;
+
+  animation: aparecer-aviso 0.4s var(--curva);
+}
+
+.AvisoSesion button {
+  display: grid;
+  place-items: center;
+  flex: none;
+
+  width: 30px;
+  height: 30px;
+
+  background: var(--superficie-2);
+  border: 0;
+  border-radius: 50%;
+
+  cursor: pointer;
+}
+
+.AvisoSesion svg {
+  width: 14px;
+  height: 14px;
+
+  fill: none;
+  stroke: var(--texto-suave);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.AvisoSesion button:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+}
+
+@keyframes aparecer-aviso {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}

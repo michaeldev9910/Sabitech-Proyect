@@ -1,111 +1,113 @@
 import { useEffect, useState } from "react";
-import Header from "./components/Header/Header.jsx";
-import Footer from "./components/footer/footer.jsx";
-import { listarCharlas } from "./api/charlasApi.js";
-import "./App.css";
+import LoginView from "./Views/loginView/loginView.jsx";
+import MainView from "./Views/mainView/MainView.jsx";
+import { cerrarSesion, obtenerUsuario } from "./api/loginApi.js";
+import { ApiError } from "./api/apiError.js";
 
-const formatoFecha = new Intl.DateTimeFormat("es-ES", {
-  dateStyle: "medium",
-  timeStyle: "short",
-  timeZone: "UTC",
-});
+const TOKEN_KEY = "sabitech-auth-token";
 
 function App() {
-  const [charlas, setCharlas] = useState(null);
-  const [hayError, setHayError] = useState(false);
-  const [visibles, setVisibles] = useState(false);
+  const [estado, setEstado] = useState("comprobando");
+  const [usuario, setUsuario] = useState(null);
+  const [token, setToken] = useState(null);
+  const [errorSesion, setErrorSesion] = useState("");
 
   useEffect(() => {
-    listarCharlas()
-      .then((charlas) => {
-        console.log("Charlas:", charlas);
-        setCharlas(charlas);
-      })
-      .catch((error) => {
-        console.error("Error al listar charlas:", error);
-        setHayError(true);
-      });
+    let cancelado = false;
+
+    async function comprobarSesion() {
+      try {
+        const tokenGuardado = window.localStorage.getItem(TOKEN_KEY);
+        if (!tokenGuardado) {
+          if (!cancelado) setEstado("invitado");
+          return;
+        }
+
+        const usuarioActual = await obtenerUsuario(tokenGuardado);
+        if (!cancelado) {
+          setToken(tokenGuardado);
+          setUsuario(usuarioActual);
+          setEstado("autenticado");
+        }
+      } catch (error) {
+        console.error("No se pudo comprobar la sesión:", error);
+
+        if (!cancelado) {
+          if (error instanceof ApiError && error.status === 401) {
+            window.localStorage.removeItem(TOKEN_KEY);
+          } else {
+            setErrorSesion(
+              "No se pudo comprobar la sesión. Continúas como invitado.",
+            );
+          }
+          setEstado("invitado");
+        }
+      }
+    }
+
+    comprobarSesion();
+    return () => {
+      cancelado = true;
+    };
   }, []);
 
+  function iniciarSesion({
+    usuario: usuarioAutenticado,
+    token: tokenAutenticado,
+  }) {
+    window.localStorage.setItem(TOKEN_KEY, tokenAutenticado);
+    setToken(tokenAutenticado);
+    setUsuario(usuarioAutenticado);
+    setErrorSesion("");
+    setEstado("autenticado");
+  }
+
+  function entrarComoInvitado() {
+    setErrorSesion("");
+    setEstado("invitado");
+  }
+
+  function mostrarAcceso() {
+    setEstado("anonimo");
+  }
+
+  async function salir() {
+    await cerrarSesion(token);
+    window.localStorage.removeItem(TOKEN_KEY);
+    setToken(null);
+    setUsuario(null);
+    setEstado("invitado");
+  }
+
+  if (estado === "comprobando") {
+    return <p role="status">Comprobando la sesión…</p>;
+  }
+
+  if (estado === "autenticado") {
+    return (
+      <MainView
+        usuario={usuario}
+        onCerrarSesion={salir}
+        onMostrarAcceso={mostrarAcceso}
+      />
+    );
+  }
+
+  if (estado === "invitado") {
+    return (
+      <MainView
+        onMostrarAcceso={mostrarAcceso}
+        errorInicial={errorSesion}
+      />
+    );
+  }
+
   return (
-    <>
-      <Header />
-
-      <main>
-        <section id="charlas" className="Charlas">
-          <button
-            type="button"
-            className="BotonCharlas"
-            aria-expanded={visibles}
-            onClick={() => setVisibles((valor) => !valor)}
-          >
-            {visibles ? "Ocultar charlas" : "Ver charlas"}
-          </button>
-
-          {visibles && (
-            <>
-              {hayError && (
-                <p role="alert">
-                  No se han podido cargar las charlas. Recarga la página para
-                  volver a intentarlo.
-                </p>
-              )}
-              {!hayError && charlas === null && <p>Cargando charlas…</p>}
-              {charlas?.length === 0 && (
-                <p>Todavía no hay charlas publicadas.</p>
-              )}
-              {charlas?.length > 0 && (
-                <ul className="ListaCharlas">
-                  {charlas.map((charla) => (
-                    <li key={charla.id} className="TarjetaCharla">
-                      <h2>{charla.titulo}</h2>
-                      {charla.descripcion && <p>{charla.descripcion}</p>}
-                      <dl>
-                        <dt>Horario</dt>
-                        <dd>
-                          {formatoFecha.formatRange(
-                            new Date(charla.inicio),
-                            new Date(charla.fin),
-                          )}
-                        </dd>
-                        {charla.ponente && (
-                          <>
-                            <dt>Ponente</dt>
-                            <dd>
-                              {charla.ponente.nombre} {charla.ponente.apellidos}
-                              {charla.ponente.organizacion &&
-                                ` · ${charla.ponente.organizacion}`}
-                            </dd>
-                          </>
-                        )}
-                        {charla.sala && (
-                          <>
-                            <dt>Sala</dt>
-                            <dd>
-                              {charla.sala.nombre}
-                              {charla.sala.ubicacion &&
-                                ` · ${charla.sala.ubicacion}`}
-                            </dd>
-                          </>
-                        )}
-                        <dt>Aforo</dt>
-                        <dd>{charla.aforo} plazas</dd>
-                        <dt>Reservas desde</dt>
-                        <dd>
-                          {formatoFecha.format(new Date(charla.aperturaPlazas))}
-                        </dd>
-                      </dl>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </>
-          )}
-        </section>
-      </main>
-
-      <Footer />
-    </>
+    <LoginView
+      onAuthenticated={iniciarSesion}
+      onGuest={entrarComoInvitado}
+      errorInicial={errorSesion}
+    />
   );
 }
 

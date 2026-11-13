@@ -1,0 +1,107 @@
+import "./Contacto.css";
+
+const VENTAJAS = [
+  {
+    titulo: "Ponentes en activo",
+    texto: "Profesionales que aplican cada día lo que cuentan en sus charlas.",
+  },
+  {
+    titulo: "Aforo reducido",
+    texto: "Grupos pequeños para que haya tiempo de preguntar y debatir.",
+  },
+  {
+    titulo: "Acceso con código QR",
+    texto: "Reserva tu plaza y entra a la sala con tu código, sin colas.",
+  },
+];
+
+function Contacto() {
+  function enviarPropuesta(evento) {
+    evento.preventDefault();
+    // TODO: enviar por POST cuando exista la ruta en el backend
+  }
+
+  return (
+    <section
+      id="contacto"
+      className="Contacto ZonaOscura"
+      aria-labelledby="contacto-titulo"
+    >
+      <div className="Contacto__contenedor">
+        <div className="Contacto__llamada">
+          <p className="Contacto__antetitulo">Contacto</p>
+          <h2 id="contacto-titulo" className="Contacto__titulo">
+            ¿Tienes conocimiento que compartir?
+          </h2>
+          <p className="Contacto__texto">
+            Buscamos ponentes con experiencia real en salud, tecnología y
+            negocios. Escríbenos con tu propuesta o cualquier consulta sobre el
+            programa.
+          </p>
+
+          <form className="Contacto__formulario" onSubmit={enviarPropuesta}>
+            <div className="Contacto__campo">
+              <label htmlFor="nombre">Nombre y apellidos</label>
+              <input
+                type="text"
+                id="nombre"
+                name="nombre"
+                autoComplete="name"
+                required
+              />
+            </div>
+
+            <div className="Contacto__campo">
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                autoComplete="email"
+                required
+              />
+            </div>
+
+            <div className="Contacto__campo">
+              <label htmlFor="telefono">Número de teléfono</label>
+              <input
+                type="tel"
+                id="telefono"
+                name="telefono"
+                autoComplete="tel"
+                required
+              />
+            </div>
+
+            <div className="Contacto__campo">
+              <label htmlFor="mensaje">Mensaje</label>
+              <textarea id="mensaje" name="mensaje" rows={5} required />
+            </div>
+
+            <button
+              type="submit"
+              className="Contacto__boton Contacto__boton--principal"
+            >
+              Enviar propuesta
+            </button>
+          </form>
+        </div>
+        <ul className="Contacto__ventajas">
+          {VENTAJAS.map(({ titulo, texto }, indice) => (
+            <li key={titulo}>
+              <span className="Contacto__numero" aria-hidden="true">
+                {String(indice + 1).padStart(2, "0")}
+              </span>
+              <div>
+                <strong>{titulo}</strong>
+                <p>{texto}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+export default Contacto;
