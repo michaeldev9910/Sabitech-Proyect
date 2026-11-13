@@ -66,11 +66,7 @@
   font-size: 1.02rem;
 }
 
-.Contacto__formulario {
-  display: grid;
-  gap: 1rem;
-
-  max-width: 520px;
+.Contacto__acciones {
   margin-top: 2rem;
 }
 

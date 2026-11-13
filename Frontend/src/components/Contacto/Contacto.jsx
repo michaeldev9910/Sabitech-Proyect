@@ -39,52 +39,14 @@ function Contacto() {
             programa.
           </p>
 
-          <form className="Contacto__formulario" onSubmit={enviarPropuesta}>
-            <div className="Contacto__campo">
-              <label htmlFor="nombre">Nombre y apellidos</label>
-              <input
-                type="text"
-                id="nombre"
-                name="nombre"
-                autoComplete="name"
-                required
-              />
-            </div>
-
-            <div className="Contacto__campo">
-              <label htmlFor="email">Email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                autoComplete="email"
-                required
-              />
-            </div>
-
-            <div className="Contacto__campo">
-              <label htmlFor="telefono">Número de teléfono</label>
-              <input
-                type="tel"
-                id="telefono"
-                name="telefono"
-                autoComplete="tel"
-                required
-              />
-            </div>
-
-            <div className="Contacto__campo">
-              <label htmlFor="mensaje">Mensaje</label>
-              <textarea id="mensaje" name="mensaje" rows={5} required />
-            </div>
-
-            <button
-              type="submit"
+          <div className="Contacto__acciones">
+            <a
+              href={`mailto:${CORREO_CONTACTO}?subject=${encodeURIComponent("Propuesta de charla para Sabitech")}`}
               className="Contacto__boton Contacto__boton--principal"
             >
-              Enviar propuesta
-            </button>
-          </form>
+              Proponer una charla
+            </a>
+          </div>
         </div>
         <ul className="Contacto__ventajas">
           {VENTAJAS.map(({ titulo, texto }, indice) => (
