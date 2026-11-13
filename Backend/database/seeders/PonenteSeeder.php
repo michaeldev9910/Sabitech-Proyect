@@ -9,7 +9,6 @@ class PonenteSeeder extends Seeder
 {
     public function run(): void
     {
-        // Personas ficticias: no se usan datos reales.
         $ponentes = [
             ['nombre' => 'Laura',  'apellidos' => 'Martinez Ortega', 'organizacion' => 'Estudio Cobalto',  'biografia' => 'Desarrolladora backend especializada en PHP y APIs.'],
             ['nombre' => 'Daniel', 'apellidos' => 'Ferrer Soler',    'organizacion' => 'Nube Digital',     'biografia' => 'Ingeniero de plataformas, trabaja con contenedores y despliegue.'],
