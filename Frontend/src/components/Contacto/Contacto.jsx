@@ -1,5 +1,8 @@
 import "./Contacto.css";
 
+// TODO: sustituir por el correo real de la organización de Sabitech.
+const CORREO_CONTACTO = "contacto@sabitech.es";
+
 const VENTAJAS = [
   {
     titulo: "Ponentes en activo",
@@ -16,11 +19,6 @@ const VENTAJAS = [
 ];
 
 function Contacto() {
-  function enviarPropuesta(evento) {
-    evento.preventDefault();
-    // TODO: enviar por POST cuando exista la ruta en el backend
-  }
-
   return (
     <section
       id="contacto"
