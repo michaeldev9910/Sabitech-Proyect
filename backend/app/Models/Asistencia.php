@@ -2,11 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['reserva_id', 'registrada_por', 'qr_ventana', 'registrada_en'])]
 class Asistencia extends Model
 {
     protected $table = 'asistencias';

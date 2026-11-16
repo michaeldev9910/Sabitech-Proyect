@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CharlaController;
 use App\Http\Controllers\CharlasDeSalaController;
+use App\Http\Controllers\ContactoController;
 use App\Http\Controllers\PonenteController;
 use App\Http\Controllers\SalaController;
 use App\Http\Middleware\EnsureRol;
@@ -34,6 +35,12 @@ Route::apiResource('salas', SalaController::class)
 Route::get('/salas/{sala}/charlas', CharlasDeSalaController::class)
     ->whereNumber('sala')
     ->name('salas.charlas');
+
+// Formulario de contacto: público, limitado a 5 envíos por minuto por IP.
+// Solo envía un correo; no guarda nada en la base de datos.
+Route::post('/contacto', ContactoController::class)
+    ->middleware('throttle:5,1')
+    ->name('contacto.enviar');
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
