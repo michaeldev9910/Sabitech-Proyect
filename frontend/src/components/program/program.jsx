@@ -95,16 +95,21 @@ function Programa({
     [charlas],
   );
 
-  // Filtros "base" (todo menos el área): sirven para contar por área
-  const base = useMemo(() => {
+  // Búsqueda y sala (todo menos el momento y el área)
+  const coincidentes = useMemo(() => {
     const palabras = normalizar(busqueda).split(/\s+/).filter(Boolean);
     return (charlas ?? []).filter((charla) => {
-      if (!encajaMomento(charla, filtros.momento)) return false;
       if (filtros.sala !== "todas" && String(charla.salaId) !== filtros.sala) return false;
       const texto = indice.get(charla.id);
       return palabras.every((palabra) => texto.includes(palabra));
     });
-  }, [charlas, indice, busqueda, filtros.momento, filtros.sala]);
+  }, [charlas, indice, busqueda, filtros.sala]);
+
+  // Filtros "base" (todo menos el área): sirven para contar por área
+  const base = useMemo(
+    () => coincidentes.filter((charla) => encajaMomento(charla, filtros.momento)),
+    [coincidentes, filtros.momento],
+  );
 
   const resultados = useMemo(
     () =>
@@ -117,11 +122,22 @@ function Programa({
   const cuentaArea = (id) =>
     id === "todas" ? base.length : base.filter((charla) => areaDe.get(charla.id) === id).length;
 
-  const hayFiltros =
+  // Búsqueda, área o sala distintas de las iniciales (el momento va aparte)
+  const otrosFiltros =
     filtros.q !== FILTROS_INICIALES.q ||
     filtros.area !== FILTROS_INICIALES.area ||
-    filtros.momento !== FILTROS_INICIALES.momento ||
     filtros.sala !== FILTROS_INICIALES.sala;
+  const hayFiltros = otrosFiltros || filtros.momento !== FILTROS_INICIALES.momento;
+
+  // Si "Próximas" deja la lista vacía pero hay charlas celebradas que encajan con
+  // el resto de filtros, el aviso lo explica y ofrece verlas. "Próximas" es el valor
+  // inicial y no cuenta como filtro, así que pedir que se quiten filtros no ayudaría.
+  const celebradasOcultas =
+    filtros.momento === "proximas" && resultados.length === 0
+      ? coincidentes.filter(
+          (charla) => filtros.area === "todas" || areaDe.get(charla.id) === filtros.area,
+        ).length
+      : 0;
 
   const limpiar = () => setFiltros(FILTROS_INICIALES);
 
@@ -279,16 +295,40 @@ function Programa({
 
         {!cargando && !hayError && resultados.length === 0 && (
           <div className="Programa__vacio">
-            <p className="Programa__vacio-titulo">No hay charlas que coincidan</p>
-            <p>
-              {charlas?.length
-                ? "Prueba con otra búsqueda o quita alguno de los filtros."
-                : "Todavía no hay charlas publicadas. Vuelve pronto."}
-            </p>
-            {hayFiltros && (
-              <button type="button" className="Programa__boton" onClick={limpiar}>
-                Ver todas las charlas
-              </button>
+            {celebradasOcultas > 0 ? (
+              <>
+                <p className="Programa__vacio-titulo">
+                  {otrosFiltros ? "No hay charlas próximas que coincidan" : "No hay charlas próximas"}
+                </p>
+                <p>
+                  {otrosFiltros
+                    ? "Las charlas que buscas ya se han celebrado."
+                    : "Todas las charlas publicadas ya se han celebrado."}
+                </p>
+                <button
+                  type="button"
+                  className="Programa__boton"
+                  onClick={() => cambiar("momento", "celebradas")}
+                >
+                  {celebradasOcultas === 1
+                    ? "Ver 1 charla celebrada"
+                    : `Ver ${celebradasOcultas} charlas celebradas`}
+                </button>
+              </>
+            ) : (
+              <>
+                <p className="Programa__vacio-titulo">No hay charlas que coincidan</p>
+                <p>
+                  {charlas?.length
+                    ? "Prueba con otra búsqueda o quita alguno de los filtros."
+                    : "Todavía no hay charlas publicadas. Vuelve pronto."}
+                </p>
+                {hayFiltros && (
+                  <button type="button" className="Programa__boton" onClick={limpiar}>
+                    Ver todas las charlas
+                  </button>
+                )}
+              </>
             )}
           </div>
         )}
