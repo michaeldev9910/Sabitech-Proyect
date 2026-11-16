@@ -44,5 +44,12 @@ services:
       db:
         condition: service_healthy
 
+  # Buzón de pruebas: captura los correos que envía Laravel en local.
+  # Se ven en http://localhost:8025 (el SMTP, puerto 1025, solo es accesible entre contenedores).
+  mailpit:
+    image: axllent/mailpit
+    ports:
+      - "127.0.0.1:8025:8025"
+
 volumes:
   mysql_data:
