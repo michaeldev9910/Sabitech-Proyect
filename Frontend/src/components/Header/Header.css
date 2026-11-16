@@ -153,8 +153,7 @@
 }
 
 .Talon .Papel {
-  filter: drop-shadow(0 0 0.5px rgba(20, 40, 61, 0.45))
-    drop-shadow(0 10px 18px rgba(20, 40, 61, 0.12));
+  filter: drop-shadow(0 0 0.5px rgba(20, 40, 61, 0.45)) drop-shadow(0 10px 18px rgba(20, 40, 61, 0.12));
 }
 
 .Talon .Papel::before {
@@ -396,13 +395,11 @@
 
   width: 3px;
 
-  background: repeating-linear-gradient(
-    180deg,
-    var(--salud),
-    var(--tecnologia) 16.66%,
-    var(--negocios) 33.33%,
-    var(--salud) 50%
-  );
+  background: repeating-linear-gradient(180deg,
+      var(--salud),
+      var(--tecnologia) 16.66%,
+      var(--negocios) 33.33%,
+      var(--salud) 50%);
   background-size: 100% 200%;
 
   -webkit-mask: repeating-linear-gradient(180deg, #000 0 3px, transparent 3px 8px);
@@ -935,13 +932,11 @@
     width: auto;
     height: 3px;
 
-    background: repeating-linear-gradient(
-      90deg,
-      var(--salud),
-      var(--tecnologia) 16.66%,
-      var(--negocios) 33.33%,
-      var(--salud) 50%
-    );
+    background: repeating-linear-gradient(90deg,
+        var(--salud),
+        var(--tecnologia) 16.66%,
+        var(--negocios) 33.33%,
+        var(--salud) 50%);
     background-size: 200% 100%;
 
     -webkit-mask: linear-gradient(90deg, #000 3px, transparent 0) 0 0 / 8px 100% round;
@@ -990,6 +985,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .Cabecera *,
   .Cabecera *::before,
   .Cabecera::before {
@@ -1007,6 +1003,7 @@
 }
 
 @media (forced-colors: active) {
+
   .Cuerpo,
   .Talon {
     border: 1px solid CanvasText;
