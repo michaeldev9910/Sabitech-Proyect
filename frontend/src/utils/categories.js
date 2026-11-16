@@ -2,8 +2,8 @@
 // Áreas de Sabitech: Salud · Tecnología · Negocios
 //
 // La API todavía no guarda la categoría de cada charla. Mientras tanto la
-// deducimos aquí a partir del título, la descripción y la biografía del
-// ponente. Si el back añade un campo `categoria` ("salud", "tecnologia" o
+// deducimos aquí a partir del título, la descripción y la biografía de los
+// ponentes. Si el back añade un campo `categoria` ("salud", "tecnologia" o
 // "negocios"), se usa ese valor y esta deducción deja de aplicarse.
 // =================================
 
@@ -74,8 +74,12 @@ export function categoriaDe(charla) {
 
   // El título pesa el doble: es lo que mejor describe la charla.
   const titulo = normalizar(charla.titulo);
+  // Biografía y organización de todos los ponentes (el nombre de una persona no dice nada del área)
   const resto = normalizar(
-    [charla.descripcion, charla.ponente?.biografia, charla.ponente?.organizacion].join(" "),
+    [
+      charla.descripcion,
+      ...(charla.ponentes ?? []).flatMap((ponente) => [ponente.biografia, ponente.organizacion]),
+    ].join(" "),
   );
 
   let mejor = POR_DEFECTO;

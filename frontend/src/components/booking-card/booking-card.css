@@ -1,0 +1,245 @@
+/* =================================
+   TARJETA DE RESERVA ("Mis reservas")
+================================= */
+
+.Reserva {
+  display: grid;
+  gap: 1rem;
+
+  padding: 1.25rem 1.35rem;
+
+  background: var(--superficie);
+  border: 1px solid var(--linea);
+  border-left: 4px solid var(--teal);
+  border-radius: 14px;
+  box-shadow: var(--sombra);
+}
+
+.Reserva[data-estado="cancelada"] {
+  border-left-color: var(--linea-fuerte);
+  box-shadow: none;
+}
+
+.Reserva__cabecera {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.Reserva__titulo {
+  color: var(--titulo);
+
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+}
+
+.Reserva[data-estado="cancelada"] .Reserva__titulo {
+  color: var(--texto-suave);
+}
+
+.Reserva__estado {
+  flex: none;
+
+  padding: 0.25rem 0.7rem;
+
+  background: var(--salud-suave);
+  border-radius: 999px;
+
+  color: var(--salud-texto);
+
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.Reserva__estado[data-estado="cancelada"] {
+  background: var(--superficie-2);
+
+  color: var(--texto-suave);
+}
+
+/* Datos: fecha, horario, sala, ponentes y código */
+
+.Reserva__datos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr));
+  gap: 0.75rem 1.25rem;
+}
+
+.Reserva__datos dt {
+  color: var(--texto-suave);
+
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.Reserva__datos dd {
+  margin-top: 0.15rem;
+
+  color: var(--titulo);
+
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.Reserva__dia::first-letter {
+  text-transform: uppercase;
+}
+
+.Reserva__codigo {
+  padding: 0.1rem 0.45rem;
+
+  background: var(--superficie-2);
+  border-radius: 6px;
+
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-size: 0.88rem;
+  letter-spacing: 0.08em;
+}
+
+/* Pie: avisos y cancelación */
+
+.Reserva__pie {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+
+  padding-top: 1rem;
+
+  border-top: 1px solid var(--linea);
+}
+
+.Reserva__pie:empty {
+  display: none;
+}
+
+.Reserva__nota {
+  color: var(--texto-suave);
+
+  font-size: 0.85rem;
+}
+
+.Reserva__nota--qr {
+  color: var(--teal-oscuro);
+
+  font-weight: 600;
+}
+
+.Reserva__nota--aviso {
+  color: var(--aviso);
+
+  font-weight: 600;
+}
+
+.Reserva__cancelar,
+.Reserva__si,
+.Reserva__no {
+  padding: 0.55rem 1rem;
+
+  border-radius: 999px;
+
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.Reserva__cancelar {
+  margin-left: auto;
+
+  background: transparent;
+  border: 1px solid var(--error-linea);
+
+  color: var(--error-linea);
+}
+
+.Reserva__cancelar:hover,
+.Reserva__si {
+  background: var(--error-linea);
+  border: 1px solid var(--error-linea);
+
+  color: #ffffff;
+}
+
+.Reserva__si:hover {
+  background: var(--error-texto);
+  border-color: var(--error-texto);
+}
+
+.Reserva__no {
+  background: var(--superficie);
+  border: 1px solid var(--linea-fuerte);
+
+  color: var(--titulo);
+}
+
+.Reserva__no:hover {
+  background: var(--superficie-2);
+}
+
+.Reserva__si:disabled,
+.Reserva__no:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.Reserva__cancelar:focus-visible,
+.Reserva__si:focus-visible,
+.Reserva__no:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+}
+
+.Reserva__confirmar {
+  display: grid;
+  gap: 0.75rem;
+
+  width: 100%;
+  padding: 0.9rem 1rem;
+
+  background: var(--superficie-2);
+  border-radius: 10px;
+}
+
+.Reserva__confirmar p {
+  color: var(--titulo);
+
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.Reserva__botones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.Reserva__error {
+  width: 100%;
+
+  color: var(--error-linea);
+
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+@media (max-width: 480px) {
+  .Reserva {
+    padding: 1.1rem 1rem;
+  }
+
+  .Reserva__cancelar {
+    margin-left: 0;
+  }
+}

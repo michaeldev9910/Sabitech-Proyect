@@ -8,6 +8,8 @@ import Contacto from "../../components/contact/contact.jsx";
 import Footer from "../../components/footer/footer.jsx";
 import { listarCharlas } from "../../api/talks-api.js";
 import { listarSalas } from "../../api/rooms-api.js";
+import { listarMisReservas, reservar } from "../../api/bookings-api.js";
+import { tieneRolQueReserva } from "../../utils/bookings.js";
 import { categoriaDe } from "../../utils/categories.js";
 import { charlasRecientes } from "../../utils/talks.js";
 import {
@@ -23,8 +25,10 @@ import "./main-view.css";
  */
 function MainView({
   usuario = null,
+  token = null,
   onCerrarSesion,
   onMostrarAcceso,
+  onVerMisReservas,
   errorInicial = "",
 }) {
   const [charlas, setCharlas] = useState(null);
@@ -32,6 +36,17 @@ function MainView({
   const [salasApi, setSalasApi] = useState(null);
   const [filtros, setFiltros] = useState(leerFiltrosDeUrl);
   const [aviso, setAviso] = useState(errorInicial);
+  const [errorInicialVisto, setErrorInicialVisto] = useState(errorInicial);
+  const [misReservas, setMisReservas] = useState(null);
+
+  // Si App.jsx manda un aviso nuevo (p. ej. "la sesión ha caducado"), se muestra
+  if (errorInicial !== errorInicialVisto) {
+    setErrorInicialVisto(errorInicial);
+    setAviso(errorInicial);
+  }
+
+  // Solo los roles que reservan tienen "mis reservas" (el rol acceso no)
+  const gestionaReservas = Boolean(token) && tieneRolQueReserva(usuario);
 
   useEffect(() => {
     listarCharlas()
@@ -51,12 +66,60 @@ function MainView({
       });
   }, []);
 
+  // Reservas de la persona: sirven para saber si ya tiene plaza en cada charla
+  useEffect(() => {
+    if (!gestionaReservas) return undefined;
+
+    let cancelado = false;
+    listarMisReservas(token)
+      .then((lista) => {
+        if (!cancelado) setMisReservas(lista);
+      })
+      .catch((error) => {
+        // Sin la lista se puede seguir reservando: el servidor avisa si ya hay plaza
+        console.error("Error al listar mis reservas:", error);
+      });
+
+    return () => {
+      cancelado = true;
+    };
+  }, [gestionaReservas, token]);
+
   // Los filtros viajan en la URL para poder compartir una búsqueda
   useEffect(() => {
     escribirFiltrosEnUrl(filtros);
   }, [filtros]);
 
   const cargando = charlas === null;
+
+  // Al volver de "Mis reservas" (o al abrir un enlace con #seccion),
+  // se va a esa sección cuando ya hay contenido
+  useEffect(() => {
+    if (cargando) return;
+    const id = window.location.hash.slice(1);
+    if (id) document.getElementById(id)?.scrollIntoView();
+  }, [cargando]);
+
+  const reservarCharla = useCallback(
+    async (charla) => {
+      const reserva = await reservar(token, charla.id);
+
+      // La reserva cuenta ya; después se refrescan las reservas y las plazas libres
+      setMisReservas((anteriores) => [
+        ...(anteriores ?? []).filter((otra) => otra.id !== reserva.id),
+        reserva,
+      ]);
+      await Promise.all([
+        listarMisReservas(token).then(setMisReservas),
+        listarCharlas().then(setCharlas),
+      ]).catch((error) => {
+        console.error("No se pudieron refrescar los datos tras reservar:", error);
+      });
+
+      return reserva;
+    },
+    [token],
+  );
   const lista = useMemo(() => charlas ?? [], [charlas]);
 
   // Área (Salud / Tecnología / Negocios) de cada charla
@@ -93,6 +156,7 @@ function MainView({
         usuario={usuario}
         onAcceder={onMostrarAcceso}
         onCerrarSesion={onCerrarSesion}
+        onVerMisReservas={onVerMisReservas}
       />
 
       <main>
@@ -118,6 +182,11 @@ function MainView({
           setFiltros={setFiltros}
           cargando={cargando}
           hayError={hayError}
+          usuario={usuario}
+          misReservas={gestionaReservas ? misReservas : null}
+          onReservar={reservarCharla}
+          onMostrarAcceso={onMostrarAcceso}
+          onVerMisReservas={onVerMisReservas}
         />
 
         <Sedes />

@@ -1,0 +1,196 @@
+/* =================================
+   VISTA "MIS RESERVAS"
+================================= */
+
+.MisReservas {
+  padding: 3.5rem 2.5rem 6rem;
+}
+
+.MisReservas__contenedor {
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.MisReservas__cabecera {
+  margin-bottom: 2rem;
+}
+
+.MisReservas__antetitulo {
+  margin-bottom: 0.4rem;
+
+  color: var(--teal);
+
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.MisReservas__titulo {
+  color: var(--titulo);
+
+  font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.MisReservas__intro {
+  max-width: 640px;
+  margin-top: 0.75rem;
+
+  color: var(--texto-suave);
+
+  font-size: 1rem;
+}
+
+.MisReservas__volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  margin-top: 1.1rem;
+
+  color: var(--teal-oscuro);
+
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.MisReservas__volver svg {
+  width: 18px;
+  height: 18px;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.MisReservas__volver:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.MisReservas__volver:focus-visible,
+.MisReservas__boton:focus-visible,
+.MisReservas__aviso:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+}
+
+/* Avisos y estados de carga */
+
+.MisReservas__aviso {
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.2rem;
+
+  background: var(--superficie);
+  border: 1px solid var(--linea);
+  border-left: 3px solid var(--exito);
+  border-radius: 12px;
+
+  color: var(--texto);
+}
+
+.MisReservas__aviso--error {
+  border-left-color: var(--error-linea);
+
+  color: var(--error-texto);
+}
+
+.MisReservas__cargando {
+  color: var(--texto-suave);
+}
+
+.MisReservas__vacio {
+  display: grid;
+  justify-items: center;
+  gap: 0.5rem;
+
+  padding: 3.5rem 1.5rem;
+
+  background: var(--superficie);
+  border: 1px dashed var(--linea-fuerte);
+  border-radius: 18px;
+
+  color: var(--texto-suave);
+  text-align: center;
+}
+
+.MisReservas__vacio-titulo {
+  color: var(--titulo);
+
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.MisReservas__boton {
+  margin-top: 0.75rem;
+  padding: 0.7rem 1.3rem;
+
+  background: var(--boton-fondo);
+  border-radius: 999px;
+
+  color: #ffffff;
+
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.MisReservas__boton:hover {
+  background: var(--boton-hover);
+}
+
+/* Listas: "Próximas" y "Pasadas o canceladas" */
+
+.MisReservas__seccion + .MisReservas__seccion {
+  margin-top: 2.5rem;
+}
+
+.MisReservas__subtitulo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+
+  margin-bottom: 1rem;
+
+  color: var(--titulo);
+
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.MisReservas__cuenta {
+  padding: 0.1rem 0.55rem;
+
+  background: var(--superficie-2);
+  border-radius: 999px;
+
+  color: var(--texto-suave);
+
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.MisReservas__lista {
+  display: grid;
+  gap: 1rem;
+
+  list-style: none;
+}
+
+@media (max-width: 760px) {
+  .MisReservas {
+    padding: 2.5rem 1.5rem 4.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .MisReservas {
+    padding-inline: 1rem;
+  }
+}

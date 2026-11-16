@@ -30,9 +30,11 @@ const textoBuscable = (charla) =>
     [
       charla.titulo,
       charla.descripcion,
-      nombreCompleto(charla.ponente),
-      charla.ponente?.organizacion,
-      charla.ponente?.biografia,
+      ...charla.ponentes.flatMap((ponente) => [
+        nombreCompleto(ponente),
+        ponente.organizacion,
+        ponente.biografia,
+      ]),
       charla.sala?.nombre,
     ].join(" "),
   );
@@ -50,7 +52,20 @@ const COMPARADORES = {
   az: (a, b) => a.titulo.localeCompare(b.titulo, "es"),
 };
 
-function Programa({ charlas, areaDe, salas, filtros, setFiltros, cargando, hayError }) {
+function Programa({
+  charlas,
+  areaDe,
+  salas,
+  filtros,
+  setFiltros,
+  cargando,
+  hayError,
+  usuario = null,
+  misReservas = null,
+  onReservar,
+  onMostrarAcceso,
+  onVerMisReservas,
+}) {
   const buscadorRef = useRef(null);
   const busqueda = useDeferredValue(filtros.q);
 
@@ -282,7 +297,15 @@ function Programa({ charlas, areaDe, salas, filtros, setFiltros, cargando, hayEr
           <ul className="Rejilla">
             {resultados.map((charla) => (
               <li key={charla.id}>
-                <TarjetaCharla charla={charla} area={areaDe.get(charla.id)} />
+                <TarjetaCharla
+                  charla={charla}
+                  area={areaDe.get(charla.id)}
+                  usuario={usuario}
+                  misReservas={misReservas}
+                  onReservar={onReservar}
+                  onMostrarAcceso={onMostrarAcceso}
+                  onVerMisReservas={onVerMisReservas}
+                />
               </li>
             ))}
           </ul>
