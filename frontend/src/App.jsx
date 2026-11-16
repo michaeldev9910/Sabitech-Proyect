@@ -13,6 +13,8 @@ function App() {
   const [estado, setEstado] = useState("comprobando");
   // Pantalla de las personas con sesión: "inicio" | "mis-reservas"
   const [pantalla, setPantalla] = useState("inicio");
+  // Pantalla a la que ir al iniciar sesión (p. ej. si se pulsó "Mis reservas" sin sesión)
+  const [trasAcceso, setTrasAcceso] = useState("inicio");
   const [usuario, setUsuario] = useState(null);
   const [token, setToken] = useState(null);
   const [errorSesion, setErrorSesion] = useState("");
@@ -78,16 +80,21 @@ function App() {
     setToken(tokenAutenticado);
     setUsuario(usuarioAutenticado);
     setErrorSesion("");
-    setPantalla("inicio");
+    if (trasAcceso === "mis-reservas") verMisReservas();
+    else setPantalla("inicio");
+    setTrasAcceso("inicio");
     setEstado("autenticado");
   }
 
   function entrarComoInvitado() {
     setErrorSesion("");
+    setTrasAcceso("inicio");
     setEstado("invitado");
   }
 
-  function mostrarAcceso() {
+  // `destino`: "mis-reservas" para ir a esa pantalla al entrar; cualquier otra cosa, el inicio
+  function mostrarAcceso(destino) {
+    setTrasAcceso(destino === "mis-reservas" ? "mis-reservas" : "inicio");
     setEstado("anonimo");
   }
 
