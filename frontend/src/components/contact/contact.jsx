@@ -1,7 +1,6 @@
+import { useState } from "react";
+import FormularioContacto from "./contact-form.jsx";
 import "./contact.css";
-
-// TODO: sustituir por el correo real de la organización de Sabitech.
-const CORREO_CONTACTO = "contacto@sabitech.es";
 
 const VENTAJAS = [
   {
@@ -19,6 +18,8 @@ const VENTAJAS = [
 ];
 
 function Contacto() {
+  const [formularioAbierto, setFormularioAbierto] = useState(false);
+
   return (
     <section
       id="contacto"
@@ -38,12 +39,13 @@ function Contacto() {
           </p>
 
           <div className="Contacto__acciones">
-            <a
-              href={`mailto:${CORREO_CONTACTO}?subject=${encodeURIComponent("Propuesta de charla para Sabitech")}`}
+            <button
+              type="button"
               className="Contacto__boton Contacto__boton--principal"
+              onClick={() => setFormularioAbierto(true)}
             >
               Proponer una charla
-            </a>
+            </button>
           </div>
         </div>
         <ul className="Contacto__ventajas">
@@ -60,6 +62,12 @@ function Contacto() {
           ))}
         </ul>
       </div>
+
+      {/* Popup con el formulario: el backend lo envía por correo */}
+      <FormularioContacto
+        abierto={formularioAbierto}
+        onCerrar={() => setFormularioAbierto(false)}
+      />
     </section>
   );
 }
