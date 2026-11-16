@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Charla extends Model
 {
     protected $table = 'charlas';
 
-    protected $fillable = ['ponente_id', 'sala_id', 'titulo', 'descripcion', 'inicio', 'fin', 'apertura_plazas', 'aforo', 'estado'];
+    protected $fillable = ['sala_id', 'titulo', 'descripcion', 'inicio', 'fin', 'apertura_plazas', 'aforo', 'estado'];
 
     protected $appends = ['plazas_libres'];
 
@@ -24,9 +25,10 @@ class Charla extends Model
         ];        
     }
 
-    public function ponente(): BelongsTo{
+    // Una charla puede tener varios ponentes (tabla intermedia charla_ponente)
+    public function ponentes(): BelongsToMany{
 
-        return $this->belongsTo(Ponente::class, 'ponente_id');
+        return $this->belongsToMany(Ponente::class, 'charla_ponente')->withTimestamps();
 
     }
 

@@ -7,13 +7,14 @@ use App\Models\Sala;
 use Closure;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class CharlaController extends Controller
 {
     public function index(): JsonResponse
     {
-        $charlas = Charla::with(['ponente', 'sala'])
+        $charlas = Charla::with(['ponentes', 'sala'])
             ->withCount('reservasConfirmadas')
             ->where('estado', 'publicada')
             ->orderBy('inicio')
@@ -26,30 +27,40 @@ class CharlaController extends Controller
     {
         // Solo charlas publicadas: si no existe o no está publicada, findOrFail()
         // lanza una excepción y Laravel responde solo, sin escribir el código a mano.
-        $charla = Charla::with(['ponente', 'sala'])
+        $charla = Charla::with(['ponentes', 'sala'])
             ->withCount('reservasConfirmadas')
             ->where('estado', 'publicada')
             ->findOrFail($id);
 
         return response()->json($charla);
     }
- 
+
     public function store(Request $request): JsonResponse
     {
-        $datos = $request->validate($this->reglas($request));
+        $datos = $request->validate($this->reglas($request), $this->mensajes());
 
-        $charla = Charla::create($datos);
- 
-        return response()->json($charla->load(['ponente', 'sala']), 201);
+        // La charla y sus ponentes se guardan juntos: si algo falla, no queda nada a medias
+        $charla = DB::transaction(function () use ($datos) {
+            $charla = Charla::create(Arr::except($datos, 'ponentes'));
+            $charla->ponentes()->sync($datos['ponentes']);
+
+            return $charla;
+        });
+
+        return response()->json($charla->load(['ponentes', 'sala']), 201);
     }
- 
+
     public function update(Request $request, Charla $charla): JsonResponse
     {
-        $datos = $request->validate($this->reglas($request));
+        $datos = $request->validate($this->reglas($request), $this->mensajes());
 
-        $charla->update($datos);
- 
-        return response()->json($charla->load(['ponente', 'sala']));
+        // sync() deja exactamente los ponentes enviados: añade los nuevos y quita los que sobran
+        DB::transaction(function () use ($charla, $datos) {
+            $charla->update(Arr::except($datos, 'ponentes'));
+            $charla->ponentes()->sync($datos['ponentes']);
+        });
+
+        return response()->json($charla->load(['ponentes', 'sala']));
     }
  
     public function destroy(Charla $charla): JsonResponse
@@ -72,7 +83,9 @@ class CharlaController extends Controller
     private function reglas(Request $request): array
     {
         return [
-            'ponente_id'      => 'required|integer|exists:ponentes,id',
+            // Ids de los ponentes de la charla: al menos uno y sin repetir
+            'ponentes'        => 'required|array|min:1',
+            'ponentes.*'      => 'integer|distinct|exists:ponentes,id',
             'sala_id'         => 'required|integer|exists:salas,id',
             'titulo'          => 'required|string|max:150',
             'descripcion'     => 'nullable|string',
@@ -92,6 +105,18 @@ class CharlaController extends Controller
                 },
             ],
             'estado'          => 'sometimes|in:borrador,publicada,cancelada',
+        ];
+    }
+
+    private function mensajes(): array
+    {
+        return [
+            'ponentes.required'   => 'Indica al menos un ponente.',
+            'ponentes.array'      => 'Los ponentes se envían como una lista de ids.',
+            'ponentes.min'        => 'Indica al menos un ponente.',
+            'ponentes.*.integer'  => 'Cada ponente se indica con su id.',
+            'ponentes.*.distinct' => 'Hay ponentes repetidos.',
+            'ponentes.*.exists'   => 'Alguno de los ponentes no existe.',
         ];
     }
 }
