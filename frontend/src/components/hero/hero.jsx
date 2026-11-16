@@ -6,7 +6,8 @@ import {
   formatoFechaLarga,
   horario,
   momentoDe,
-  nombreCompleto,
+  nombresPonentes,
+  organizacionesPonentes,
   siguienteCharla,
 } from "../../utils/talks.js";
 import { irAlBuscador } from "../../utils/navigation.js";
@@ -45,6 +46,7 @@ function CuentaAtras({ hasta }) {
 function ProximaCharla({ charla, area }) {
   const enDirecto = momentoDe(charla) === "en-curso";
   const categoria = categoriaPorId(area);
+  const organizaciones = organizacionesPonentes(charla.ponentes);
 
   return (
     <article className="Proxima" data-area={area}>
@@ -58,10 +60,10 @@ function ProximaCharla({ charla, area }) {
       <h2 className="Proxima__titulo">{charla.titulo}</h2>
 
       <div className="Proxima__ponente">
-        <Retrato ponente={charla.ponente} area={area} className="Proxima__foto" />
+        <Retrato ponente={charla.ponentes[0]} area={area} className="Proxima__foto" />
         <div>
-          <strong>{nombreCompleto(charla.ponente)}</strong>
-          {charla.ponente?.organizacion && <span>{charla.ponente.organizacion}</span>}
+          <strong>{nombresPonentes(charla.ponentes)}</strong>
+          {organizaciones && <span>{organizaciones}</span>}
         </div>
       </div>
 
@@ -81,7 +83,9 @@ function Hero({ charlas, areaDe, cargando, onElegirArea }) {
   const vigentes = lista.filter((charla) => momentoDe(charla) !== "celebrada");
   const siguiente = siguienteCharla(lista);
 
-  const ponentes = new Set(lista.map((charla) => charla.ponenteId)).size;
+  const ponentes = new Set(
+    lista.flatMap((charla) => charla.ponentes.map((ponente) => ponente.id)),
+  ).size;
   const salas = new Set(lista.map((charla) => charla.salaId)).size;
   const plazas = vigentes.reduce(
     (total, charla) => total + (charla.plazasLibres ?? charla.aforo ?? 0),

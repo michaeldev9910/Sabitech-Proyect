@@ -1,30 +1,5 @@
 import { Usuario } from "../models/user.js";
-import { ApiError } from "./api-error.js";
-
-const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8080/api";
-
-async function pedir(ruta, { token, ...opciones } = {}) {
-  const respuesta = await fetch(`${API_URL}${ruta}`, {
-    ...opciones,
-    headers: {
-      Accept: "application/json",
-      ...(opciones.body ? { "Content-Type": "application/json" } : {}),
-      ...(token ? { Authorization: "Bearer " + token } : {}),
-      ...opciones.headers,
-    },
-  });
-  const datos = await respuesta.json().catch(() => null);
-
-  if (!respuesta.ok) {
-    throw new ApiError(
-      respuesta.status,
-      datos?.message ?? "No se pudo completar la petición.",
-      datos?.errors,
-    );
-  }
-
-  return datos;
-}
+import { pedir } from "./client.js";
 
 async function autenticar(ruta, datos) {
   const respuesta = await pedir(ruta, {

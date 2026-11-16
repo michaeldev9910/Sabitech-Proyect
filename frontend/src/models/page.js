@@ -4,7 +4,7 @@ export class Page {
     }
 
     static fromJSON(json, listKey, mapFn) {
-        const rawItems = Array.isArray(jsob[listKey]) ? json[listKey]
+        const rawItems = Array.isArray(json?.[listKey]) ? json[listKey] : [];
         return rawItems.map(mapFn);
     }
 }

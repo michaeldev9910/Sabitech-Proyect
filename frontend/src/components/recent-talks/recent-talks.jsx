@@ -8,7 +8,8 @@ import {
   formatoFechaLarga,
   horario,
   momentoDe,
-  nombreCompleto,
+  nombresPonentes,
+  organizacionesPonentes,
 } from "../../utils/talks.js";
 import "../../styles/bootstrap-carousel.scss";
 import "./recent-talks.css";
@@ -28,6 +29,7 @@ function Diapositiva({ charla, area, activa, onVerCharla }) {
   const categoria = categoriaPorId(area);
   const momento = momentoDe(charla);
   const plazas = estadoPlazas(charla);
+  const organizaciones = organizacionesPonentes(charla.ponentes);
 
   return (
     <div
@@ -38,7 +40,7 @@ function Diapositiva({ charla, area, activa, onVerCharla }) {
     >
       <article className="Diapositiva" data-area={area}>
         <div className="Diapositiva__visual">
-          <Retrato ponente={charla.ponente} area={area} className="Diapositiva__retrato" />
+          <Retrato ponente={charla.ponentes[0]} area={area} className="Diapositiva__retrato" />
           <span className={`Diapositiva__momento Diapositiva__momento--${momento}`}>
             {ETIQUETA_MOMENTO[momento]}
           </span>
@@ -76,8 +78,8 @@ function Diapositiva({ charla, area, activa, onVerCharla }) {
 
           <div className="Diapositiva__pie">
             <p className="Diapositiva__ponente">
-              <strong>{nombreCompleto(charla.ponente)}</strong>
-              {charla.ponente?.organizacion && <span>{charla.ponente.organizacion}</span>}
+              <strong>{nombresPonentes(charla.ponentes)}</strong>
+              {organizaciones && <span>{organizaciones}</span>}
             </p>
 
             <a

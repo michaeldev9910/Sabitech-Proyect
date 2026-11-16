@@ -4,7 +4,6 @@ import { Sala } from './room';
 export class Charla {
     constructor({
         id,
-        ponente_id,
         sala_id,
         titulo,
         descripcion,
@@ -16,11 +15,10 @@ export class Charla {
         categoria,
         plazas_libres,
         reservas_confirmadas_count,
-        ponente,
+        ponentes,
         sala,
     }) {
         this.id = id;
-        this.ponenteId = ponente_id;
         this.salaId = sala_id;
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -33,7 +31,8 @@ export class Charla {
         this.categoria = categoria ?? null;
         this.plazasLibres = plazas_libres ?? null;
         this.reservasConfirmadas = reservas_confirmadas_count ?? null;
-        this.ponente = ponente ? Ponente.fromJSON(ponente) : null;
+        // Una charla puede tener varios ponentes: siempre es un array (el "pivot" de cada uno se ignora)
+        this.ponentes = (ponentes ?? []).map(Ponente.fromJSON).filter(Boolean);
         this.sala = sala ? Sala.fromJSON(sala) : null;
     }
 
@@ -41,7 +40,6 @@ export class Charla {
         if (!json) return null;
         return new Charla({
             id: json.id,
-            ponente_id: json.ponente_id,
             sala_id: json.sala_id,
             titulo: json.titulo,
             descripcion: json.descripcion,
@@ -53,7 +51,7 @@ export class Charla {
             categoria: json.categoria,
             plazas_libres: json.plazas_libres,
             reservas_confirmadas_count: json.reservas_confirmadas_count,
-            ponente: json.ponente,
+            ponentes: json.ponentes,
             sala: json.sala,
         });
     }
@@ -61,7 +59,6 @@ export class Charla {
     toJSON() {
         return {
             id: this.id,
-            ponente_id: this.ponenteId,
             sala_id: this.salaId,
             titulo: this.titulo,
             descripcion: this.descripcion,
@@ -70,6 +67,8 @@ export class Charla {
             apertura_plazas: this.aperturaPlazas,
             aforo: this.aforo,
             estado: this.estado,
+            // Al crear o editar una charla el backend espera los ids de los ponentes
+            ponentes: this.ponentes.map((ponente) => ponente.id),
         };
     }
 }

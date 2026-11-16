@@ -8,6 +8,7 @@ import {
 import "./header.css";
 import FotoCuenta from "../../assets/avatar.svg";
 import { irAlBuscador } from "../../utils/navigation.js";
+import { tieneRolQueReserva } from "../../utils/bookings.js";
 
 // Cada sección tiene su color de marca para el visor del menú.
 // "QR" y "Control admin" vienen de la rama login: sus secciones aún no existen.
@@ -36,7 +37,7 @@ const seccionDelHash = () => {
   return SECCIONES.some((seccion) => seccion.id === id) ? id : null;
 };
 
-function Header({ usuario = null, onAcceder, onCerrarSesion }) {
+function Header({ usuario = null, onAcceder, onCerrarSesion, onVerMisReservas }) {
   const compacta = useSyncExternalStore(
     suscribirDesplazamiento,
     estaDesplazada,
@@ -308,6 +309,21 @@ function Header({ usuario = null, onAcceder, onCerrarSesion }) {
                   </p>
                   {usuario.email && (
                     <p className="MenuCuenta__email">{usuario.email}</p>
+                  )}
+
+                  {/* Solo los roles que reservan (el personal de acceso no) */}
+                  {onVerMisReservas && tieneRolQueReserva(usuario) && (
+                    <button
+                      type="button"
+                      className="MenuCuenta__enlace"
+                      onClick={() => {
+                        setMenuCuenta(false);
+                        cerrar();
+                        onVerMisReservas();
+                      }}
+                    >
+                      Mis reservas
+                    </button>
                   )}
 
                   {errorCuenta && (

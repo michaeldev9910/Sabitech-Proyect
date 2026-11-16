@@ -644,6 +644,9 @@
 
   padding: 1.5rem 1.35rem 1.35rem;
 
+  /* Con varios ponentes (o la acción de reserva) el contenido puede no caber */
+  overflow-y: auto;
+
   background: rgba(255, 255, 255, 0.95);
 
   -webkit-backdrop-filter: blur(6px);
@@ -768,6 +771,98 @@
 
 .Tarjeta__plazas[data-tono="completa"]::before {
   background: #D92D20;
+}
+
+/* Reserva: botón, "Ya tienes plaza" y avisos */
+
+.Tarjeta__reserva {
+  display: grid;
+  justify-items: start;
+  gap: 0.5rem;
+
+  width: 100%;
+  /* Deja sitio al botón + / × de la esquina */
+  padding-right: 3.25rem;
+}
+
+.Tarjeta__reservar {
+  padding: 0.6rem 1.1rem;
+
+  background: var(--boton-fondo);
+  border: 0;
+  border-radius: 999px;
+
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: background-color 0.2s ease;
+}
+
+.Tarjeta__reservar:hover {
+  background: var(--boton-hover);
+}
+
+.Tarjeta__reservar:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.Tarjeta__tienes-plaza {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.6rem;
+
+  color: var(--exito);
+
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.Tarjeta__enlace {
+  padding: 0;
+
+  background: none;
+  border: 0;
+
+  color: var(--teal-oscuro);
+
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+
+  cursor: pointer;
+}
+
+.Tarjeta__enlace:hover {
+  color: var(--teal);
+}
+
+.Tarjeta__reservar:focus-visible,
+.Tarjeta__enlace:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+}
+
+.Tarjeta__aviso {
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.Tarjeta__aviso--exito {
+  color: var(--exito);
+}
+
+.Tarjeta__aviso--error {
+  color: var(--error-linea);
 }
 
 /* Botón + / × */

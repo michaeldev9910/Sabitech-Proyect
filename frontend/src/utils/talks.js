@@ -2,8 +2,9 @@
 // Utilidades de presentación para las charlas
 // =================================
 
-// Las fechas se muestran en UTC, igual que las guarda la API.
-const ZONA = "UTC";
+// La API envía las fechas en UTC; aquí se muestran en hora de España.
+// Usa siempre estos formateadores para mostrar fechas (nunca toLocaleString() suelto).
+const ZONA = "Europe/Madrid";
 
 export const formatoFechaLarga = new Intl.DateTimeFormat("es-ES", {
   weekday: "long",
@@ -39,6 +40,20 @@ export const horario = (charla) =>
 
 export const nombreCompleto = (ponente) =>
   ponente ? `${ponente.nombre} ${ponente.apellidos ?? ""}`.trim() : "Ponente por confirmar";
+
+const formatoLista = new Intl.ListFormat("es", { type: "conjunction" });
+
+/** "Laura Martínez y Hugo López", o "Ponente por confirmar" si no hay ninguno. */
+export const nombresPonentes = (ponentes = []) =>
+  ponentes.length
+    ? formatoLista.format(ponentes.map(nombreCompleto))
+    : nombreCompleto(null);
+
+/** Organizaciones de los ponentes, sin repetir ("" si ninguno indica la suya). */
+export const organizacionesPonentes = (ponentes = []) =>
+  formatoLista.format([
+    ...new Set(ponentes.map((ponente) => ponente.organizacion).filter(Boolean)),
+  ]);
 
 export const iniciales = (ponente) =>
   ponente
