@@ -14,3 +14,19 @@ export async function pedir(ruta) {
 
     return datos;
 }
+
+// POST con cuerpo JSON. Lanza ApiError igual que pedir() (422 trae los errores por campo).
+export async function enviar(ruta, cuerpo) {
+    const respuesta = await fetch(`${API_URL}${ruta}`, {
+        method: 'POST',
+        headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify(cuerpo),
+    });
+    const datos = await respuesta.json().catch(() => null);
+
+    if (!respuesta.ok) {
+        throw new ApiError(respuesta.status, datos?.message ?? 'Error en la petición', datos?.errors);
+    }
+
+    return datos;
+}
