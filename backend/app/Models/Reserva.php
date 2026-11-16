@@ -2,13 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-#[Fillable(['codigo', 'usuario_id', 'charla_id', 'estado', 'confirmada_en', 'cancelada_en', 'qr_semilla', 'qr_renovado_en'])]
 class Reserva extends Model
 {
     protected $table = 'reservas';
@@ -26,7 +24,7 @@ class Reserva extends Model
         ];
     } 
 
-    public function usuario(): BelongsTo{
+     public function usuario(): BelongsTo{
 
         return $this->belongsTo(Usuario::class, 'usuario_id');
 

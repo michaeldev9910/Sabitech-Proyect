@@ -18,7 +18,7 @@ class CharlaSeeder extends Seeder
         $charlas = [
             [
                 'titulo' => 'Introduccion a Laravel', 'ponente' => 'Laura', 'sala' => 'Sala Magna',
-                'inicio' => $dia(3, 10), 'aforo' => 60, 'estado' => 'publicada',
+                'inicio' => $dia(24, 12), 'aforo' => 60, 'estado' => 'publicada',
                 'descripcion' => 'Rutas, controladores y Eloquent para crear una API.',
             ],
             [
@@ -28,22 +28,22 @@ class CharlaSeeder extends Seeder
             ],
             [
                 'titulo' => 'Docker para desarrolladores', 'ponente' => 'Daniel', 'sala' => 'Laboratorio',
-                'inicio' => $dia(4, 10), 'aforo' => 2, 'estado' => 'publicada',
+                'inicio' => $dia(4, 12), 'aforo' => 2, 'estado' => 'publicada',
                 'descripcion' => 'Contenedores para un entorno de desarrollo reproducible.',
             ],
             [
                 'titulo' => 'Accesibilidad en interfaces web', 'ponente' => 'Marta', 'sala' => 'Aula 2',
-                'inicio' => $dia(5, 11), 'aforo' => 25, 'estado' => 'publicada',
+                'inicio' => $dia(5, 12), 'aforo' => 25, 'estado' => 'publicada',
                 'descripcion' => 'Etiquetas, foco, contraste y navegacion por teclado.',
             ],
             [
                 'titulo' => 'Seguridad en aplicaciones web', 'ponente' => 'Laura', 'sala' => 'Aula 1',
-                'inicio' => $dia(6, 10), 'aforo' => 30, 'estado' => 'borrador',
+                'inicio' => $dia(6, 12), 'aforo' => 30, 'estado' => 'publicada',
                 'descripcion' => 'Charla en preparacion.',
             ],
             [
                 'titulo' => 'Taller de testing (cancelado)', 'ponente' => 'Hugo', 'sala' => 'Aula 2',
-                'inicio' => $dia(6, 12), 'aforo' => 20, 'estado' => 'cancelada',
+                'inicio' => $dia(1, 12), 'aforo' => 20, 'estado' => 'publicada',
                 'descripcion' => 'Charla cancelada por el ponente.',
             ],
             [
