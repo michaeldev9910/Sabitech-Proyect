@@ -92,10 +92,16 @@ function MainView({
 
   const cargando = charlas === null;
 
-  // Al volver de "Mis reservas" (o al abrir un enlace con #seccion),
-  // se va a esa sección cuando ya hay contenido
+  // Cuando ya hay contenido: al volver con «atrás» (del formulario de acceso o de
+  // «Mis reservas») se recupera hasta dónde se había bajado (App.jsx lo guarda en el
+  // historial); si no, al abrir un enlace con #seccion se va a esa sección
   useEffect(() => {
     if (cargando) return;
+    const scrollGuardado = window.history.state?.scrollY;
+    if (typeof scrollGuardado === "number") {
+      window.scrollTo({ top: scrollGuardado, behavior: "instant" });
+      return;
+    }
     const id = window.location.hash.slice(1);
     if (id) document.getElementById(id)?.scrollIntoView();
   }, [cargando]);
