@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 
 /**
  * Reservas de la persona que ha iniciado sesión (roles asistente y organización).
- * El frontend enseña estas mismas reglas (src/utils/rules.js y bookings.js),
+ * El frontend enseña estas mismas reglas (src/utilidades/reglas.js y reservas.js),
  * pero quien decide es el servidor.
  */
 class ReservaController extends Controller
@@ -52,7 +52,11 @@ class ReservaController extends Controller
             $charla = Charla::lockForUpdate()->findOrFail($datos['charla_id']);
 
             abort_if($charla->estado !== 'publicada', 422, 'Esta charla no admite reservas.');
-            abort_if(now()->lt($charla->apertura_plazas), 422, 'Las reservas de esta charla todavía no están abiertas.');
+            abort_if(
+                now()->lt($charla->apertura_plazas),
+                422,
+                'Todavía no se puede reservar: las reservas se abren ' . Charla::DIAS_APERTURA_RESERVAS . ' días antes del inicio.',
+            );
             abort_if(now()->gte($charla->inicio), 422, 'La charla ya ha empezado: no admite reservas.');
 
             // Persona y charla son únicas en reservas: si la canceló antes, se reactiva la misma

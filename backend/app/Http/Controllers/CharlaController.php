@@ -91,7 +91,7 @@ class CharlaController extends Controller
             'descripcion'     => 'nullable|string',
             'inicio'          => 'required|date',
             'fin'             => 'required|date|after:inicio',
-            'apertura_plazas' => 'required|date|before:inicio',
+            // apertura_plazas no se envía: el modelo la pone 7 días antes del inicio
             'aforo'           => [
                 'bail', 'required', 'integer', 'min:1',
                 // Regla propia: el aforo no puede superar la capacidad de la sala elegida.

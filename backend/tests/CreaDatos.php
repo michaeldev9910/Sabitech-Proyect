@@ -39,20 +39,19 @@ trait CreaDatos
     }
 
     /**
-     * Charla publicada dentro de 3 días, con el plazo de reservas ya abierto.
+     * Charla publicada dentro de 3 días: como faltan menos de 7, las reservas ya están abiertas.
      */
     protected function charla(array $datos = []): Charla
     {
         $inicio = now()->addDays(3)->startOfHour();
 
         return Charla::create([
-            'sala_id'         => $this->sala()->id,
-            'titulo'          => 'Charla de prueba',
-            'inicio'          => $inicio,
-            'fin'             => $inicio->copy()->addHour(),
-            'apertura_plazas' => now()->subDay(),
-            'aforo'           => 20,
-            'estado'          => 'publicada',
+            'sala_id' => $this->sala()->id,
+            'titulo'  => 'Charla de prueba',
+            'inicio'  => $inicio,
+            'fin'     => $inicio->copy()->addHour(),
+            'aforo'   => 20,
+            'estado'  => 'publicada',
             ...$datos,
         ]);
     }

@@ -11,9 +11,21 @@ class Charla extends Model
 {
     protected $table = 'charlas';
 
-    protected $fillable = ['sala_id', 'titulo', 'descripcion', 'inicio', 'fin', 'apertura_plazas', 'aforo', 'estado'];
+    // Las reservas se abren 7 días antes del inicio (se cancelan hasta 24 h antes y el QR sale 30 min antes)
+    public const DIAS_APERTURA_RESERVAS = 7;
+
+    // apertura_plazas no se rellena a mano: la calcula booted() a partir del inicio
+    protected $fillable = ['sala_id', 'titulo', 'descripcion', 'inicio', 'fin', 'aforo', 'estado'];
 
     protected $appends = ['plazas_libres'];
+
+    protected static function booted(): void
+    {
+        // Cada vez que se guarda la charla, la apertura queda DIAS_APERTURA_RESERVAS días antes del inicio
+        static::saving(function (Charla $charla) {
+            $charla->apertura_plazas = $charla->inicio->copy()->subDays(self::DIAS_APERTURA_RESERVAS);
+        });
+    }
 
     protected function casts(): array {
         

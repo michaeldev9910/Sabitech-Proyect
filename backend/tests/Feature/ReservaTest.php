@@ -82,20 +82,28 @@ class ReservaTest extends TestCase
 
     public function test_no_se_reserva_antes_de_que_abra_el_plazo(): void
     {
-        $charla = $this->charla(['apertura_plazas' => now()->addDay()]);
+        // Faltan 10 días: las reservas no se abren hasta 7 días antes
+        $charla = $this->charla(['inicio' => now()->addDays(10), 'fin' => now()->addDays(10)->addHour()]);
         Sanctum::actingAs($this->usuario());
 
         $this->postJson('/api/reservas', ['charla_id' => $charla->id])
             ->assertUnprocessable()
-            ->assertJsonPath('message', 'Las reservas de esta charla todavía no están abiertas.');
+            ->assertJsonPath('message', 'Todavía no se puede reservar: las reservas se abren 7 días antes del inicio.');
+    }
+
+    public function test_se_reserva_en_cuanto_faltan_7_dias(): void
+    {
+        $charla = $this->charla(['inicio' => now()->addDays(7)->subMinute(), 'fin' => now()->addDays(7)->addHour()]);
+        Sanctum::actingAs($this->usuario());
+
+        $this->postJson('/api/reservas', ['charla_id' => $charla->id])->assertCreated();
     }
 
     public function test_no_se_reserva_una_charla_que_ya_ha_empezado(): void
     {
         $charla = $this->charla([
-            'inicio'          => now()->subMinutes(10),
-            'fin'             => now()->addHour(),
-            'apertura_plazas' => now()->subDay(),
+            'inicio' => now()->subMinutes(10),
+            'fin'    => now()->addHour(),
         ]);
         Sanctum::actingAs($this->usuario());
 
@@ -137,9 +145,8 @@ class ReservaTest extends TestCase
     {
         $usuario = $this->usuario();
         $reserva = $this->reservaDe($usuario, $this->charla([
-            'inicio'          => now()->addHours(5),
-            'fin'             => now()->addHours(6),
-            'apertura_plazas' => now()->subDay(),
+            'inicio' => now()->addHours(5),
+            'fin'    => now()->addHours(6),
         ]));
         Sanctum::actingAs($usuario);
 

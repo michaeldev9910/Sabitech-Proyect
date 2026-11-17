@@ -1,5 +1,5 @@
-{{-- Usa la plantilla resources/views/layouts/app.blade.php --}}
-@extends('layouts.app')
+{{-- Usa la plantilla resources/views/plantillas/app.blade.php --}}
+@extends('plantillas.app')
 
 @section('titulo', 'Programa')
 

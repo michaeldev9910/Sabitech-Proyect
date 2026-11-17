@@ -50,7 +50,7 @@ class CharlaSeeder extends Seeder
             [
                 'titulo' => 'Demo en curso (prueba del QR)', 'ponentes' => ['Daniel'], 'sala' => 'Sala Magna',
                 'inicio' => now()->subMinutes(10), 'fin' => now()->addHours(2),
-                'apertura_plazas' => now()->subHours(2), 'aforo' => 50, 'estado' => 'publicada',
+                'aforo' => 50, 'estado' => 'publicada',
                 'descripcion' => 'Charla con el plazo de QR abierto, solo para pruebas.',
             ],
         ];
@@ -65,7 +65,7 @@ class CharlaSeeder extends Seeder
                     'descripcion'     => $c['descripcion'],
                     'inicio'          => $inicio,
                     'fin'             => $c['fin'] ?? $inicio->copy()->addHour(),
-                    'apertura_plazas' => $c['apertura_plazas'] ?? $inicio->copy()->subDay(),
+                    // La apertura de reservas la pone el modelo: 7 días antes del inicio
                     'aforo'           => $c['aforo'],
                     'estado'          => $c['estado'],
                 ]

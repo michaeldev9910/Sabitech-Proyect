@@ -108,13 +108,12 @@ class CharlaPonentesTest extends TestCase
         $inicio = now()->addWeek()->startOfHour();
 
         return [
-            'sala_id'         => $this->sala()->id,
-            'titulo'          => 'Charla a dos voces',
-            'inicio'          => $inicio->toDateTimeString(),
-            'fin'             => $inicio->copy()->addHour()->toDateTimeString(),
-            'apertura_plazas' => now()->toDateTimeString(),
-            'aforo'           => 20,
-            'estado'          => 'publicada',
+            'sala_id' => $this->sala()->id,
+            'titulo'  => 'Charla a dos voces',
+            'inicio'  => $inicio->toDateTimeString(),
+            'fin'     => $inicio->copy()->addHour()->toDateTimeString(),
+            'aforo'   => 20,
+            'estado'  => 'publicada',
         ];
     }
 }
