@@ -222,6 +222,7 @@ SABITECH/
 | [Diccionario de datos](docs/DICCIONARIO_DATOS.md) | Tablas, campos, restricciones e integridad |
 | [Plan del QR](docs/PLAN_QR.md) | Diseño del QR que cambia cada 30 s |
 | [Plan del correo](docs/PLAN_CORREO.md) | Diseño del correo de confirmación de reserva |
+| [Plan de publicación](docs/PLAN_PUBLICACION.md) | Entorno de demostración: servidor, dominio, HTTPS, CI y copias |
 
 ## Ramas y versiones
 
