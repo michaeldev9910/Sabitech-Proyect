@@ -17,7 +17,10 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        DB::statement('ALTER TABLE salas ADD CONSTRAINT chk_salas_capacidad CHECK (capacidad > 0)');
+        // SQLite (la base de datos de los tests) no admite añadir restricciones con ALTER TABLE
+        if (DB::getDriverName() !== 'sqlite') {
+            DB::statement('ALTER TABLE salas ADD CONSTRAINT chk_salas_capacidad CHECK (capacidad > 0)');
+        }
     }
 
     public function down(): void

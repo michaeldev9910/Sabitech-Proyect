@@ -33,8 +33,8 @@ class MensajeContacto extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.contacto',
-            text: 'emails.contacto-texto',
+            view: 'correos.contacto',
+            text: 'correos.contacto-texto',
         );
     }
 }

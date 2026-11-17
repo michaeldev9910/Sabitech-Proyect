@@ -13,7 +13,7 @@ class ProgramaController extends Controller
 {
     public function index(): View
     {
-        $charlas = Charla::with(['ponente', 'sala'])
+        $charlas = Charla::with(['ponentes', 'sala'])
             ->withCount('reservasConfirmadas')
             ->where('estado', 'publicada')
             ->orderBy('inicio')
