@@ -15,8 +15,8 @@ services:
     container_name: frontend
     build: ./frontend
     ports:
-      # Por defecto solo desde este PC. Para el móvil: IP_FRONTEND=0.0.0.0
-      - "${IP_FRONTEND:-127.0.0.1}:5173:5173" # puerto de conexion al movil
+      # Por defecto abierto a la red local (móvil incluido). Solo este PC: IP_FRONTEND=127.0.0.1
+      - "${IP_FRONTEND:-0.0.0.0}:5173:5173" # puerto de conexion al movil
     environment:
       - API_DESTINO=http://web:80 # conexion interna entre docker Backend y frontend
     volumes:
