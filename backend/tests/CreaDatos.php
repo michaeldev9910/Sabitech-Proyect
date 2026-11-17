@@ -4,6 +4,7 @@ namespace Tests;
 
 use App\Models\Charla;
 use App\Models\Ponente;
+use App\Models\Reserva;
 use App\Models\Rol;
 use App\Models\Sala;
 use App\Models\Usuario;
@@ -53,6 +54,16 @@ trait CreaDatos
             'aforo'   => 20,
             'estado'  => 'publicada',
             ...$datos,
+        ]);
+    }
+
+    protected function reserva(Usuario $usuario, Charla $charla, string $estado = 'confirmada'): Reserva
+    {
+        return Reserva::create([
+            'codigo'     => Str::upper(Str::random(10)),
+            'usuario_id' => $usuario->id,
+            'charla_id'  => $charla->id,
+            'estado'     => $estado,
         ]);
     }
 }

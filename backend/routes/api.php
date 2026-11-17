@@ -1,12 +1,16 @@
 <?php
 
+use App\Http\Controllers\AsistenciaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CharlaController;
 use App\Http\Controllers\CharlasDeSalaController;
 use App\Http\Controllers\ContactoController;
+use App\Http\Controllers\NotificacionController;
 use App\Http\Controllers\PonenteController;
 use App\Http\Controllers\ReservaController;
+use App\Http\Controllers\RolController;
 use App\Http\Controllers\SalaController;
+use App\Http\Controllers\UsuarioController;
 use App\Http\Middleware\EnsureRol;
 use Illuminate\Support\Facades\Route;
 
@@ -56,7 +60,27 @@ Route::middleware('auth:sanctum')->group(function () {
             ->name('reservas.destroy');
     });
 
+    // El personal de sala (acceso) registra la entrada con el código de la reserva
+    Route::post('/asistencias', [AsistenciaController::class, 'store'])
+        ->middleware(EnsureRol::class . ':acceso,organizacion')
+        ->name('asistencias.store');
+
     Route::middleware(EnsureRol::class . ':organizacion')->group(function () {
+        Route::get('/asistencias', [AsistenciaController::class, 'index'])->name('asistencias.index');
+
+        // ->parameters() fija el nombre del parámetro: en inglés Laravel pasaría "roles" a {role}
+        Route::apiResource('usuarios', UsuarioController::class)
+            ->only(['index', 'show', 'update'])
+            ->where(['usuario' => '[0-9]+']);
+        Route::apiResource('roles', RolController::class)
+            ->only(['index', 'show'])
+            ->parameters(['roles' => 'rol'])
+            ->where(['rol' => '[0-9]+']);
+        Route::apiResource('notificaciones', NotificacionController::class)
+            ->only(['index', 'show'])
+            ->parameters(['notificaciones' => 'notificacion'])
+            ->where(['notificacion' => '[0-9]+']);
+
         Route::post('/charlas', [CharlaController::class, 'store'])->name('charlas.store');
         Route::put('/charlas/{charla}', [CharlaController::class, 'update'])
             ->whereNumber('charla')
