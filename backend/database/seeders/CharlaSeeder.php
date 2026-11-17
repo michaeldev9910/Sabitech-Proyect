@@ -13,7 +13,8 @@ class CharlaSeeder extends Seeder
     {
         $ponentes = fn (array $nombres) => Ponente::whereIn('nombre', $nombres)->pluck('id');
         $sala     = fn (string $nombre) => Sala::where('nombre', $nombre)->value('id');
-        $dia = fn (int $dias, int $hora) => now()->addDays($dias)->setTime($hora, 0);
+        // $dia(días desde hoy, hora en España). Se guarda en UTC, que es lo que espera la API
+        $dia = fn (int $dias, int $hora) => now('Europe/Madrid')->addDays($dias)->setTime($hora, 0)->utc();
 
         $charlas = [
             [
@@ -28,7 +29,7 @@ class CharlaSeeder extends Seeder
             ],
             [
                 'titulo' => 'Docker para desarrolladores', 'ponentes' => ['Daniel'], 'sala' => 'Laboratorio',
-                'inicio' => $dia(4, 12), 'aforo' => 2, 'estado' => 'publicada',
+                'inicio' => $dia(0, 10), 'aforo' => 2, 'estado' => 'publicada',
                 'descripcion' => 'Contenedores para un entorno de desarrollo reproducible.',
             ],
             [
