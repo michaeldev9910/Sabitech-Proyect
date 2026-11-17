@@ -1,6 +1,7 @@
 import { ApiError } from './api-error';
 
-const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8080/api';
+// Ruta relativa: Vite reenvía /api al backend (ver vite.config.js).
+const API_URL = import.meta.env.VITE_API_URL ?? '/api';
 
 // Si una petición con token devuelve 401, la sesión ha caducado.
 // App.jsx se suscribe aquí para borrar el token y volver al estado de invitado.
