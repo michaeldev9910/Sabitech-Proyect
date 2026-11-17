@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
-import LoginView from "./views/login-view/login-view.jsx";
-import MainView from "./views/main-view/main-view.jsx";
-import MyBookingsView from "./views/my-bookings-view/my-bookings-view.jsx";
-import { cerrarSesion, obtenerUsuario } from "./api/auth-api.js";
-import { avisarAlCaducarSesion } from "./api/client.js";
-import { ApiError } from "./api/api-error.js";
-import { tieneRolQueReserva } from "./utils/bookings.js";
+import LoginView from "./vistas/vista-acceso/vista-acceso.jsx";
+import MainView from "./vistas/vista-principal/vista-principal.jsx";
+import MyBookingsView from "./vistas/vista-mis-reservas/vista-mis-reservas.jsx";
+import { cerrarSesion, obtenerUsuario } from "./api/api-autenticacion.js";
+import { avisarAlCaducarSesion } from "./api/cliente.js";
+import { ApiError } from "./api/error-api.js";
+import { tieneRolQueReserva } from "./utilidades/reservas.js";
 
 const TOKEN_KEY = "sabitech-auth-token";
 
