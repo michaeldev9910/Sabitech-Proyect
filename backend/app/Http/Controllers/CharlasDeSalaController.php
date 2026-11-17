@@ -14,7 +14,7 @@ class CharlasDeSalaController extends Controller
     public function __invoke(Sala $sala): JsonResponse
     {
         $charlas = $sala->charlas()
-            ->with('ponente')
+            ->with('ponentes')
             ->withCount('reservasConfirmadas')
             ->where('estado', 'publicada')
             ->orderBy('inicio')

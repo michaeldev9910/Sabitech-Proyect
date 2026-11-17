@@ -1,5 +1,5 @@
-{{-- Usa la plantilla resources/views/layouts/app.blade.php --}}
-@extends('layouts.app')
+{{-- Usa la plantilla resources/views/plantillas/app.blade.php --}}
+@extends('plantillas.app')
 
 @section('titulo', 'Programa')
 
@@ -44,7 +44,8 @@
                     <p class="charla__fecha">{{ fecha_charla($charla->inicio) }}</p>
                     <h2>{{ $charla->titulo }}</h2>
                     <p class="charla__datos">
-                        {{ $charla->ponente?->nombre }} {{ $charla->ponente?->apellidos }}
+                        {{-- nombres_ponentes() también es un helper propio: "Laura Martinez y Hugo Lopez" --}}
+                        {{ nombres_ponentes($charla->ponentes) }}
                         · {{ $charla->sala?->nombre }}
                     </p>
 

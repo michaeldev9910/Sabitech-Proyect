@@ -5,6 +5,7 @@ use App\Http\Controllers\CharlaController;
 use App\Http\Controllers\CharlasDeSalaController;
 use App\Http\Controllers\ContactoController;
 use App\Http\Controllers\PonenteController;
+use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\SalaController;
 use App\Http\Middleware\EnsureRol;
 use Illuminate\Support\Facades\Route;
@@ -45,6 +46,15 @@ Route::post('/contacto', ContactoController::class)
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
     Route::get('/me', [AuthController::class, 'me'])->name('auth.me');
+
+    // Reservas de la persona que ha iniciado sesión. El rol "acceso" no reserva: solo valida la entrada.
+    Route::middleware(EnsureRol::class . ':asistente,organizacion')->group(function () {
+        Route::get('/mis-reservas', [ReservaController::class, 'index'])->name('reservas.mias');
+        Route::post('/reservas', [ReservaController::class, 'store'])->name('reservas.store');
+        Route::delete('/reservas/{reserva}', [ReservaController::class, 'destroy'])
+            ->whereNumber('reserva')
+            ->name('reservas.destroy');
+    });
 
     Route::middleware(EnsureRol::class . ':organizacion')->group(function () {
         Route::post('/charlas', [CharlaController::class, 'store'])->name('charlas.store');

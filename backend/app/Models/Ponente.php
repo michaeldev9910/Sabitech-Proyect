@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Ponente extends Model
 {
@@ -11,8 +11,9 @@ class Ponente extends Model
 
     protected $fillable = ['nombre', 'apellidos', 'organizacion', 'biografia', 'foto_url'];
 
-    public function charlas(): HasMany
+    // Un ponente puede dar varias charlas y una charla tener varios ponentes
+    public function charlas(): BelongsToMany
     {
-        return $this->hasMany(Charla::class, 'ponente_id');
+        return $this->belongsToMany(Charla::class, 'charla_ponente')->withTimestamps();
     }
 }

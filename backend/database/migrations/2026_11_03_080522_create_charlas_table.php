@@ -26,10 +26,13 @@ return new class extends Migration
             $table->index(['estado', 'inicio']);
         });
 
-        DB::statement(
-            'ALTER TABLE charlas ADD CONSTRAINT chk_charlas_fechas
-             CHECK (fin > inicio AND apertura_plazas < inicio AND aforo > 0)'
-        );
+        // SQLite (la base de datos de los tests) no admite añadir restricciones con ALTER TABLE
+        if (DB::getDriverName() !== 'sqlite') {
+            DB::statement(
+                'ALTER TABLE charlas ADD CONSTRAINT chk_charlas_fechas
+                 CHECK (fin > inicio AND apertura_plazas < inicio AND aforo > 0)'
+            );
+        }
     }
 
     public function down(): void

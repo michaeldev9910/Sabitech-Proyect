@@ -21,3 +21,17 @@ if (! function_exists('fecha_charla')) {
         return $fecha ? $fecha->format('d/m/Y · H:i') : 'Fecha por confirmar';
     }
 }
+
+if (! function_exists('nombres_ponentes')) {
+    /**
+     * Nombres de los ponentes de una charla: "Laura Martinez Ortega y Hugo Lopez Gil"
+     */
+    function nombres_ponentes(iterable $ponentes): string
+    {
+        $nombres = collect($ponentes)
+            ->map(fn ($ponente) => trim("{$ponente->nombre} {$ponente->apellidos}"))
+            ->join(', ', ' y ');
+
+        return $nombres !== '' ? $nombres : 'Ponente por confirmar';
+    }
+}
