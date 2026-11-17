@@ -117,6 +117,7 @@ function MyBookingsView({ usuario, token, onCerrarSesion, onVolverAInicio }) {
         usuario={usuario}
         onCerrarSesion={onCerrarSesion}
         onVerMisReservas={() => window.scrollTo({ top: 0 })}
+        seccionActual="mis-reservas"
       />
 
       <main className="MisReservas" aria-labelledby="mis-reservas-titulo">

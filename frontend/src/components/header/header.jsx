@@ -11,14 +11,16 @@ import { irAlBuscador } from "../../utils/navigation.js";
 import { tieneRolQueReserva } from "../../utils/bookings.js";
 
 // Cada sección tiene su color de marca para el visor del menú.
-// "QR" y "Control admin" vienen de la rama login: sus secciones aún no existen.
 const SECCIONES = [
   { id: "inicio", texto: "Inicio", marca: "var(--light-teal)" },
   { id: "recientes", texto: "Recientes", marca: "var(--salud)" },
   { id: "charlas", texto: "Programa", marca: "var(--tecnologia)" },
   { id: "donde-estamos", texto: "Dónde estamos", marca: "var(--negocios)" },
-  { id: "qr", texto: "QR", marca: "var(--salud)" },
-  { id: "admin", texto: "Control admin", marca: "var(--tecnologia)" },
+  // No es una sección de la portada sino otra pantalla (App.jsx)
+  { id: "mis-reservas", texto: "Mis reservas", marca: "var(--salud)", pantalla: true },
+  // De momento no se muestran: vienen de la rama login y sus secciones aún no existen
+  // { id: "qr", texto: "QR", marca: "var(--salud)" },
+  // { id: "admin", texto: "Control admin", marca: "var(--tecnologia)" },
   { id: "contacto", texto: "Contacto", marca: "var(--light-teal)" },
 ];
 
@@ -37,15 +39,33 @@ const seccionDelHash = () => {
   return SECCIONES.some((seccion) => seccion.id === id) ? id : null;
 };
 
-function Header({ usuario = null, onAcceder, onCerrarSesion, onVerMisReservas }) {
+/**
+ * `seccionActual` marca en el menú la pantalla en la que se está
+ * (la vista de "Mis reservas" pasa "mis-reservas").
+ */
+function Header({
+  usuario = null,
+  onAcceder,
+  onCerrarSesion,
+  onVerMisReservas,
+  seccionActual = null,
+}) {
   const compacta = useSyncExternalStore(
     suscribirDesplazamiento,
     estaDesplazada,
   );
   const [abierta, setAbierta] = useState(false);
   const [activa, setActiva] = useState(
-    () => seccionDelHash() ?? SECCIONES[0].id,
+    () => seccionActual ?? seccionDelHash() ?? SECCIONES[0].id,
   );
+
+  // "Mis reservas": con sesión abre esa pantalla; sin sesión, el acceso (y después
+  // lleva a ella). El rol "acceso" no reserva, así que no lo ve.
+  const verReservas = usuario
+    ? onVerMisReservas
+    : onAcceder && (() => onAcceder("mis-reservas"));
+  const conReservas = Boolean(verReservas) && (!usuario || tieneRolQueReserva(usuario));
+  const secciones = SECCIONES.filter(({ pantalla }) => !pantalla || conReservas);
   const [apuntada, setApuntada] = useState(null);
 
   // Menú de la cuenta (solo con sesión iniciada)
@@ -71,8 +91,19 @@ function Header({ usuario = null, onAcceder, onCerrarSesion, onVerMisReservas })
     const colocar = () => {
       const enlace = navegacion.querySelector(`[data-seccion="${destino}"]`);
       if (!enlace) return;
-      visor.style.setProperty("--x", `${enlace.offsetLeft}px`);
-      visor.style.setProperty("--y", `${enlace.offsetTop}px`);
+
+      // Posición dentro de la navegación. En móvil, con el menú cerrado o animándose,
+      // cada <li> lleva un transform y pasa a ser el offsetParent del enlace (que mediría 0):
+      // por eso se suman los desplazamientos hasta llegar a la navegación.
+      let x = 0;
+      let y = 0;
+      for (let nodo = enlace; nodo && nodo !== navegacion; nodo = nodo.offsetParent) {
+        x += nodo.offsetLeft;
+        y += nodo.offsetTop;
+      }
+
+      visor.style.setProperty("--x", `${x}px`);
+      visor.style.setProperty("--y", `${y}px`);
       visor.style.setProperty("--ancho", `${enlace.offsetWidth}px`);
       visor.style.setProperty("--alto-enlace", `${enlace.offsetHeight}px`);
     };
@@ -256,17 +287,23 @@ function Header({ usuario = null, onAcceder, onCerrarSesion, onVerMisReservas })
               onPointerLeave={() => setApuntada(null)}
               onBlur={() => setApuntada(null)}
             >
-              {SECCIONES.map(({ id, texto, marca }, indice) => (
+              {secciones.map(({ id, texto, marca, pantalla }, indice) => (
                 <li key={id} style={{ "--marca": marca, "--orden": indice }}>
                   <a
                     href={`#${id}`}
                     data-seccion={id}
-                    aria-current={activa === id ? "location" : undefined}
+                    aria-current={activa === id ? (pantalla ? "page" : "location") : undefined}
                     onPointerEnter={(evento) => {
                       if (evento.pointerType !== "touch") setApuntada(id);
                     }}
                     onFocus={() => setApuntada(id)}
-                    onClick={cerrar}
+                    onClick={(evento) => {
+                      cerrar();
+                      if (!pantalla) return;
+                      // Otra pantalla, no una sección: sin "#" en la URL
+                      evento.preventDefault();
+                      verReservas();
+                    }}
                   >
                     {texto}
                   </a>

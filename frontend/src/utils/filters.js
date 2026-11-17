@@ -40,5 +40,6 @@ export function escribirFiltrosEnUrl(filtros) {
 
   const consulta = parametros.toString();
   const url = `${window.location.pathname}${consulta ? `?${consulta}` : ""}${window.location.hash}`;
-  window.history.replaceState(null, "", url);
+  // Conserva lo que App.jsx guarda en el historial (pantalla y scroll para «atrás»)
+  window.history.replaceState(window.history.state, "", url);
 }
