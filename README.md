@@ -229,6 +229,7 @@ SABITECH/
 - `main`: versión estable. Es la que se entrega.
 - `frontend` y `backend`: desarrollo. Se integran en `main` con pull requests.
 - Etiqueta **`v0.1-checkpoint`**: versión presentada en el checkpoint de noviembre de 2026.
+- Etiqueta **`v1.0-final`**: versión final del proyecto.
 
 ## Equipo
 
