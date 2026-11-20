@@ -19,28 +19,28 @@ class CharlaSeeder extends Seeder
         $charlas = [
             [
                 'titulo' => 'Introduccion a Laravel', 'ponentes' => ['Laura'], 'sala' => 'Sala Magna',
-                'inicio' => $dia(24, 12), 'aforo' => 60, 'estado' => 'publicada',
+                'inicio' => $dia(20, 12), 'aforo' => 60, 'estado' => 'publicada',
                 'descripcion' => 'Rutas, controladores y Eloquent para crear una API.',
             ],
             [
                 'titulo' => 'React desde cero', 'ponentes' => ['Hugo'], 'sala' => 'Aula 1',
-                'inicio' => $dia(3, 12), 'aforo' => 35, 'estado' => 'publicada',
+                'inicio' => $dia(7, 12), 'aforo' => 35, 'estado' => 'publicada',
                 'descripcion' => 'Componentes, estado y consumo de una API.',
             ],
             [
                 'titulo' => 'Docker para desarrolladores', 'ponentes' => ['Daniel'], 'sala' => 'Laboratorio',
-                'inicio' => $dia(0, 10), 'aforo' => 2, 'estado' => 'publicada',
+                'inicio' => $dia(20, 10), 'aforo' => 2, 'estado' => 'publicada',
                 'descripcion' => 'Contenedores para un entorno de desarrollo reproducible.',
             ],
             [
                 'titulo' => 'Accesibilidad en interfaces web', 'ponentes' => ['Marta'], 'sala' => 'Aula 2',
-                'inicio' => $dia(5, 12), 'aforo' => 25, 'estado' => 'publicada',
+                'inicio' => $dia(30, 12), 'aforo' => 25, 'estado' => 'publicada',
                 'descripcion' => 'Etiquetas, foco, contraste y navegacion por teclado.',
             ],
             [
                 // Charla con dos ponentes
                 'titulo' => 'Seguridad en aplicaciones web', 'ponentes' => ['Laura', 'Daniel'], 'sala' => 'Aula 1',
-                'inicio' => $dia(6, 12), 'aforo' => 30, 'estado' => 'publicada',
+                'inicio' => $dia(7, 12), 'aforo' => 30, 'estado' => 'publicada',
                 'descripcion' => 'Charla en preparacion.',
             ],
             [
